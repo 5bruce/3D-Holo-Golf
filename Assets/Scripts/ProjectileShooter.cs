@@ -19,6 +19,7 @@ public class ProjectileShooter : MonoBehaviour {
         resting = true;
         gameObject.GetComponent<Rigidbody>().useGravity = false;
 
+        gameObject.GetComponent<HandDraggable>().StartedDragging += ProjectileShooter_StartedDragging;
         gameObject.GetComponent<HandDraggable>().StoppedDragging += ProjectileShooter_StoppedDragging;
 	}
 
@@ -27,15 +28,24 @@ public class ProjectileShooter : MonoBehaviour {
     {
         if (resting)
         {
-            transform.position = Camera.main.transform.position + Camera.main.transform.forward * forwardOffset;
+            transform.position = Camera.main.transform.position + Vector3.Normalize(Camera.main.transform.forward)*forwardOffset;
             transform.rotation = Camera.main.transform.rotation;
         }
     }
 
     void OnReset()
     {
+        Debug.Log("ProjectileShooter: OnReset()");
         gameObject.GetComponent<Rigidbody>().useGravity = false;
         resting = true;
+    }
+
+    /// <summary>
+    /// Prepares projectile to be dragged from resting position
+    /// </summary>
+    private void ProjectileShooter_StartedDragging()
+    {
+        resting = false;
     }
 
     /// <summary>
@@ -43,6 +53,7 @@ public class ProjectileShooter : MonoBehaviour {
     /// </summary>
     private void ProjectileShooter_StoppedDragging()
     {
+        Debug.Log("ProjectileShooter: StoppedDragging event handler called");
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         rb.useGravity = true;
         resting = false;
