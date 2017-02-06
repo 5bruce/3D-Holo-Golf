@@ -385,11 +385,11 @@ PlayerSettings:
   m_MobileRenderingPath: 1
   metroPackageName: 3d-Holo-Pong
   metroPackageVersion: 1.0.0.0
-  metroCertificatePath: 
+  metroCertificatePath: Assets\WSATestCertificate.pfx
   metroCertificatePassword: 
-  metroCertificateSubject: 
-  metroCertificateIssuer: 
-  metroCertificateNotAfter: 0000000000000000
+  metroCertificateSubject: DefaultCompany
+  metroCertificateIssuer: DefaultCompany
+  metroCertificateNotAfter: 80ad0113309fd301
   metroApplicationDescription: 3d-Holo-Pong
   wsaImages: {}
   metroTileShortName: 

@@ -39,7 +39,7 @@ namespace HoloToolkit.Unity.SpatialMapping
         }
     };
 
-    public class PlaneFinding
+    public class PlaneFinding : MonoBehaviour
     {
         #region Public APIs
 
