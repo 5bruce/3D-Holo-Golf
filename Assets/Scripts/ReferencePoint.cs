@@ -7,6 +7,8 @@ public class ReferencePoint : MonoBehaviour
 {
 	private MeshRenderer meshRenderer;
 
+    public float forward_offset = 1f;
+
 	// Use this for initialization
 	void Start()
 	{
@@ -21,10 +23,8 @@ public class ReferencePoint : MonoBehaviour
 		// Do a raycast into the world based on the user's
 		// head position and orientation.
 		Vector3 headPosition = Camera.main.transform.position;
-		Vector3 gazeDirection = Camera.main.transform.forward;
-
-		// percent offset
-		const float forward_offset = 1f;  
+		Vector3 gazeDirection = Vector3.Normalize(Camera.main.transform.forward);
+ 
 		Vector3 offset = new Vector3 (0f, 0.10f, 0f);
 		meshRenderer.transform.position = headPosition + gazeDirection*forward_offset + offset;
 	}

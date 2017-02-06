@@ -563,6 +563,11 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1669232004 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1000012072213228, guid: a611e772ef8ddf64d8106a9cbb70f31c,
+    type: 2}
+  m_PrefabInternal: {fileID: 2139090538}
 --- !u!1001 &1763463174
 Prefab:
   m_ObjectHideFlags: 0
@@ -722,7 +727,25 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reference_point: {fileID: 197475433}
+  forwardOffset: 0.5
   resting: 1
+--- !u!114 &1890298097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1890298088}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52a72bdb251e5ce488e5c51f0a9c657b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Cursor: {fileID: 1669232004}
+  DirectionIndicatorObject: {fileID: 100000, guid: befc70bcd73699b4d8e5c5fc86296927,
+    type: 3}
+  DirectionIndicatorColor: {r: 0.2530277, g: 0.2530277, b: 0.9558824, a: 1}
+  VisibilitySafeFactor: 0.1
+  MetersFromCursor: 0.3
 --- !u!4 &2034742217 stripped
 Transform:
   m_PrefabParentObject: {fileID: 4000013298573622, guid: 2ed75ffdf9031c94e8bce4b3d17b9928,

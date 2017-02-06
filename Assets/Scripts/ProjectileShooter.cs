@@ -10,7 +10,7 @@ public class ProjectileShooter : MonoBehaviour {
     //public GameObject projectile_prefab;
     public GameObject reference_point;
 
-    const float forwardOffset = 0.5f;
+    public float forwardOffset = 0.5f;
     public const float throwRatio = 10.0f;
     public bool resting;
 
