@@ -17,6 +17,8 @@ public class ProjectileShooter : MonoBehaviour {
     /// Icon indicating where Projectile should be shot from next
     /// </summary>
     public GameObject flag;
+    Vector3 flag_position;
+    Quaternion flag_rotation;
     
     /// <summary>
     /// Trigger object that counts as this projectile's goal trigger
@@ -26,17 +28,23 @@ public class ProjectileShooter : MonoBehaviour {
     /// <summary>
     /// Minimum speed the projectile must be moving to stop from freezing in its place after launched
     /// </summary>
-    public float noMovmentthresh = 0.05f;
+    public float noMovmentThresh = 0.05f;
 
     public float forwardOffset = 0.5f;
     public const float throwRatio = 10.0f;
     public bool resting = true;
 
+    //bool canPlaceFlag;
     int strokes;
 
     // Use this for initialization
     void Start () {
         strokes = 0;
+
+        //canPlaceFlag = true;
+        // initially hide flag
+        flag.GetComponent<MeshRenderer>().enabled = false;
+
         resting = true;
         gameObject.GetComponent<Rigidbody>().useGravity = false;
 
@@ -56,7 +64,7 @@ public class ProjectileShooter : MonoBehaviour {
         {
             Rigidbody rb = gameObject.GetComponent<Rigidbody>();
             float speed = rb.velocity.magnitude;
-            if (speed < noMovmentthresh)
+            if (speed < noMovmentThresh)
             {
                 // freeze the projectile of this component
                 rb.velocity = new Vector3(0, 0, 0);
@@ -73,6 +81,7 @@ public class ProjectileShooter : MonoBehaviour {
         Debug.Log("ProjectileShooter: OnReset()");
         gameObject.GetComponent<Rigidbody>().useGravity = false;
         resting = true;
+        //canPlaceFlag = true;
     }
 
     /// <summary>
@@ -82,7 +91,28 @@ public class ProjectileShooter : MonoBehaviour {
     void PlaceFlag()
     {
         Debug.Log("ProjectileShooter: PlaceFlag()");
+        // move flag to new position and orientation
+        flag.transform.position = flag_position;
+        flag.transform.rotation = flag_rotation;
 
+        // after placing flag, don't want to be able to place again in same turn/stroke
+        //canPlaceFlag = false;
+    }
+
+
+    void OnCollisionEnter(Collision collision)
+    {
+        // TODO: added sound effects
+
+        flag.GetComponent<MeshRenderer>().enabled = true;
+    }
+
+    void OnCollisionStay(Collision collision)
+    {
+        // position of the porjectile
+        flag_position = gameObject.transform.position;
+        // normal of the suface hit by the projectile, see http://answers.unity3d.com/answers/59309/view.html
+        flag_rotation = Quaternion.FromToRotation(Vector3.up, collision.contacts[0].normal);  
     }
 
     void OnTriggerEnter(Collider other)

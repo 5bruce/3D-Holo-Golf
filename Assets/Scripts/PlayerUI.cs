@@ -29,13 +29,13 @@ public class PlayerUI : MonoBehaviour {
     void ProjectileLaunched(int strokes)
     {
         Debug.Log("PlayerUI: ProjectileLaunched()");
-        strokesText.text = "Strokes: " + strokes;
+        strokesText.text = "Strokes: " + strokes.ToString();
     }
 
     void GoalEntered(int strokes)
     {
         Debug.Log("PlauerUI: GoalEntered()");
         if (strokes == 1) goalText.text = "Hole in one!";
-        else goalText.text = "Finished in " + strokes + " strokes!";
+        else goalText.text = "Finished in " + strokes.ToString() + " strokes!";  // FIXME: nothing appearing after concatenation attempt
     }
 }
