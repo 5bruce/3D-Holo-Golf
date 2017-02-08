@@ -5,7 +5,7 @@ using HoloToolkit.Unity.InputModule;
 
 /// <summary>
 /// Controls the launching and reseting of the attached-to projectile gameobject.
-/// Also controls when the recent-bounce flag can be placed.
+/// Also controls when the recent-bounce flag is placed.
 /// </summary>
 public class ProjectileShooter : MonoBehaviour {
     /// <summary>
@@ -23,9 +23,14 @@ public class ProjectileShooter : MonoBehaviour {
     /// </summary>
     public GameObject goal;
 
+    /// <summary>
+    /// Minimum speed the projectile must be moving to stop from freezing in its place after launched
+    /// </summary>
+    public float noMovmentthresh = 0.05f;
+
     public float forwardOffset = 0.5f;
     public const float throwRatio = 10.0f;
-    public bool resting;
+    public bool resting = true;
 
     int strokes;
 
@@ -47,6 +52,20 @@ public class ProjectileShooter : MonoBehaviour {
             transform.position = Camera.main.transform.position + Vector3.Normalize(Camera.main.transform.forward)*forwardOffset;
             transform.rotation = Camera.main.transform.rotation;
         }
+        else
+        {
+            Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+            float speed = rb.velocity.magnitude;
+            if (speed < noMovmentthresh)
+            {
+                // freeze the projectile of this component
+                rb.velocity = new Vector3(0, 0, 0);
+                //Or
+                //rb.constraints = RigidbodyConstraints.FreezeAll;
+
+                PlaceFlag();
+            }
+        }
     }
 
     void OnReset()
@@ -54,6 +73,16 @@ public class ProjectileShooter : MonoBehaviour {
         Debug.Log("ProjectileShooter: OnReset()");
         gameObject.GetComponent<Rigidbody>().useGravity = false;
         resting = true;
+    }
+
+    /// <summary>
+    /// Places the flag object of this component along the surface normal of the 
+    /// object colliding with attached-to projectile when called.
+    /// </summary>
+    void PlaceFlag()
+    {
+        Debug.Log("ProjectileShooter: PlaceFlag()");
+
     }
 
     void OnTriggerEnter(Collider other)
