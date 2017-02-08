@@ -4,18 +4,28 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 
 /// <summary>
-/// Controls whether the attached-to projectile is launching or resting
+/// Controls the launching and reseting of the attached-to projectile gameobject
 /// </summary>
 public class ProjectileShooter : MonoBehaviour {
-    //public GameObject projectile_prefab;
+    /// <summary>
+    /// Reference this projectile launches towards when relaeased from handdragging
+    /// </summary>
     public GameObject reference_point;
+    
+    /// <summary>
+    /// Trigger object that counts as this projectile's goal trigger
+    /// </summary>
+    public GameObject goal;
 
     public float forwardOffset = 0.5f;
     public const float throwRatio = 10.0f;
     public bool resting;
 
+    int strokes;
+
     // Use this for initialization
     void Start () {
+        strokes = 0;
         resting = true;
         gameObject.GetComponent<Rigidbody>().useGravity = false;
 
@@ -40,6 +50,17 @@ public class ProjectileShooter : MonoBehaviour {
         resting = true;
     }
 
+    void OnTriggerEnter(Collider other)
+    {
+        Debug.Log("ProjectileShooter: OnTriggerEntered()");
+        if(other.transform.gameObject.name == goal.name)
+        {
+            Debug.Log("ProjectileShooter: goal entered");
+            gameObject.SetActive(false);  // can't be activated once inactive (just for initial testing)
+            SendMessageUpwards("GoalEntered", strokes);
+        }
+    }
+
     /// <summary>
     /// Prepares projectile to be dragged from resting position
     /// </summary>
@@ -61,5 +82,8 @@ public class ProjectileShooter : MonoBehaviour {
         Vector3 direction = reference_point.transform.position - gameObject.transform.position;
         float magnitude = direction.magnitude * throwRatio;
         rb.velocity = direction * magnitude;
+
+        strokes++;
+        SendMessageUpwards("ProjectileLaunched", strokes);
     }
 }
