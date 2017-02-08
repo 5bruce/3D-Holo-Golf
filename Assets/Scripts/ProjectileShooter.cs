@@ -4,13 +4,19 @@ using UnityEngine;
 using HoloToolkit.Unity.InputModule;
 
 /// <summary>
-/// Controls the launching and reseting of the attached-to projectile gameobject
+/// Controls the launching and reseting of the attached-to projectile gameobject.
+/// Also controls when the recent-bounce flag can be placed.
 /// </summary>
 public class ProjectileShooter : MonoBehaviour {
     /// <summary>
     /// Reference this projectile launches towards when relaeased from handdragging
     /// </summary>
     public GameObject reference_point;
+
+    /// <summary>
+    /// Icon indicating where Projectile should be shot from next
+    /// </summary>
+    public GameObject flag;
     
     /// <summary>
     /// Trigger object that counts as this projectile's goal trigger
