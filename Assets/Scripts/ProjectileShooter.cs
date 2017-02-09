@@ -43,7 +43,12 @@ public class ProjectileShooter : MonoBehaviour {
 
         //canPlaceFlag = true;
         // initially hide flag
-        flag.GetComponent<MeshRenderer>().enabled = false;
+        // make flag visible
+        MeshRenderer[] flag_meshes = flag.GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer mesh in flag_meshes)
+        {
+            mesh.enabled = false;
+        }
 
         resting = true;
         gameObject.GetComponent<Rigidbody>().useGravity = false;
@@ -104,13 +109,18 @@ public class ProjectileShooter : MonoBehaviour {
     {
         // TODO: added sound effects
 
-        flag.GetComponent<MeshRenderer>().enabled = true;
+        // make flag visible
+        MeshRenderer[] flag_meshes = flag.GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer mesh in flag_meshes)
+        {
+            mesh.enabled = true;
+        }
     }
 
     void OnCollisionStay(Collision collision)
     {
         // position of the porjectile
-        flag_position = gameObject.transform.position;
+        flag_position = gameObject.transform.position;  // TODO: add an up_offset to stop flag poking under spatial mesh ball is rolling on
         // normal of the suface hit by the projectile, see http://answers.unity3d.com/answers/59309/view.html
         flag_rotation = Quaternion.FromToRotation(Vector3.up, collision.contacts[0].normal);  
     }

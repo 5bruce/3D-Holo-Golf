@@ -357,7 +357,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 27
+    m_FontSize: 30
     m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
@@ -391,7 +391,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 75}
-  m_SizeDelta: {x: 160, y: 30}
+  m_SizeDelta: {x: 160, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &326335633
 GameObject:
@@ -757,8 +757,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 50, y: -30}
-  m_SizeDelta: {x: 160, y: 30}
+  m_AnchoredPosition: {x: 200, y: -50}
+  m_SizeDelta: {x: 160, y: 40}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1098159827
 MonoBehaviour:
@@ -781,7 +781,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 25
+    m_FontSize: 30
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 2
@@ -839,6 +839,20 @@ Prefab:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 23783120898083344, guid: d48a78e2fa9f8d2449101947777e7d22,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4914841828405010, guid: d48a78e2fa9f8d2449101947777e7d22, type: 2}
+      propertyPath: m_LocalScale.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 136226648538793810, guid: d48a78e2fa9f8d2449101947777e7d22,
+        type: 2}
+      propertyPath: m_Height
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 23256939814014210, guid: d48a78e2fa9f8d2449101947777e7d22,
         type: 2}
       propertyPath: m_Enabled
       value: 0
@@ -1212,7 +1226,7 @@ Canvas:
   serializedVersion: 2
   m_RenderMode: 1
   m_Camera: {fileID: 666531086}
-  m_PlaneDistance: 0.5
+  m_PlaneDistance: 1.5
   m_PixelPerfect: 0
   m_ReceivesEvents: 1
   m_OverrideSorting: 0

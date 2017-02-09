@@ -34,8 +34,9 @@ public class PlayerUI : MonoBehaviour {
 
     void GoalEntered(int strokes)
     {
-        Debug.Log("PlauerUI: GoalEntered()");
+        Debug.Log("PlauerUI: GoalEntered(): strokes = " + strokes.ToString());
+        strokesText.text = "";
         if (strokes == 1) goalText.text = "Hole in one!";
-        else goalText.text = "Finished in " + strokes.ToString() + " strokes!";  // FIXME: nothing appearing after concatenation attempt
+        else goalText.text = strokes.ToString() + " strokes!";  // FIXME: can' concat. a string literal to front
     }
 }
