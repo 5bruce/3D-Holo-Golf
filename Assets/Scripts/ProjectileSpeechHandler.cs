@@ -5,7 +5,9 @@ using HoloToolkit.Unity.InputModule;
 using System;
 
 public class ProjectileSpeechHandler : MonoBehaviour, 
-                                       ISpeechHandler {
+                                       ISpeechHandler
+{
+    // FIXME: I'm not sure that this is properly implementing the interface
     public void OnSpeechKeywordRecognized(SpeechKeywordRecognizedEventData eventData)
     {
         if(eventData.RecognizedText == "Reset Ball")
