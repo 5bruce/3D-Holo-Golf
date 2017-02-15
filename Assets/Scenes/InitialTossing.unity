@@ -91,6 +91,11 @@ NavMeshSettings:
     cellSize: 0.16666667
     accuratePlacement: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &145281908 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1145744266026872, guid: 41e0515e8930a77408e69a88f8c11a0b,
+    type: 2}
+  m_PrefabInternal: {fileID: 1861432729}
 --- !u!1001 &176046954
 Prefab:
   m_ObjectHideFlags: 0
@@ -362,6 +367,7 @@ GameObject:
   m_Component:
   - component: {fileID: 326335634}
   - component: {fileID: 326335635}
+  - component: {fileID: 326335636}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -398,6 +404,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   strokesText: {fileID: 1098159827}
   goalText: {fileID: 283593894}
+--- !u!114 &326335636
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 326335633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce876bdc95f1c864d908de47996dccf7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pauseMenu: {fileID: 145281908}
 --- !u!1 &413439875
 GameObject:
   m_ObjectHideFlags: 0
@@ -544,6 +562,42 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 176046960}
           m_MethodName: ToggleMesh
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: OnReset
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  - Keyword: Pause Game
+    KeyCode: 0
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 326335636}
+          m_MethodName: PauseGame
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: OnReset
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  - Keyword: Resume Game
+    KeyCode: 0
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 326335636}
+          m_MethodName: ResumeGame
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}
@@ -852,7 +906,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1ba7972ed7742544aacd40bba6ef2f1f, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1022,6 +1076,67 @@ Prefab:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 3d175caf3db262344bdd5069b0bb5f24, type: 2}
+  m_IsPrefabParent: 0
+--- !u!1001 &1861432729
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4758050051376910, guid: 41e0515e8930a77408e69a88f8c11a0b, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4758050051376910, guid: 41e0515e8930a77408e69a88f8c11a0b, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4758050051376910, guid: 41e0515e8930a77408e69a88f8c11a0b, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4758050051376910, guid: 41e0515e8930a77408e69a88f8c11a0b, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4758050051376910, guid: 41e0515e8930a77408e69a88f8c11a0b, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4758050051376910, guid: 41e0515e8930a77408e69a88f8c11a0b, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4758050051376910, guid: 41e0515e8930a77408e69a88f8c11a0b, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4758050051376910, guid: 41e0515e8930a77408e69a88f8c11a0b, type: 2}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1145744266026872, guid: 41e0515e8930a77408e69a88f8c11a0b, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 65335976969237120, guid: 41e0515e8930a77408e69a88f8c11a0b,
+        type: 2}
+      propertyPath: m_Size.x
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 65335976969237120, guid: 41e0515e8930a77408e69a88f8c11a0b,
+        type: 2}
+      propertyPath: m_Size.z
+      value: 0.0025
+      objectReference: {fileID: 0}
+    - target: {fileID: 65335976969237120, guid: 41e0515e8930a77408e69a88f8c11a0b,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 41e0515e8930a77408e69a88f8c11a0b, type: 2}
   m_IsPrefabParent: 0
 --- !u!1001 &1880687070
 Prefab:
