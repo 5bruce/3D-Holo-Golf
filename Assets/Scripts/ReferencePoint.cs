@@ -8,6 +8,7 @@ public class ReferencePoint : MonoBehaviour
 	private MeshRenderer meshRenderer;
 
     public float forward_offset = 1f;
+    public float upwards_offset = 0.1f;
 
 	// Use this for initialization
 	void Start()
@@ -25,7 +26,7 @@ public class ReferencePoint : MonoBehaviour
 		Vector3 headPosition = Camera.main.transform.position;
 		Vector3 gazeDirection = Vector3.Normalize(Camera.main.transform.forward);
  
-		Vector3 offset = new Vector3 (0f, 0.10f, 0f);
+		Vector3 offset = new Vector3 (0f, upwards_offset, 0f);
 		meshRenderer.transform.position = headPosition + gazeDirection*forward_offset + offset;
 	}
 }
