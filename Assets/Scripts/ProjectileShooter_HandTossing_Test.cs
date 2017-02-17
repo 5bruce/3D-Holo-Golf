@@ -7,7 +7,8 @@ using HoloToolkit.Unity.InputModule;
 /// Controls the launching and reseting of the attached-to projectile gameobject.
 /// Also controls when the recent-bounce flag is placed.
 /// </summary>
-public class ProjectileShooter : MonoBehaviour {
+public class ProjectileShooter_HandTossing_Test : MonoBehaviour
+{
     /// <summary>
     /// Reference this projectile launches towards when relaeased from handdragging
     /// </summary>
@@ -17,9 +18,9 @@ public class ProjectileShooter : MonoBehaviour {
     /// Icon indicating where Projectile should be shot from next
     /// </summary>
     public GameObject flag;
-    Vector3 flagPosition;
-    Quaternion flagRotation;
-    
+    Vector3 flag_position;
+    Quaternion flag_rotation;
+
     /// <summary>
     /// Trigger object that counts as this projectile's goal trigger
     /// </summary>
@@ -30,36 +31,29 @@ public class ProjectileShooter : MonoBehaviour {
     /// </summary>
     public float noMovmentThresh = 0.05f;
 
-    /// <summary>
-    /// distance from camera for projectile to stay at when resting (must be above 0.5f)
-    /// </summary>
-    public float forwardOffset = 0.5f;
-
-    /// <summary>
-    /// force multiplier to apply to projectile and reference point distance when released (must be above 0)
-    /// </summary>
-    public float throwRatio = 10.0f;
-
+    public const float forwardOffset = 0.5f;
+    public const float throwRatio = 10.0f;
     public bool resting = true;
 
-    bool isDragging;
-    bool canPlaceFlag;
+    bool can_place_flag;
+    // track strokes for score
     int strokes;
+    // track position and speed data for launching on release
+    Vector3 previous_position;
+    Vector3 current_position;
+    Vector3 speed, launch_velocity;
 
     // Use this for initialization
-    void Start () {
-        forwardOffset = (forwardOffset < 0.5f) ? 0.5f : forwardOffset;
-        throwRatio = (throwRatio <= 0) ? 10f : throwRatio;
-        isDragging = false;
-        canPlaceFlag = false;
+    void Start()
+    {
+        can_place_flag = false;
         strokes = 0;
-
-        // initially hide trajectory prediction line
-        gameObject.GetComponent<LineRenderer>().enabled = false;
+        current_position = previous_position = gameObject.transform.position;
+        speed = launch_velocity = Vector3.zero;
 
         // initially hide flag
-        MeshRenderer[] flagMeshes = flag.GetComponentsInChildren<MeshRenderer>();
-        foreach (MeshRenderer mesh in flagMeshes)
+        MeshRenderer[] flag_meshes = flag.GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer mesh in flag_meshes)
         {
             mesh.enabled = false;
         }
@@ -69,28 +63,38 @@ public class ProjectileShooter : MonoBehaviour {
 
         gameObject.GetComponent<HandDraggable>().StartedDragging += ProjectileShooter_StartedDragging;
         gameObject.GetComponent<HandDraggable>().StoppedDragging += ProjectileShooter_StoppedDragging;
-	}
+    }
 
     // Update is called once per frame
     void Update()
     {
         if (resting)
         {
-            transform.position = Camera.main.transform.position + Vector3.Normalize(Camera.main.transform.forward)*forwardOffset;
+            transform.position = Camera.main.transform.position + Vector3.Normalize(Camera.main.transform.forward) * forwardOffset;
             transform.rotation = Camera.main.transform.rotation;
         }
         else
         {
-            if (isDragging)
+            if (!resting)
             {
-                UpdateTrajectory(gameObject.transform.position, this.LaunchVelocity(), Physics.gravity);
+                // track prev. and curr. positions and speed
+                previous_position = current_position;
+                current_position = gameObject.transform.position;
+                float delta = Time.deltaTime;
+                // need to calc. projectile motion this way b/c handdragging does not register as ridgidbody velocity
+                speed = (delta != 0)
+                    ? (current_position - previous_position) / delta
+                    : Vector3.zero;
+                launch_velocity = (speed != Vector3.zero) ? speed : launch_velocity;
+                Debug.Log("ProjectileShooter: LateUpdate: speed=" + speed);
             }
-            if (canPlaceFlag)
+
+            if (can_place_flag)
             {
                 // track speed to check when to place projectile's flag
                 Rigidbody rb = gameObject.GetComponent<Rigidbody>();
-                float rollingSpeed = rb.velocity.magnitude;
-                if (rollingSpeed < noMovmentThresh)
+                float rolling_speed = rb.velocity.magnitude;
+                if (rolling_speed < noMovmentThresh)
                 {
                     // freeze the projectile of this component and place flag
                     rb.velocity = new Vector3(0, 0, 0);
@@ -112,43 +116,14 @@ public class ProjectileShooter : MonoBehaviour {
     }
 
     /// <summary>
-    /// draws a line predicting the projectile's basic trajectory.
-    /// see https://forum.unity3d.com/threads/projectile-prediction-line.143636/#post-985266
-    /// </summary>
-    /// <param name="initialPosition"></param>
-    /// <param name="initialVelocity"></param>
-    /// <param name="gravity"></param>
-    void UpdateTrajectory(Vector3 initialPosition, Vector3 initialVelocity, Vector3 gravity)
-    {
-        gravity = (gravity == null) ? Physics.gravity : gravity;
-
-        // number of line vertices to draw with
-        int numSteps = 20; // for example
-        // delta between predicted trajectory to place vertices
-        float timeDelta = 0.1f / initialVelocity.magnitude; // for example
-
-        LineRenderer lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.numPositions = numSteps;
-
-        Vector3 position = initialPosition;
-        Vector3 velocity = initialVelocity;
-        for (int v = 0; v < numSteps; v++)
-        {
-            position += velocity * timeDelta + 0.5f * gravity * timeDelta * timeDelta;
-            velocity += gravity * timeDelta;
-            lineRenderer.SetPosition(v, position);  // can place this either at start or end of this section
-        }
-    }
-
-    /// <summary>
     /// Places the flag object of this component along the surface normal of the 
     /// object colliding with attached-to projectile when called.
     /// </summary>
     void PlaceFlag()
     {
         // move flag to new position and orientation
-        flag.transform.position = flagPosition;
-        flag.transform.rotation = flagRotation;
+        flag.transform.position = flag_position;
+        flag.transform.rotation = flag_rotation;
 
         // after placing flag, don't want to be able to place again in same turn/stroke
         //can_place_flag = false;
@@ -170,15 +145,15 @@ public class ProjectileShooter : MonoBehaviour {
     void OnCollisionStay(Collision collision)
     {
         // position of the porjectile
-        flagPosition = gameObject.transform.position;  // TODO: add an up_offset to stop flag poking under spatial mesh ball is rolling on
+        flag_position = gameObject.transform.position;  // TODO: add an up_offset to stop flag poking under spatial mesh ball is rolling on
         // normal of the suface hit by the projectile, see http://answers.unity3d.com/answers/59309/view.html
-        flagRotation = Quaternion.FromToRotation(Vector3.up, collision.contacts[0].normal);  
+        flag_rotation = Quaternion.FromToRotation(Vector3.up, collision.contacts[0].normal);
     }
 
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("ProjectileShooter: OnTriggerEntered()");
-        if(other.transform.gameObject.name == goal.name)
+        if (other.transform.gameObject.name == goal.name)
         {
             Debug.Log("ProjectileShooter: goal entered");
             gameObject.SetActive(false);  // can't be activated once inactive (just for initial testing)
@@ -192,8 +167,6 @@ public class ProjectileShooter : MonoBehaviour {
     private void ProjectileShooter_StartedDragging()
     {
         resting = false;
-        isDragging = true;
-        gameObject.GetComponent<LineRenderer>().enabled = true;
     }
 
     /// <summary>
@@ -206,28 +179,16 @@ public class ProjectileShooter : MonoBehaviour {
         rb.useGravity = true;
         resting = false;
 
-        rb.velocity = this.LaunchVelocity();
+        Vector3 direction = /*reference_point.transform.position - gameObject.transform.position*/Vector3.Normalize(current_position - previous_position);
+        //float magnitude = direction.magnitude * throwRatio;
+        Debug.Log("ProjectileShooter: direction=" + direction + " speed=" + speed + " launch_velocity=" + launch_velocity);
+        rb.velocity = launch_velocity;
 
         strokes++;
         SendMessageUpwards("ProjectileLaunched", strokes);
 
-        // remove trajectory prediction line
-        gameObject.GetComponent<LineRenderer>().enabled = false;
-
-        // start drawing projectile line
         gameObject.GetComponent<TrailRenderer>().enabled = true;
 
-        isDragging = false;
-        canPlaceFlag = true;
-    }
-    /// <summary>
-    /// calculates velocity to apply to projectile based on projectile's reference point
-    /// </summary>
-    /// <returns></returns>
-    private Vector3 LaunchVelocity()
-    {
-        Vector3 direction = reference_point.transform.position - gameObject.transform.position;
-        float magnitude = direction.magnitude * throwRatio;
-        return direction * magnitude;
+        can_place_flag = true;
     }
 }
