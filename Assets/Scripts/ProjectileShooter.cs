@@ -120,8 +120,6 @@ public class ProjectileShooter : MonoBehaviour {
     /// <param name="gravity"></param>
     void UpdateTrajectory(Vector3 initialPosition, Vector3 initialVelocity, Vector3 gravity)
     {
-        gravity = (gravity == null) ? Physics.gravity : gravity;
-
         // number of line vertices to draw with
         int numSteps = 20; // for example
         // delta between predicted trajectory to place vertices
