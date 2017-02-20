@@ -9,6 +9,11 @@ using HoloToolkit.Unity.InputModule;
 /// </summary>
 public class ProjectileShooter : MonoBehaviour {
     /// <summary>
+    /// The cursor belonging to the player who's projectile this component's attached-to gameobject is.
+    /// </summary>
+    public GameObject cursor;
+
+    /// <summary>
     /// Reference this projectile launches towards when relaeased from handdragging
     /// </summary>
     public GameObject reference_point;
@@ -48,6 +53,18 @@ public class ProjectileShooter : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+        // exit with error if this projectile does not have gameobject relationships set
+        if (!cursor || cursor.GetComponent<AnimatedCursor>() == null ||
+            !reference_point ||
+            !flag ||
+            !goal)
+        {
+            Debug.LogError("ProjectileShooter.cs: Start(): this script expects 'cursor' GameObject to have 'AnimatedCursor' component from the HoloToolkit");
+            Debug.LogError("ProjectileShooter.cs: Start(): reference_point, flag, or goal GameObject may not have been set in this component");
+            // note, this does not quit in the Unity editor, see http://answers.unity3d.com/answers/514429/view.html
+            Application.Quit();
+        }
+
         forwardOffset = (forwardOffset < 0.5f) ? 0.5f : forwardOffset;
         throwRatio = (throwRatio <= 0) ? 10f : throwRatio;
         isDragging = false;
@@ -109,6 +126,13 @@ public class ProjectileShooter : MonoBehaviour {
         gameObject.GetComponent<Rigidbody>().useGravity = false;
         resting = true;
         gameObject.GetComponent<TrailRenderer>().enabled = false;
+
+        // reset cursor back to its min. distance in front of camera
+        /* 
+         * This is done to avoid bug where cursor gets stuck behind ball after reset. 
+         * The actual reset position should not matter, since cursor will continue its usual behavior in next frame.
+         */
+        //cursor.transform.position = Vector3.Normalize(Camera.main.transform.forward) + new Vector3(0f, 0f, cursor.GetComponent<AnimatedCursor>().MinCursorDistance);
     }
 
     /// <summary>

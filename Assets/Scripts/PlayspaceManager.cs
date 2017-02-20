@@ -183,7 +183,7 @@ public class PlayspaceManager : Singleton<PlayspaceManager>
     /// <summary>
     /// Called when the GameObject is unloaded.
     /// </summary>
-    private new void OnDestroy()
+    private new void OnDestroy()  // what is 'new'? see http://stackoverflow.com/a/1014378
     {
         if (SurfaceMeshesToPlanes.Instance != null)
         {
