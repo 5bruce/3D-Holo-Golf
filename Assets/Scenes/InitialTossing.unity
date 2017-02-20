@@ -848,6 +848,11 @@ Prefab:
       propertyPath: TagalongDistance
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114863148731069218, guid: 41e0515e8930a77408e69a88f8c11a0b,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 41e0515e8930a77408e69a88f8c11a0b, type: 2}
   m_IsPrefabParent: 0

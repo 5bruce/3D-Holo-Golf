@@ -36,6 +36,9 @@ public class ToMainButtonHandler : MonoBehaviour,
     void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
         Debug.Log("ToMainButtonHandler: OnInputClicked()");
-        SceneManager.LoadScene("StartingMenu");
+
+        // Set time back to normal speed before continuing
+        Time.timeScale = 1;
+        SceneManager.LoadSceneAsync("StartingMenu");
     }
 }

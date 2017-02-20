@@ -47,6 +47,13 @@ public class PlayspaceManager : Singleton<PlayspaceManager>
             scanTime = scanTime_Debug;
         }
 
+        // start SpatialMapping observer if not already running
+        if (!SpatialMappingManager.Instance.IsObserverRunning())
+        {
+            Debug.Log("PlayspaceManager: Start(): starting spatialmappingmanager observer");
+            SpatialMappingManager.Instance.StartObserver();
+        }
+
         // Update surfaceObserver and storedMeshes to use the same material during scanning.
         // This action overrides whatever material is default assigned to the SpatialMappingManager
         SpatialMappingManager.Instance.SetSurfaceMaterial(defaultMaterial);
@@ -66,10 +73,10 @@ public class PlayspaceManager : Singleton<PlayspaceManager>
         {
             // If we have not processed the spatial mapping data
             // and scanning time is limited...
-
+            // Debug.Log("current scantime = " + (Time.timeSinceLevelLoad - SpatialMappingManager.Instance.StartTime));
             // Check to see if enough scanning time has passed
             // since starting the observer.
-            if (limitScanningByTime && ((Time.time - SpatialMappingManager.Instance.StartTime) < scanTime))
+            if (limitScanningByTime && ((Time.timeSinceLevelLoad - SpatialMappingManager.Instance.StartTime) < scanTime))
             {
                 // If we have a limited scanning time, then we should wait until
                 // enough time has passed before processing the mesh.

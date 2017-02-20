@@ -52,12 +52,15 @@ public class SpatialMappingMeshToggler : MonoBehaviour {
         if(surfaceMeshesToPlanes != null)
         {
             List<GameObject> activePlanes = surfaceMeshesToPlanes.ActivePlanes;
-            if (activePlanes[0].GetComponent<MeshRenderer>().enabled)
-                foreach (GameObject plane in activePlanes)
-                    plane.GetComponent<MeshRenderer>().enabled = false;
-            else
-                foreach (GameObject plane in activePlanes)
-                    plane.GetComponent<MeshRenderer>().enabled = true;
+            if (activePlanes.Count > 0)
+            {
+                if (activePlanes[0].GetComponent<MeshRenderer>().enabled)
+                    foreach (GameObject plane in activePlanes)
+                        plane.GetComponent<MeshRenderer>().enabled = false;
+                else
+                    foreach (GameObject plane in activePlanes)
+                        plane.GetComponent<MeshRenderer>().enabled = true;
+            }
         }
     }
 }

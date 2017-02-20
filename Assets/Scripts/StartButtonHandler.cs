@@ -37,6 +37,6 @@ public class StartButtonHandler : MonoBehaviour,
     void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
         Debug.Log("ExitButtonHandler: OnInputClicked()");
-        SceneManager.LoadScene("InitialTossing");
+        SceneManager.LoadSceneAsync("InitialTossing");
     }
 }
