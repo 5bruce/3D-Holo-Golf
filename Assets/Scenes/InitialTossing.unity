@@ -191,6 +191,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51d556294c53c4e409080adbf3278950, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  primaryMaterial: {fileID: 2100000, guid: d698790d3facd3d4289a13fa1243030a, type: 2}
+  secondaryMaterial: {fileID: 2100000, guid: df172103f5fba4a4d8636aeca60cb0d7, type: 2}
 --- !u!1001 &179016540
 Prefab:
   m_ObjectHideFlags: 0
@@ -261,6 +263,11 @@ Prefab:
       value: 
       objectReference: {fileID: 1275394040788850, guid: f399c246090d70c458efd1292ef37d85,
         type: 2}
+    - target: {fileID: 114405577936728720, guid: 8bd4ac5a6a7c50a44a7a1923ab24a284,
+        type: 2}
+      propertyPath: drawPlanesMask
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8bd4ac5a6a7c50a44a7a1923ab24a284, type: 2}
   m_IsPrefabParent: 0
@@ -1032,6 +1039,10 @@ Prefab:
         type: 2}
       propertyPath: m_Enabled
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1266920180313250, guid: d48a78e2fa9f8d2449101947777e7d22, type: 2}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: d48a78e2fa9f8d2449101947777e7d22, type: 2}

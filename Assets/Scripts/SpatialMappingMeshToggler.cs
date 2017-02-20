@@ -9,6 +9,8 @@ using UnityEngine;
 /// Intended to be activated/deactiveated by KeywordManager
 /// </summary>
 public class SpatialMappingMeshToggler : MonoBehaviour {
+    public Material primaryMaterial;
+    public Material secondaryMaterial;
 
     /// <summary>
     /// Controls spatial mapping.  In this script we access spatialMappingManager
@@ -28,6 +30,7 @@ public class SpatialMappingMeshToggler : MonoBehaviour {
         if (spatialMappingManager == null)
         {
             Debug.LogError("This script expects that you have a SpatialMappingManager component in your scene.");
+            Application.Quit();
         }
     }
 	
@@ -40,23 +43,21 @@ public class SpatialMappingMeshToggler : MonoBehaviour {
     {
         Debug.Log("SpatialMappingToggler: ToggleMesh() called");
         // toggle rendering of spatial mesh
-        if (spatialMappingManager.DrawVisualMeshes) spatialMappingManager.DrawVisualMeshes = false;
-        else spatialMappingManager.DrawVisualMeshes = true;
+        if (spatialMappingManager.SurfaceMaterial == primaryMaterial)
+            spatialMappingManager.SetSurfaceMaterial(secondaryMaterial);
+        else
+            spatialMappingManager.SetSurfaceMaterial(primaryMaterial);
 
-        // toggle rendering of surface planes
+        // toggle rendering of all surface planes
         if(surfaceMeshesToPlanes != null)
         {
             List<GameObject> activePlanes = surfaceMeshesToPlanes.ActivePlanes;
             if (activePlanes[0].GetComponent<MeshRenderer>().enabled)
-            {
                 foreach (GameObject plane in activePlanes)
                     plane.GetComponent<MeshRenderer>().enabled = false;
-            }
             else
-            {
                 foreach (GameObject plane in activePlanes)
                     plane.GetComponent<MeshRenderer>().enabled = true;
-            }
         }
     }
 }
