@@ -14,7 +14,11 @@ public class PlayspaceManager : Singleton<PlayspaceManager>
     public bool limitScanningByTime = true;
 
     [Tooltip("How much time (in seconds) that the SurfaceObserver will run after being started; used when 'Limit Scanning By Time' is checked.")]
-    public float scanTime = 30.0f;
+    public float scanTime = 60.0f;
+
+    [Tooltip("Debugging time (in seconds) that the SurfaceObserver will run after being started; used when 'Limit Scanning By Time' is checked.")]
+    public float scanTime_Debug = 10.0f;
+    public bool debugging;
 
     [Tooltip("Material to use when rendering Spatial Mapping meshes while the observer is running.")]
     public Material defaultMaterial;
@@ -38,6 +42,11 @@ public class PlayspaceManager : Singleton<PlayspaceManager>
     /// </summary>
     private void Start()
     {
+        if (debugging)
+        {
+            scanTime = scanTime_Debug;
+        }
+
         // Update surfaceObserver and storedMeshes to use the same material during scanning.
         // This action overrides whatever material is default assigned to the SpatialMappingManager
         SpatialMappingManager.Instance.SetSurfaceMaterial(defaultMaterial);

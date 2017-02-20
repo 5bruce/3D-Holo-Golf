@@ -48,6 +48,7 @@ public class ProjectileShooter : MonoBehaviour {
     public bool resting = true;
 
     bool isDragging;
+    bool canScore;
     bool canPlaceFlag;
     int strokes;
 
@@ -68,6 +69,7 @@ public class ProjectileShooter : MonoBehaviour {
         forwardOffset = (forwardOffset < 0.5f) ? 0.5f : forwardOffset;
         throwRatio = (throwRatio <= 0) ? 10f : throwRatio;
         isDragging = false;
+        canScore = false;
         canPlaceFlag = false;
         strokes = 0;
 
@@ -123,8 +125,13 @@ public class ProjectileShooter : MonoBehaviour {
     void OnReset()
     {
         Debug.Log("ProjectileShooter: OnReset()");
+        // set projectile back to resting state
         gameObject.GetComponent<Rigidbody>().useGravity = false;
         resting = true;
+        // projectile cannot be used to score in resting state
+        canScore = false;
+        canPlaceFlag = false;
+        // remove projectile trail
         gameObject.GetComponent<TrailRenderer>().enabled = false;
 
         // reset cursor back to its min. distance in front of camera
@@ -132,7 +139,7 @@ public class ProjectileShooter : MonoBehaviour {
          * This is done to avoid bug where cursor gets stuck behind ball after reset. 
          * The actual reset position should not matter, since cursor will continue its usual behavior in next frame.
          */
-        //cursor.transform.position = Vector3.Normalize(Camera.main.transform.forward) + new Vector3(0f, 0f, cursor.GetComponent<AnimatedCursor>().MinCursorDistance);
+        cursor.transform.position = Vector3.Normalize(Camera.main.transform.forward) + new Vector3(0f, 0f, cursor.GetComponent<AnimatedCursor>().MinCursorDistance);
     }
 
     /// <summary>
@@ -182,10 +189,13 @@ public class ProjectileShooter : MonoBehaviour {
         // TODO: add sound effects
 
         // make flag visible
-        MeshRenderer[] flag_meshes = flag.GetComponentsInChildren<MeshRenderer>();
-        foreach (MeshRenderer mesh in flag_meshes)
+        if (canPlaceFlag)
         {
-            mesh.enabled = true;
+            MeshRenderer[] flag_meshes = flag.GetComponentsInChildren<MeshRenderer>();
+            foreach (MeshRenderer mesh in flag_meshes)
+            {
+                mesh.enabled = true;
+            }
         }
     }
 
@@ -200,7 +210,7 @@ public class ProjectileShooter : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         Debug.Log("ProjectileShooter: OnTriggerEntered()");
-        if(other.transform.gameObject.name == goal.name)
+        if(other.transform.gameObject.name == goal.name && canScore)
         {
             Debug.Log("ProjectileShooter: goal entered");
             gameObject.SetActive(false);  // can't be activated once inactive (just for initial testing)
@@ -240,6 +250,7 @@ public class ProjectileShooter : MonoBehaviour {
         gameObject.GetComponent<TrailRenderer>().enabled = true;
 
         isDragging = false;
+        canScore = true;
         canPlaceFlag = true;
     }
     /// <summary>
