@@ -60,8 +60,8 @@ public class ProjectileShooter : MonoBehaviour {
             !flag ||
             !goal)
         {
-            Debug.LogError("ProjectileShooter.cs: Start(): this script expects 'cursor' GameObject to have 'AnimatedCursor' component from the HoloToolkit");
-            Debug.LogError("ProjectileShooter.cs: Start(): reference_point, flag, or goal GameObject may not have been set in this component");
+            Debug.LogError(this.name + ": Start(): this script expects 'cursor' GameObject to have 'AnimatedCursor' component from the HoloToolkit");
+            Debug.LogError(this.name + ": Start(): reference_point, flag, or goal GameObject may not have been set in this component");
             // note, this does not quit in the Unity editor, see http://answers.unity3d.com/answers/514429/view.html
             Application.Quit();
         }
@@ -124,7 +124,7 @@ public class ProjectileShooter : MonoBehaviour {
 
     void OnReset()
     {
-        Debug.Log("ProjectileShooter: OnReset()");
+        Debug.Log(this.name + ": OnReset()");
         // set projectile back to resting state
         gameObject.GetComponent<Rigidbody>().useGravity = false;
         resting = true;
@@ -209,10 +209,10 @@ public class ProjectileShooter : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("ProjectileShooter: OnTriggerEntered()");
+        Debug.Log(this.name + ": OnTriggerEntered()");
         if(other.transform.gameObject.name == goal.name && canScore)
         {
-            Debug.Log("ProjectileShooter: goal entered");
+            Debug.Log(this.name + ": goal entered");
             gameObject.SetActive(false);  // can't be activated once inactive (just for initial testing)
             SendMessageUpwards("GoalEntered", strokes);
         }
@@ -233,7 +233,7 @@ public class ProjectileShooter : MonoBehaviour {
     /// </summary>
     private void ProjectileShooter_StoppedDragging()
     {
-        Debug.Log("ProjectileShooter: StoppedDragging event handler called");
+        Debug.Log(this.name + ": StoppedDragging event handler called");
         Rigidbody rb = gameObject.GetComponent<Rigidbody>();
         rb.useGravity = true;
         resting = false;

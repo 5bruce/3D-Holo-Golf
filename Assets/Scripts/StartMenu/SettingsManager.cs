@@ -9,9 +9,9 @@ using UnityEngine;
 public class SettingsManager : Singleton<SettingsManager>
 {
     /// <summary>
-    /// number of players expected in game
+    /// number of players expected in game (DEBUG: currently only used for PlayAndPass scene)
     /// </summary>
-    public int numberOfPlayers = 1;
+    public int numberOfPlayers = 2;
 
 	// Use this for initialization
 	void Start () {

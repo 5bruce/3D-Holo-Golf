@@ -637,7 +637,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &465715913
 Transform:
   m_ObjectHideFlags: 0
@@ -671,6 +671,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 518857998}
+  - component: {fileID: 518857999}
   m_Layer: 0
   m_Name: Players
   m_TagString: Untagged
@@ -692,6 +693,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &518857999
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 518857997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff47f670232510448858196d1f06e46a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 1724590505}
 --- !u!1001 &596825414
 Prefab:
   m_ObjectHideFlags: 0
@@ -773,12 +786,20 @@ Prefab:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4944544801444150, guid: 41e0515e8930a77408e69a88f8c11a0b, type: 2}
+      propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1239663005869926, guid: 41e0515e8930a77408e69a88f8c11a0b, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 41e0515e8930a77408e69a88f8c11a0b, type: 2}
   m_IsPrefabParent: 0
 --- !u!1 &596825415 stripped
 GameObject:
-  m_PrefabParentObject: {fileID: 1977478404595864, guid: 41e0515e8930a77408e69a88f8c11a0b,
+  m_PrefabParentObject: {fileID: 1239663005869926, guid: 41e0515e8930a77408e69a88f8c11a0b,
     type: 2}
   m_PrefabInternal: {fileID: 596825414}
 --- !u!1001 &638121247
@@ -818,7 +839,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4000011792100794, guid: a611e772ef8ddf64d8106a9cbb70f31c, type: 2}
       propertyPath: m_RootOrder
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 114000011521989572, guid: a611e772ef8ddf64d8106a9cbb70f31c,
         type: 2}
@@ -1390,7 +1411,7 @@ Transform:
   - {fileID: 465715913}
   - {fileID: 1715587255}
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1664375369
 Prefab:
@@ -1510,6 +1531,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3843716256798774097f56e52ed576f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  settingsAccess: {fileID: 0}
+  numberOfPlayers: 0
 --- !u!1 &1724590505
 GameObject:
   m_ObjectHideFlags: 0

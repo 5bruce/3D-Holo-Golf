@@ -1,24 +1,29 @@
-﻿using System.Collections;
+﻿using HoloToolkit.Unity;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SettingsManagerLoader : MonoBehaviour {
+public class SettingsManagerLoader : Singleton<SettingsManagerLoader> {
 
     GameObject settingsManager;
-    SettingsManager settingsAccess;
+    public SettingsManager settingsAccess;
+
+    public int numberOfPlayers;
 
 	// Use this for initialization
+    // FIXME: This is not necessarily called before other Start() methods of other components.
+    //        Thus other scripts tryings to access settings data from here may get null exception.
 	void Start () {
         // find the SettiingsManager gameobject (from previous scene) and display some test data
         settingsManager = GameObject.Find("SettingsManager");
         if (settingsManager)
         {
             settingsAccess = settingsManager.GetComponent<SettingsManager>();
-            Debug.Log(gameObject.name + ": numberOfPlayers = " + settingsAccess.numberOfPlayers);
+            numberOfPlayers = settingsAccess.numberOfPlayers;
         }
         else
         {
-            Debug.Log(gameObject.name + ": could not find settings manager gameobject");
+            Debug.LogError(this.name + ": could not find a settings manager gameobject");
         }
 	}
 	

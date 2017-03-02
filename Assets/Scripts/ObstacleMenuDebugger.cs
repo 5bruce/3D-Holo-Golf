@@ -12,9 +12,14 @@ public class ObstacleMenuDebugger : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        // initially want this menu hidden
-        ObstacleMenu.SetActive(false);
-        menuActive = false;
+        if (!ObstacleMenu)
+            Debug.LogError(this.name + ": no obstacle menu gameobject provided");
+        else
+        {
+            // initially want this menu hidden
+            ObstacleMenu.SetActive(false);
+            menuActive = false;
+        }
 	}
 	
 	// Update is called once per frame
