@@ -6,6 +6,8 @@ using System;
 public class ObjectSelectionHandler : MonoBehaviour {
     public GameObject canvas;
     public GameObject[] prefabs = new GameObject[2];
+    public int numPlayers = 1;
+    public int objectsCreated = 0;
 
     void instantiateGameObjectMenu()
     {
