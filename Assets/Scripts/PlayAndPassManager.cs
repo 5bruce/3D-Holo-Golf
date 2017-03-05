@@ -21,7 +21,7 @@ public class PlayAndPassManager : MonoBehaviour {
 	void Start () {
         if (!firstPlayer)
         {
-            Debug.LogError(this.name + ": no player prefab assigned");
+            Debug.LogError(this.name + ": no player creation prefab assigned");
         }
         else
         {
@@ -48,8 +48,9 @@ public class PlayAndPassManager : MonoBehaviour {
             {
                 GameObject player = Instantiate(firstPlayer, firstPlayer.transform.position, firstPlayer.transform.rotation, gameObject.transform);
                 player.name = "Player" + (1+i);
+                //player.BroadcastMessage("Deactivate");
                 player.SetActive(false);
-                Debug.Log(this.name + ": player clone: " + player.name);
+                Debug.Log(this.name + ": player1 clone created: " + player.name);
                 players.Add(player); 
             }
         }
@@ -59,4 +60,20 @@ public class PlayAndPassManager : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    void ChangeActivePlayer ()
+    {
+        // safely deactivate current active player
+        //activePlayer.BroadcastMessage("Deactivate");
+        activePlayer.SetActive(false);
+
+        // cycle thru players in round-robin schedule
+        activePlayer = (players.IndexOf(activePlayer) + 1 < numberOfPlayers)
+                        ? players[players.IndexOf(activePlayer) + 1]
+                        : players[0];
+        Debug.Log(this.name + ": activePlayer: " + activePlayer.name);
+
+        //activePlayer.BroadcastMessage("Activate");
+        activePlayer.SetActive(true);
+    }
 }
