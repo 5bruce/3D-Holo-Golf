@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
-/// Determines which player is currently active
+/// Creates and manages players in a play-and-pass game
 /// </summary>
 public class PlayAndPassManager : MonoBehaviour {
 
@@ -48,7 +48,8 @@ public class PlayAndPassManager : MonoBehaviour {
             {
                 GameObject player = Instantiate(firstPlayer, firstPlayer.transform.position, firstPlayer.transform.rotation, gameObject.transform);
                 player.name = "Player" + (1+i);
-                //player.BroadcastMessage("Deactivate");
+                player.BroadcastMessage("Deactivate");
+                // initially, hide other player balls so first toss does not toss all
                 player.SetActive(false);
                 Debug.Log(this.name + ": player1 clone created: " + player.name);
                 players.Add(player); 
@@ -61,19 +62,32 @@ public class PlayAndPassManager : MonoBehaviour {
 		
 	}
 
+    // TODO: convert from using SetActive() to broadcasting Activate/Deactivate to children
     void ChangeActivePlayer ()
     {
         // safely deactivate current active player
-        //activePlayer.BroadcastMessage("Deactivate");
-        activePlayer.SetActive(false);
+        /*
+         Deactivated players should have only thier ball visible.
+         The ball should be able to roll around and continue to place its flag,
+         but is otherwise not interactable (no response to gestures or voice).
+         */
+        activePlayer.BroadcastMessage("Deactivate");
+        activePlayer.transform.FindChild("Canvas").gameObject.SetActive(false);
+        //activePlayer.SetActive(false);
 
         // cycle thru players in round-robin schedule
         activePlayer = (players.IndexOf(activePlayer) + 1 < numberOfPlayers)
                         ? players[players.IndexOf(activePlayer) + 1]
                         : players[0];
-        Debug.Log(this.name + ": activePlayer: " + activePlayer.name);
+        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": activePlayer: " + activePlayer.name);
 
-        //activePlayer.BroadcastMessage("Activate");
-        activePlayer.SetActive(true);
+        // enable this player object if first time being activated
+        if (!activePlayer.activeSelf)
+        {
+            activePlayer.SetActive(true);
+        }
+        activePlayer.BroadcastMessage("Activate");
+        activePlayer.transform.FindChild("Canvas").gameObject.SetActive(true);
+        //activePlayer.SetActive(true);
     }
 }

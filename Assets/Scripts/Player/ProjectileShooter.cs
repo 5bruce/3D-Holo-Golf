@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
+using HoloToolkit.Unity;
 
 /// <summary>
 /// Controls the launching and reseting of the attached-to projectile gameobject.
@@ -129,17 +130,23 @@ public class ProjectileShooter : MonoBehaviour {
     /// <summary>
     /// Used for activating this component in play-and-pass games
     /// </summary>
-    public void Activate()
+    void Activate()
     {
+        Debug.Log(gameObject.transform.parent.gameObject.name + ": " + this.GetType().Name + ": Activate()");
         isActive = true;
+        gameObject.GetComponent<HandDraggable>().enabled = true;
+        gameObject.GetComponent<DirectionIndicator>().enabled = true;
     }
 
     /// <summary>
     /// Used for deactivating this component in play-and-pass games
     /// </summary>
-    public void Deactivate ()
+    void Deactivate ()
     {
+        Debug.Log(gameObject.transform.parent.gameObject.name + ": " + this.GetType().Name + ": Deactivate()");
         isActive = false;
+        gameObject.GetComponent<HandDraggable>().enabled = false;
+        gameObject.GetComponent<DirectionIndicator>().enabled = false;
     }
 
     void OnReset()
