@@ -14,21 +14,20 @@ public class clickHandler : MonoBehaviour,
     public GameObject canvasObj;
     public int numPlayers = 0;
     public int objectsCreated = 0;
-    //private ObjectSelectionHandler osh;
+    private ObjectSelectionHandler osh;
 
     // Use this for initialization
     void Start()
     {
-       /* osh = canvasObj.GetComponent<ObjectSelectionHandler>();
+        osh = canvasObj.GetComponent<ObjectSelectionHandler>();
         numPlayers = osh.numPlayers;
-        objectsCreated = osh.objectsCreated;*/
+        objectsCreated = osh.objectsCreated;
     }
 
     // Update is called once per frame
     void Update()
     {
         //in case the other buttons have been clicked
-       // objectsCreated = osh.objectsCreated;
     }
 
     void IFocusable.OnFocusEnter()
@@ -49,15 +48,23 @@ public class clickHandler : MonoBehaviour,
         Debug.Log("ObjectButtons: OnInputClicked()");
         //System.Console.Write("ObjectButtons: OnInputClicked()");
 
-        //osh.objectsCreated += 1;
-        // objectsCreated += 1;
+        //Make sure variable is up to date
+        objectsCreated = osh.objectsCreated;
 
-        canvasObj.SetActive(false);
+        //The reason I do it before I actually create the objects, is so that it creates a "lock" on 
+        //creating on object, however it doesn't actually make a lock so errors could happen with multiple
+        //hololenses 
+        //see if I can make an actual lock in c#
+        osh.objectsCreated += 1;
+        objectsCreated += 1;
+
+        //canvasObj.SetActive(false);
 
         GameObject createdObject;
         createdObject = (GameObject)Instantiate(selectionObject);
+        createdObject.transform.position = canvasObj.transform.position - canvasObj.transform.forward;
         createdObject.SetActive(true);
-        /*
+        
         //set draggable
         if (objectsCreated == numPlayers)
         {
@@ -66,6 +73,6 @@ public class clickHandler : MonoBehaviour,
             //randomize menu with 5 obstacles to choose from
           //  osh.objectsCreated = 0;
             objectsCreated = 0;
-        }*/
+        }
     }
 }
