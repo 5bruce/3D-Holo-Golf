@@ -56,7 +56,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 82b93226d2a61ea4b956c7895b99f2d9, type: 2}
+  - {fileID: 2100000, guid: a52c145bfa05da742b398b26cd3996ad, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -108,5 +108,6 @@ MonoBehaviour:
   inactive_material: {fileID: 2100000, guid: a7fae6f3bd4b52d46b6762485483f2f6, type: 2}
   selectionObject: {fileID: 1895281144004862, guid: bfa0e97a39e0ecd4789a40e6c7e24f27,
     type: 2}
-  panel: {fileID: 0}
+  canvasObj: {fileID: 0}
   numPlayers: 1
+  objectsCreated: 0
