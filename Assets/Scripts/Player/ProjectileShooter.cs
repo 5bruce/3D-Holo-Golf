@@ -96,20 +96,22 @@ public class ProjectileShooter : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (isActive) {
-            if (resting)
+        //if (isActive) {
+            if (resting && isActive)
             {
                 transform.position = Camera.main.transform.position + Vector3.Normalize(Camera.main.transform.forward) * forwardOffset;
                 transform.rotation = Camera.main.transform.rotation;
             }
             else
             {
-                if (isDragging)
+                if (isDragging && isActive)
                 {
                     UpdateTrajectory(gameObject.transform.position, this.LaunchVelocity(), Physics.gravity);
                 }
                 else if (canPlaceFlag)
                 {
+                    // still want to be able to roll around and place flag while this player not active
+
                     // track speed to check when to place projectile's flag
                     Rigidbody rb = gameObject.GetComponent<Rigidbody>();
                     float rollingSpeed = rb.velocity.magnitude;
@@ -124,7 +126,7 @@ public class ProjectileShooter : MonoBehaviour {
                     }
                 }
             }
-        }
+        //}
     }
 
     /// <summary>
