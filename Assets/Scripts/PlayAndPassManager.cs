@@ -15,6 +15,7 @@ public class PlayAndPassManager : MonoBehaviour {
     SettingsManager settingsAccess;
     int numberOfPlayers;
     List<GameObject> players = new List<GameObject>();
+    Material[] playerColors;
     GameObject activePlayer;
 
 	// Use this for initialization
@@ -37,7 +38,10 @@ public class PlayAndPassManager : MonoBehaviour {
 
             // get number of player for this game
             numberOfPlayers = settingsAccess.numberOfPlayers;
-            Debug.Log(this.name + ": numberOfPlayers = " + numberOfPlayers);
+            Debug.Log(gameObject.name + ": " + this.GetType().Name + ": numberOfPlayers = " + numberOfPlayers);
+
+            // get player colors
+            playerColors = settingsAccess.playerColors;
 
             // add the first player to players list (there should always be a first player)
             players.Add(firstPlayer);
@@ -49,8 +53,14 @@ public class PlayAndPassManager : MonoBehaviour {
                 GameObject player = Instantiate(firstPlayer, firstPlayer.transform.position, firstPlayer.transform.rotation, gameObject.transform);
                 player.name = "Player" + (1+i);
                 player.BroadcastMessage("Deactivate");
+
+                // set this player's colors
+                player.transform.FindChild("Projectile").GetComponent<MeshRenderer>().material = playerColors[i];
+                player.transform.FindChild("FlagPole").transform.FindChild("Flag").GetComponent<MeshRenderer>().material = playerColors[i];
+
                 // initially, hide other player balls so first toss does not toss all
                 player.SetActive(false);
+
                 Debug.Log(this.name + ": player1 clone created: " + player.name);
                 players.Add(player); 
             }
@@ -73,7 +83,6 @@ public class PlayAndPassManager : MonoBehaviour {
          */
         activePlayer.BroadcastMessage("Deactivate");
         activePlayer.transform.FindChild("Canvas").gameObject.SetActive(false);
-        //activePlayer.SetActive(false);
 
         // cycle thru players in round-robin schedule
         activePlayer = (players.IndexOf(activePlayer) + 1 < numberOfPlayers)
@@ -88,6 +97,5 @@ public class PlayAndPassManager : MonoBehaviour {
         }
         activePlayer.BroadcastMessage("Activate");
         activePlayer.transform.FindChild("Canvas").gameObject.SetActive(true);
-        //activePlayer.SetActive(true);
     }
 }
