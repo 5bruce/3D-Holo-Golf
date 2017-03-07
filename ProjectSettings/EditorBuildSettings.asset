@@ -9,3 +9,5 @@ EditorBuildSettings:
     path: Assets/Scenes/StartingMenu.unity
   - enabled: 1
     path: Assets/Scenes/InitialTossing.unity
+  - enabled: 1
+    path: Assets/Scenes/PlayAndPass.unity

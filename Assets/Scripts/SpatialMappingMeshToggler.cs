@@ -29,7 +29,7 @@ public class SpatialMappingMeshToggler : MonoBehaviour {
         surfaceMeshesToPlanes = SurfaceMeshesToPlanes.Instance;
         if (spatialMappingManager == null)
         {
-            Debug.LogError("This script expects that you have a SpatialMappingManager component in your scene.");
+            Debug.LogError(this.name + ": This script expects that you have a SpatialMappingManager component in your scene.");
             Application.Quit();
         }
     }
@@ -41,7 +41,7 @@ public class SpatialMappingMeshToggler : MonoBehaviour {
 
     public void ToggleMesh()
     {
-        Debug.Log("SpatialMappingToggler: ToggleMesh() called");
+        Debug.Log(this.name + ": ToggleMesh() called");
         // toggle rendering of spatial mesh
         if (spatialMappingManager.SurfaceMaterial == primaryMaterial)
             spatialMappingManager.SetSurfaceMaterial(secondaryMaterial);

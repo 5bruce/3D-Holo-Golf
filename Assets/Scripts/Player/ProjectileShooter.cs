@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Unity.InputModule;
+using HoloToolkit.Unity;
 
 /// <summary>
 /// Controls the launching and reseting of the attached-to projectile gameobject.
@@ -47,6 +48,7 @@ public class ProjectileShooter : MonoBehaviour {
 
     public bool resting = true;
 
+    bool isActive;
     bool isDragging;
     bool canScore;
     bool canPlaceFlag;
@@ -60,12 +62,13 @@ public class ProjectileShooter : MonoBehaviour {
             !flag ||
             !goal)
         {
-            Debug.LogError("ProjectileShooter.cs: Start(): this script expects 'cursor' GameObject to have 'AnimatedCursor' component from the HoloToolkit");
-            Debug.LogError("ProjectileShooter.cs: Start(): reference_point, flag, or goal GameObject may not have been set in this component");
+            Debug.LogError(this.name + ": Start(): this script expects 'cursor' GameObject to have 'AnimatedCursor' component from the HoloToolkit");
+            Debug.LogError(this.name + ": Start(): reference_point, flag, or goal GameObject may not have been set in this component");
             // note, this does not quit in the Unity editor, see http://answers.unity3d.com/answers/514429/view.html
             Application.Quit();
         }
 
+        isActive = true;
         forwardOffset = (forwardOffset < 0.5f) ? 0.5f : forwardOffset;
         throwRatio = (throwRatio <= 0) ? 10f : throwRatio;
         isDragging = false;
@@ -93,53 +96,82 @@ public class ProjectileShooter : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (resting)
-        {
-            transform.position = Camera.main.transform.position + Vector3.Normalize(Camera.main.transform.forward)*forwardOffset;
-            transform.rotation = Camera.main.transform.rotation;
-        }
-        else
-        {
-            if (isDragging)
+        //if (isActive) {
+            if (resting && isActive)
             {
-                UpdateTrajectory(gameObject.transform.position, this.LaunchVelocity(), Physics.gravity);
+                transform.position = Camera.main.transform.position + Vector3.Normalize(Camera.main.transform.forward) * forwardOffset;
+                transform.rotation = Camera.main.transform.rotation;
             }
-            if (canPlaceFlag)
+            else
             {
-                // track speed to check when to place projectile's flag
-                Rigidbody rb = gameObject.GetComponent<Rigidbody>();
-                float rollingSpeed = rb.velocity.magnitude;
-                if (rollingSpeed < noMovmentThresh)
+                if (isDragging && isActive)
                 {
-                    // freeze the projectile of this component and place flag
-                    rb.velocity = new Vector3(0, 0, 0);
-                    //Or
-                    //rb.constraints = RigidbodyConstraints.FreezeAll;
+                    UpdateTrajectory(gameObject.transform.position, this.LaunchVelocity(), Physics.gravity);
+                }
+                else if (canPlaceFlag)
+                {
+                    // still want to be able to roll around and place flag while this player not active
 
-                    PlaceFlag();
+                    // track speed to check when to place projectile's flag
+                    Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+                    float rollingSpeed = rb.velocity.magnitude;
+                    if (rollingSpeed < noMovmentThresh)
+                    {
+                        // freeze the projectile of this component and place flag
+                        rb.velocity = new Vector3(0, 0, 0);
+                        //Or
+                        //rb.constraints = RigidbodyConstraints.FreezeAll;
+
+                        PlaceFlag();
+                    }
                 }
             }
-        }
+        //}
+    }
+
+    /// <summary>
+    /// Used for activating this component in play-and-pass games
+    /// </summary>
+    void Activate()
+    {
+        Debug.Log(gameObject.transform.parent.gameObject.name + ": " + this.GetType().Name + ": Activate()");
+        isActive = true;
+        gameObject.GetComponent<HandDraggable>().enabled = true;
+        gameObject.GetComponent<DirectionIndicator>().enabled = true;
+    }
+
+    /// <summary>
+    /// Used for deactivating this component in play-and-pass games
+    /// </summary>
+    void Deactivate ()
+    {
+        Debug.Log(gameObject.transform.parent.gameObject.name + ": " + this.GetType().Name + ": Deactivate()");
+        isActive = false;
+        gameObject.GetComponent<HandDraggable>().enabled = false;
+        gameObject.GetComponent<DirectionIndicator>().enabled = false;
     }
 
     void OnReset()
     {
-        Debug.Log("ProjectileShooter: OnReset()");
-        // set projectile back to resting state
-        gameObject.GetComponent<Rigidbody>().useGravity = false;
-        resting = true;
-        // projectile cannot be used to score in resting state
-        canScore = false;
-        canPlaceFlag = false;
-        // remove projectile trail
-        gameObject.GetComponent<TrailRenderer>().enabled = false;
+        if (isActive) {
+            Debug.Log(this.name + ": OnReset()");
+            // set projectile back to resting state
+            gameObject.GetComponent<Rigidbody>().useGravity = false;
+            resting = true;
+            // projectile cannot be used to score in resting state
+            canScore = false;
+            canPlaceFlag = false;
+            // remove projectile trail
+            gameObject.GetComponent<TrailRenderer>().enabled = false;
 
-        // reset cursor back to its min. distance in front of camera
-        /* 
-         * This is done to avoid bug where cursor gets stuck behind ball after reset. 
-         * The actual reset position should not matter, since cursor will continue its usual behavior in next frame.
-         */
-        cursor.transform.position = Vector3.Normalize(Camera.main.transform.forward) + new Vector3(0f, 0f, cursor.GetComponent<AnimatedCursor>().MinCursorDistance);
+            // reset cursor back to its min. distance in front of camera
+            /* 
+             * This is done to avoid bug where cursor gets stuck behind ball after reset. 
+             * The actual reset position should not matter, since cursor will continue its usual behavior in next frame.
+             */
+            cursor.transform.position = Vector3.Normalize(Camera.main.transform.forward) + new Vector3(0f, 0f, cursor.GetComponent<AnimatedCursor>().MinCursorDistance);
+
+        }
     }
 
     /// <summary>
@@ -151,21 +183,23 @@ public class ProjectileShooter : MonoBehaviour {
     /// <param name="gravity"></param>
     void UpdateTrajectory(Vector3 initialPosition, Vector3 initialVelocity, Vector3 gravity)
     {
-        // number of line vertices to draw with
-        int numSteps = 20; // for example
-        // delta between predicted trajectory to place vertices
-        float timeDelta = 0.1f / initialVelocity.magnitude; // for example
+        if (isActive) {
+            // number of line vertices to draw with
+            int numSteps = 20; // for example
+                               // delta between predicted trajectory to place vertices
+            float timeDelta = 0.1f / initialVelocity.magnitude; // for example
 
-        LineRenderer lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.numPositions = numSteps;
+            LineRenderer lineRenderer = GetComponent<LineRenderer>();
+            lineRenderer.numPositions = numSteps;
 
-        Vector3 position = initialPosition;
-        Vector3 velocity = initialVelocity;
-        for (int v = 0; v < numSteps; v++)
-        {
-            position += velocity * timeDelta + 0.5f * gravity * timeDelta * timeDelta;
-            velocity += gravity * timeDelta;
-            lineRenderer.SetPosition(v, position);  // can place this either at start or end of this section
+            Vector3 position = initialPosition;
+            Vector3 velocity = initialVelocity;
+            for (int v = 0; v < numSteps; v++)
+            {
+                position += velocity * timeDelta + 0.5f * gravity * timeDelta * timeDelta;
+                velocity += gravity * timeDelta;
+                lineRenderer.SetPosition(v, position);  // can place this either at start or end of this section
+            }
         }
     }
 
@@ -209,10 +243,10 @@ public class ProjectileShooter : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log("ProjectileShooter: OnTriggerEntered()");
+        Debug.Log(this.name + ": OnTriggerEntered()");
         if(other.transform.gameObject.name == goal.name && canScore)
         {
-            Debug.Log("ProjectileShooter: goal entered");
+            Debug.Log(this.name + ": goal entered");
             gameObject.SetActive(false);  // can't be activated once inactive (just for initial testing)
             SendMessageUpwards("GoalEntered", strokes);
         }
@@ -223,9 +257,12 @@ public class ProjectileShooter : MonoBehaviour {
     /// </summary>
     private void ProjectileShooter_StartedDragging()
     {
-        resting = false;
-        isDragging = true;
-        gameObject.GetComponent<LineRenderer>().enabled = true;
+        if (isActive)
+        {
+            resting = false;
+            isDragging = true;
+            gameObject.GetComponent<LineRenderer>().enabled = true;
+        }
     }
 
     /// <summary>
@@ -233,25 +270,27 @@ public class ProjectileShooter : MonoBehaviour {
     /// </summary>
     private void ProjectileShooter_StoppedDragging()
     {
-        Debug.Log("ProjectileShooter: StoppedDragging event handler called");
-        Rigidbody rb = gameObject.GetComponent<Rigidbody>();
-        rb.useGravity = true;
-        resting = false;
+        if (isActive) {
+            Debug.Log(this.name + ": StoppedDragging event handler called");
+            Rigidbody rb = gameObject.GetComponent<Rigidbody>();
+            rb.useGravity = true;
+            resting = false;
 
-        rb.velocity = this.LaunchVelocity();
+            rb.velocity = this.LaunchVelocity();
 
-        strokes++;
-        SendMessageUpwards("ProjectileLaunched", strokes);
+            strokes++;
+            SendMessageUpwards("ProjectileLaunched", strokes);
 
-        // remove trajectory prediction line
-        gameObject.GetComponent<LineRenderer>().enabled = false;
+            // remove trajectory prediction line
+            gameObject.GetComponent<LineRenderer>().enabled = false;
 
-        // start drawing projectile line
-        gameObject.GetComponent<TrailRenderer>().enabled = true;
+            // start drawing projectile line
+            gameObject.GetComponent<TrailRenderer>().enabled = true;
 
-        isDragging = false;
-        canScore = true;
-        canPlaceFlag = true;
+            isDragging = false;
+            canScore = true;
+            canPlaceFlag = true;
+        }
     }
     /// <summary>
     /// calculates velocity to apply to projectile based on projectile's reference point

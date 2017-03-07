@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class StartButtonHandler : MonoBehaviour,
-                                 IFocusable,
-                                 IInputClickHandler
+public class SettingsButtonHandler : MonoBehaviour,
+                                     IFocusable,
+                                     IInputClickHandler
 {
     public Material active_material;
     public Material inactive_material;
@@ -25,7 +25,7 @@ public class StartButtonHandler : MonoBehaviour,
 
     void IFocusable.OnFocusEnter()
     {
-        Debug.Log("ExitButtonHandler: OnFocusEnter()");
+        Debug.Log(this.name + ": OnFocusEnter()");
         gameObject.GetComponent<MeshRenderer>().material = active_material;
     }
 
@@ -36,7 +36,7 @@ public class StartButtonHandler : MonoBehaviour,
 
     void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
-        Debug.Log("ExitButtonHandler: OnInputClicked()");
-        SceneManager.LoadSceneAsync("InitialTossing");
+        Debug.Log(this.name + ": OnInputClicked()");
+        SceneManager.LoadSceneAsync("PlayAndPass");
     }
 }
