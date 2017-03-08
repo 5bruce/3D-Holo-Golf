@@ -2,17 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class SettingsButtonHandler : MonoBehaviour,
-                                     IFocusable,
-                                     IInputClickHandler
+public class SetPlayersButtonHandler : MonoBehaviour,
+                                       IFocusable,
+                                       IInputClickHandler
 {
     public Material active_material;
     public Material inactive_material;
 
-    public GameObject MainMenu;
-    public GameObject SettingsMenu;
+    [Tooltip("Value that this button sets the number of players to")]
+    public int playerValue;
 
     // Use this for initialization
     void Start()
@@ -40,7 +39,6 @@ public class SettingsButtonHandler : MonoBehaviour,
     void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
         Debug.Log(this.name + ": OnInputClicked()");
-        SettingsMenu.SetActive(true);
-        MainMenu.SetActive(false);
+        SettingsManager.Instance.numberOfPlayers = playerValue;
     }
 }

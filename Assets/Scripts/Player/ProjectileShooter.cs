@@ -170,6 +170,8 @@ public class ProjectileShooter : MonoBehaviour {
     {
         if (isActive) {
             Debug.Log(this.name + ": OnReset()");
+            // need to freeze ball before reset, else cursor and directional indicators glitch
+            gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
             // set projectile back to resting state
             gameObject.GetComponent<Rigidbody>().useGravity = false;
             resting = true;

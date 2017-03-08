@@ -15,7 +15,7 @@ public class SettingsManager : Singleton<SettingsManager>
     /// TODO: make this field changable.
     /// (DEBUG: currently only used for PlayAndPass scene)
     /// </summary>
-    public int numberOfPlayers = 2;
+    public int numberOfPlayers = 1;
 
     /// <summary>
     /// Materials that get automatically assigned to players in multiplayer games.

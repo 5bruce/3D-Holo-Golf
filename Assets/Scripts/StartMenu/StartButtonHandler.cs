@@ -37,6 +37,14 @@ public class StartButtonHandler : MonoBehaviour,
     void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
         Debug.Log(this.name + ": OnInputClicked()");
-        SceneManager.LoadSceneAsync("InitialTossing");
+        if (1 < SettingsManager.Instance.numberOfPlayers && 
+            SettingsManager.Instance.numberOfPlayers < SettingsManager.maxPlayers)
+        {
+            SceneManager.LoadSceneAsync("PlayAndPass");
+        }
+        else
+        {
+            SceneManager.LoadSceneAsync("InitialTossing");
+        }
     }
 }
