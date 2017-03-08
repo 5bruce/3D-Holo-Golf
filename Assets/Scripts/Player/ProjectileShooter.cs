@@ -53,6 +53,11 @@ public class ProjectileShooter : MonoBehaviour {
     bool canScore;
     bool canPlaceFlag;
     int strokes;
+    /// <summary>
+    /// Used for determining if the projectile is in freefall (has fallen out of spatial mesh)
+    /// </summary>
+    float launchHeight, currentHeight;
+    const float maxDrop = 20;
 
     // Use this for initialization
     void Start () {
@@ -96,29 +101,39 @@ public class ProjectileShooter : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        //if (isActive) {
-            if (resting && isActive)
+        if (resting && isActive)
+        {
+            transform.position = Camera.main.transform.position + Vector3.Normalize(Camera.main.transform.forward) * forwardOffset;
+            transform.rotation = Camera.main.transform.rotation;
+        }
+        else
+        {
+            if (isDragging && isActive)
             {
-                transform.position = Camera.main.transform.position + Vector3.Normalize(Camera.main.transform.forward) * forwardOffset;
-                transform.rotation = Camera.main.transform.rotation;
+                UpdateTrajectory(gameObject.transform.position, this.LaunchVelocity(), Physics.gravity);
             }
-            else
+            else if (canPlaceFlag)  // has been launched
             {
-                if (isDragging && isActive)
-                {
-                    UpdateTrajectory(gameObject.transform.position, this.LaunchVelocity(), Physics.gravity);
-                }
-                else if (canPlaceFlag)
-                {
-                    // still want to be able to roll around and place flag while this player not active
+                // still want to be able to roll around and place flag while this player not active
 
+                // check that projectile has not fallen out of spatial mesh
+                currentHeight = gameObject.transform.position.y;
+                if (launchHeight - currentHeight > maxDrop)
+                {
+                    // need to freeze ball before reset, else cursor and directional indicators glitch
+                    gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0,0,0);
+                    this.OnReset();
+                }
+                else
+                {
                     // track speed to check when to place projectile's flag
                     Rigidbody rb = gameObject.GetComponent<Rigidbody>();
                     float rollingSpeed = rb.velocity.magnitude;
+                    // once ball slows enough, place flag
                     if (rollingSpeed < noMovmentThresh)
                     {
                         // freeze the projectile of this component and place flag
-                        rb.velocity = new Vector3(0, 0, 0);
+                        rb.velocity = new Vector3(0,0,0);
                         //Or
                         //rb.constraints = RigidbodyConstraints.FreezeAll;
 
@@ -126,7 +141,7 @@ public class ProjectileShooter : MonoBehaviour {
                     }
                 }
             }
-        //}
+        }
     }
 
     /// <summary>
@@ -275,6 +290,8 @@ public class ProjectileShooter : MonoBehaviour {
             Rigidbody rb = gameObject.GetComponent<Rigidbody>();
             rb.useGravity = true;
             resting = false;
+
+            launchHeight = gameObject.transform.position.y;
 
             rb.velocity = this.LaunchVelocity();
 
