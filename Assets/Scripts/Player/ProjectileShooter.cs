@@ -103,6 +103,7 @@ public class ProjectileShooter : MonoBehaviour {
     {
         if (resting && isActive)
         {
+            // keep ball in user's gaze
             transform.position = Camera.main.transform.position + Vector3.Normalize(Camera.main.transform.forward) * forwardOffset;
             transform.rotation = Camera.main.transform.rotation;
         }
