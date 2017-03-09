@@ -660,6 +660,21 @@ Prefab:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 4c7a2a19ee1720f4b81c51d76877e962, type: 2}
+    - target: {fileID: 114683460701005926, guid: 8d1354b293dbe4c45b123c28166eda41,
+        type: 2}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 96290087071967848, guid: 8d1354b293dbe4c45b123c28166eda41,
+        type: 2}
+      propertyPath: m_Parameters.colorGradient.ctime0
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 96290087071967848, guid: 8d1354b293dbe4c45b123c28166eda41,
+        type: 2}
+      propertyPath: m_Parameters.colorGradient.key0.rgba
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8d1354b293dbe4c45b123c28166eda41, type: 2}
   m_IsPrefabParent: 0
@@ -684,6 +699,40 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82087ee2937adab48a492a154a880e64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!108 &617262251
+Light:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 617262238}
+  m_Enabled: 1
+  serializedVersion: 7
+  m_Type: 2
+  m_Color: {r: 0.09407438, g: 0.85294116, b: 0.85294116, a: 1}
+  m_Intensity: 2
+  m_Range: 1
+  m_SpotAngle: 30
+  m_CookieSize: 10
+  m_Shadows:
+    m_Type: 0
+    m_Resolution: -1
+    m_CustomResolution: -1
+    m_Strength: 1
+    m_Bias: 0.05
+    m_NormalBias: 0.4
+    m_NearPlane: 0.2
+  m_Cookie: {fileID: 0}
+  m_DrawHalo: 1
+  m_Flare: {fileID: 0}
+  m_RenderMode: 0
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_Lightmapping: 4
+  m_AreaSize: {x: 1, y: 1}
+  m_BounceIntensity: 1
+  m_ShadowRadius: 0
+  m_ShadowAngle: 0
 --- !u!1 &789609651
 GameObject:
   m_ObjectHideFlags: 0
