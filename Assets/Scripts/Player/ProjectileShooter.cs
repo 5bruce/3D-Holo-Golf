@@ -50,9 +50,11 @@ public class ProjectileShooter : MonoBehaviour {
 
     bool isActive;
     bool isDragging;
+    bool isColliding;
     bool canScore;
     bool canPlaceFlag;
     int strokes;
+
     /// <summary>
     /// Used for determining if the projectile is in freefall (has fallen out of spatial mesh)
     /// </summary>
@@ -154,6 +156,12 @@ public class ProjectileShooter : MonoBehaviour {
         isActive = true;
         gameObject.GetComponent<HandDraggable>().enabled = true;
         gameObject.GetComponent<DirectionIndicator>().enabled = true;
+
+        // for PlayAndPass games, flash light to indicate this projectile has priority
+        // only if ball is currently rolling around
+        if (isColliding) {
+            StartCoroutine(gameObject.GetComponent<Flash>().flashNow());
+        }
     }
 
     /// <summary>
@@ -238,6 +246,8 @@ public class ProjectileShooter : MonoBehaviour {
 
     void OnCollisionEnter(Collision collision)
     {
+        isColliding = true;
+
         // TODO: add sound effects
 
         // make flag visible
@@ -257,6 +267,11 @@ public class ProjectileShooter : MonoBehaviour {
         flagPosition = gameObject.transform.position;  // TODO: add an up_offset to stop flag poking under spatial mesh ball is rolling on
         // normal of the suface hit by the projectile, see http://answers.unity3d.com/answers/59309/view.html
         flagRotation = Quaternion.FromToRotation(Vector3.up, collision.contacts[0].normal);  
+    }
+
+    void OnCollisionExit(Collision collisionInfo)
+    {
+        isColliding = false;
     }
 
     void OnTriggerEnter(Collider other)
