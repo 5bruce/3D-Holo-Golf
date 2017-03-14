@@ -17,16 +17,12 @@ public class clickHandler : MonoBehaviour,
     [Tooltip("Parent menu of this obstacle selection button")]
     public GameObject parentMenu;
 
-    public int numPlayers = 0;
-    public int objectsCreated = 0;
     private ObjectSelectionHandler objectSelectionHandler;
 
     // Use this for initialization
     void Start()
     {
-        objectSelectionHandler = parentMenu.GetComponent<ObjectSelectionHandler>();
-        numPlayers = objectSelectionHandler.numPlayers;
-        objectsCreated = objectSelectionHandler.objectsCreated;
+        objectSelectionHandler = ObjectSelectionHandler.Instance;
     }
 
     // Update is called once per frame
@@ -53,15 +49,11 @@ public class clickHandler : MonoBehaviour,
         Debug.Log(gameObject.name + ": OnInputClicked()");
         //System.Console.Write("ObjectButtons: OnInputClicked()");
 
-        //Make sure variable is up to date
-        objectsCreated = objectSelectionHandler.objectsCreated;
-
         //The reason I do it before I actually create the objects, is so that it creates a "lock" on 
         //creating on object, however it doesn't actually make a lock so errors could happen with multiple
         //hololenses 
         //see if I can make an actual lock in c#
         objectSelectionHandler.objectsCreated += 1;
-        objectsCreated += 1;
 
         //parentMenu.SetActive(false);
 
@@ -69,14 +61,17 @@ public class clickHandler : MonoBehaviour,
         createdObject = (GameObject)Instantiate(selectionObject);
         createdObject.transform.position = parentMenu.transform.position /*- parentMenu.transform.forward*/;
         createdObject.SetActive(true);
-        
-        if (objectsCreated == numPlayers)
+
+        createdObject.AddComponent<HandDraggable>();
+        gameObject.GetComponent<HandDraggable>().StartedDragging += ObjectSelectionHandler.Instance.ObjectSelectionHandler_StartedDragging;
+        gameObject.GetComponent<HandDraggable>().StoppedDragging += ObjectSelectionHandler.Instance.ObjectSelectionHandler_StartedDragging;
+
+        objectSelectionHandler.currentObjects[objectSelectionHandler.objectsCreated - 1] = createdObject;
+
+        if (objectSelectionHandler.isPlayAndPassGame)
         {
-            // want to hide object menu until next round
-            parentMenu.SetActive(false);
-            // randomize menu with 5 obstacles to choose from
-            //  objectSelectionHandler.objectsCreated = 0;
-            objectsCreated = 0;
+            objectSelectionHandler.prepareGameObjectMenu();
         }
+        
     }
 }
