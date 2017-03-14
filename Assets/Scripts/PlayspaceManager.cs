@@ -145,7 +145,8 @@ public class PlayspaceManager : Singleton<PlayspaceManager>
     /// </summary>
     public void stopScanningVoice()
     {
-        stopScanningCommand = false;
+        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": stopScanningVoice()");
+        stopScanningCommand = true;
     }
 
     /// <summary>
