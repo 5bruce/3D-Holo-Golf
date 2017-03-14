@@ -37,7 +37,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.37311992, g: 0.38074034, b: 0.35872713, a: 1}
+  m_IndirectSpecularColor: {r: 0.37311947, g: 0.38074005, b: 0.35872722, a: 1}
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
@@ -119,8 +119,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 8856380}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.051200002, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.020000001, z: 0.005}
+  m_LocalPosition: {x: -0.491, y: -0.025, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.1, z: 0.025}
   m_Children: []
   m_Father: {fileID: 2099159529}
   m_RootOrder: 1
@@ -194,7 +194,7 @@ MonoBehaviour:
   inactive_material: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   selectionObject: {fileID: 1216148902138626, guid: b587e7a31eb166d4ba829a33ca257dbc,
     type: 2}
-  canvasObj: {fileID: 1096444902}
+  parentMenu: {fileID: 1096444902}
   numPlayers: 0
   objectsCreated: 0
 --- !u!1 &24588961
@@ -235,7 +235,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.0000011920929, y: 0}
+  m_AnchoredPosition: {x: -2.17, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &47244434
@@ -1834,8 +1834,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 635022937}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.3, y: 0.04300003, z: 0}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 0.2}
+  m_LocalPosition: {x: 0, y: 0.255, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
   m_Children:
   - {fileID: 24588962}
   - {fileID: 1224702253}
@@ -1927,8 +1927,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 706835434}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.08, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.020000001, z: 0.005}
+  m_LocalPosition: {x: 0.491, y: -0.026, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.1, z: 0.025}
   m_Children: []
   m_Father: {fileID: 2099159529}
   m_RootOrder: 2
@@ -1949,7 +1949,7 @@ MonoBehaviour:
   inactive_material: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   selectionObject: {fileID: 1910308306350940, guid: 260c745240330e7498f93eddbe54d555,
     type: 2}
-  canvasObj: {fileID: 1096444902}
+  parentMenu: {fileID: 1096444902}
   numPlayers: 0
   objectsCreated: 0
 --- !u!23 &706835437
@@ -2500,8 +2500,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 954071991}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.023000002, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.020000001, z: 0.0050000004}
+  m_LocalPosition: {x: 0, y: 0.093, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.1, z: 0.025}
   m_Children: []
   m_Father: {fileID: 2099159529}
   m_RootOrder: 0
@@ -2575,8 +2575,8 @@ MonoBehaviour:
   inactive_material: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   selectionObject: {fileID: 1895281144004862, guid: bfa0e97a39e0ecd4789a40e6c7e24f27,
     type: 2}
-  canvasObj: {fileID: 1096444902}
-  numPlayers: 1
+  parentMenu: {fileID: 1096444902}
+  numPlayers: 0
   objectsCreated: 0
 --- !u!1 &960862136
 GameObject:
@@ -3122,7 +3122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2be8bd2ebd8277c448d6d81c75517fee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TagalongDistance: 3
+  TagalongDistance: 2
   EnforceDistance: 0
   PositionUpdateSpeed: 9.8
   SmoothMotion: 1
@@ -3170,7 +3170,7 @@ Transform:
   m_GameObject: {fileID: 1096444902}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 5, y: 5, z: 5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 635022938}
   - {fileID: 2099159529}
@@ -3190,9 +3190,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 1096444902}
-  prefabs:
-  - {fileID: 1895281144004862, guid: bfa0e97a39e0ecd4789a40e6c7e24f27, type: 2}
-  - {fileID: 1216148902138626, guid: b587e7a31eb166d4ba829a33ca257dbc, type: 2}
+  obstacles:
+  - {fileID: 0}
+  - {fileID: 0}
   numPlayers: 2
   objectsCreated: 0
 --- !u!1 &1097478245
@@ -3780,8 +3780,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1211585116}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.112, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.02, z: 0.005}
+  m_LocalPosition: {x: -0.324, y: -0.159, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.1, z: 0.025}
   m_Children: []
   m_Father: {fileID: 2099159529}
   m_RootOrder: 3
@@ -3802,7 +3802,7 @@ MonoBehaviour:
   inactive_material: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   selectionObject: {fileID: 1800630414454582, guid: 11d174c2ae4d1c5409a2001bb0441b02,
     type: 2}
-  canvasObj: {fileID: 1096444902}
+  parentMenu: {fileID: 1096444902}
   numPlayers: 0
   objectsCreated: 0
 --- !u!23 &1211585119
@@ -3894,7 +3894,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -0.16, y: 0}
+  m_AnchoredPosition: {x: -2.28, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &1317447815 stripped
@@ -5468,8 +5468,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2055949066}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.142, z: 0}
-  m_LocalScale: {x: 0.1, y: 0.02, z: 0.005}
+  m_LocalPosition: {x: 0.257, y: -0.159, z: 0}
+  m_LocalScale: {x: 0.5, y: 0.1, z: 0.025}
   m_Children: []
   m_Father: {fileID: 2099159529}
   m_RootOrder: 4
@@ -5490,7 +5490,7 @@ MonoBehaviour:
   inactive_material: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
   selectionObject: {fileID: 1216148902138626, guid: b587e7a31eb166d4ba829a33ca257dbc,
     type: 2}
-  canvasObj: {fileID: 1096444902}
+  parentMenu: {fileID: 0}
   numPlayers: 0
   objectsCreated: 0
 --- !u!23 &2055949069
@@ -5568,8 +5568,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 2099159528}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.02, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 954071992}
   - {fileID: 8856381}

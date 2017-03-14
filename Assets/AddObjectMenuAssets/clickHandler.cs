@@ -5,23 +5,28 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class clickHandler : MonoBehaviour,
-                                 IFocusable,
-                                 IInputClickHandler
+                            IFocusable,
+                            IInputClickHandler
 {
     public Material active_material;
     public Material inactive_material;
+
+    [Tooltip("Object to be created when this gameobject is clicked")]
     public GameObject selectionObject;
-    public GameObject canvasObj;
+
+    [Tooltip("Parent menu of this obstacle selection button")]
+    public GameObject parentMenu;
+
     public int numPlayers = 0;
     public int objectsCreated = 0;
-    private ObjectSelectionHandler osh;
+    private ObjectSelectionHandler objectSelectionHandler;
 
     // Use this for initialization
     void Start()
     {
-        osh = canvasObj.GetComponent<ObjectSelectionHandler>();
-        numPlayers = osh.numPlayers;
-        objectsCreated = osh.objectsCreated;
+        objectSelectionHandler = parentMenu.GetComponent<ObjectSelectionHandler>();
+        numPlayers = objectSelectionHandler.numPlayers;
+        objectsCreated = objectSelectionHandler.objectsCreated;
     }
 
     // Update is called once per frame
@@ -32,7 +37,7 @@ public class clickHandler : MonoBehaviour,
 
     void IFocusable.OnFocusEnter()
     {
-        Debug.Log("ExitButtonHandler: OnFocusEnter()");
+        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": OnFocusEnter()");
         //System.Console.Write("ExitButtonHandler: OnFocusEnter()");
         gameObject.GetComponent<MeshRenderer>().material = active_material;
     }
@@ -45,33 +50,32 @@ public class clickHandler : MonoBehaviour,
     void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
         //on click function
-        Debug.Log("ObjectButtons: OnInputClicked()");
+        Debug.Log(gameObject.name + ": OnInputClicked()");
         //System.Console.Write("ObjectButtons: OnInputClicked()");
 
         //Make sure variable is up to date
-        objectsCreated = osh.objectsCreated;
+        objectsCreated = objectSelectionHandler.objectsCreated;
 
         //The reason I do it before I actually create the objects, is so that it creates a "lock" on 
         //creating on object, however it doesn't actually make a lock so errors could happen with multiple
         //hololenses 
         //see if I can make an actual lock in c#
-        osh.objectsCreated += 1;
+        objectSelectionHandler.objectsCreated += 1;
         objectsCreated += 1;
 
-        //canvasObj.SetActive(false);
+        //parentMenu.SetActive(false);
 
         GameObject createdObject;
         createdObject = (GameObject)Instantiate(selectionObject);
-        createdObject.transform.position = canvasObj.transform.position - canvasObj.transform.forward;
+        createdObject.transform.position = parentMenu.transform.position /*- parentMenu.transform.forward*/;
         createdObject.SetActive(true);
         
-        //set draggable
         if (objectsCreated == numPlayers)
         {
-            //move on to next round
-            canvasObj.SetActive(false);
-            //randomize menu with 5 obstacles to choose from
-          //  osh.objectsCreated = 0;
+            // want to hide object menu until next round
+            parentMenu.SetActive(false);
+            // randomize menu with 5 obstacles to choose from
+            //  objectSelectionHandler.objectsCreated = 0;
             objectsCreated = 0;
         }
     }

@@ -5,15 +5,15 @@ using System;
 
 public class ObjectSelectionHandler : MonoBehaviour {
     public GameObject canvas;
-    public GameObject[] prefabs = new GameObject[2];
+    public GameObject[] obstacles = new GameObject[2];
     public int numPlayers = 1;
     public int objectsCreated = 0;
 
     void instantiateGameObjectMenu()
     {
-        for(int i = 1; i <= prefabs.Length;i++)
+        for(int i = 1; i <= obstacles.Length; i++)
         {
-            instantiateObj(prefabs[randomNumberSelector(1,5)]);
+            instantiateObj(obstacles[randomNumberSelector(1,5)]);
         }
     } 
 
