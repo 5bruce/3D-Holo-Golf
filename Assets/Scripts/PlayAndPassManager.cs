@@ -33,6 +33,10 @@ public class PlayAndPassManager : MonoBehaviour {
             }
             activePlayer = firstPlayer;
 
+            if (!GameObject.Find("SettingsManager").GetComponent<SettingsManager>())
+            {
+                Debug.LogError(gameObject.name + ": " + this.GetType().Name + ": could not find SettingsManager");
+            }
             // get access to settings information
             settingsAccess = GameObject.Find("SettingsManager").GetComponent<SettingsManager>();
 

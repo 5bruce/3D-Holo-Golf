@@ -1233,6 +1233,16 @@ Prefab:
       propertyPath: debugging
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 114380606991869826, guid: 8bd4ac5a6a7c50a44a7a1923ab24a284,
+        type: 2}
+      propertyPath: limitScanningByVoiceCommand
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114380606991869826, guid: 8bd4ac5a6a7c50a44a7a1923ab24a284,
+        type: 2}
+      propertyPath: limitScanningByTime
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8bd4ac5a6a7c50a44a7a1923ab24a284, type: 2}
   m_IsPrefabParent: 0
@@ -1241,6 +1251,12 @@ Transform:
   m_PrefabParentObject: {fileID: 4900566432617368, guid: 8bd4ac5a6a7c50a44a7a1923ab24a284,
     type: 2}
   m_PrefabInternal: {fileID: 1502466332}
+--- !u!114 &1502466334 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114380606991869826, guid: 8bd4ac5a6a7c50a44a7a1923ab24a284,
+    type: 2}
+  m_PrefabInternal: {fileID: 1502466332}
+  m_Script: {fileID: 11500000, guid: 776901807ac01e64e95086252c73386d, type: 3}
 --- !u!1001 &1503953866
 Prefab:
   m_ObjectHideFlags: 0
@@ -1475,6 +1491,24 @@ MonoBehaviour:
         m_Calls:
         - m_Target: {fileID: 2140010047}
           m_MethodName: ChangeActivePlayer
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: OnReset
+            m_BoolArgument: 0
+          m_CallState: 2
+      m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
+        PublicKeyToken=null
+  - Keyword: Toggle Scanning
+    KeyCode: 96
+    Response:
+      m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 1502466334}
+          m_MethodName: stopScanningVoice
           m_Mode: 1
           m_Arguments:
             m_ObjectArgument: {fileID: 0}

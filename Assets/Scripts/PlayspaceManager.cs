@@ -13,6 +13,10 @@ public class PlayspaceManager : Singleton<PlayspaceManager>
     [Tooltip("When checked, the SurfaceObserver will stop running after a specified amount of time.")]
     public bool limitScanningByTime = true;
 
+    [Tooltip("When chacked, the SurfaceObserver will stop running after user gives 'Stop Scanning' voice command")]
+    public bool limitScanningByVoiceCommand = false;
+    bool stopScanningCommand;
+
     [Tooltip("How much time (in seconds) that the SurfaceObserver will run after being started; used when 'Limit Scanning By Time' is checked.")]
     public float scanTime = 60.0f;
 
@@ -42,7 +46,7 @@ public class PlayspaceManager : Singleton<PlayspaceManager>
     /// </summary>
     private void Start()
     {
-        if (debugging)
+        if (debugging && limitScanningByTime)
         {
             scanTime = scanTime_Debug;
         }
@@ -53,6 +57,8 @@ public class PlayspaceManager : Singleton<PlayspaceManager>
             Debug.Log("PlayspaceManager: Start(): starting spatialmappingmanager observer");
             SpatialMappingManager.Instance.StartObserver();
         }
+
+        stopScanningCommand = false;
 
         // Update surfaceObserver and storedMeshes to use the same material during scanning.
         // This action overrides whatever material is default assigned to the SpatialMappingManager
@@ -68,7 +74,6 @@ public class PlayspaceManager : Singleton<PlayspaceManager>
     private void Update()
     {
         // Check to see if the spatial mapping data has been processed
-        // and if we are limiting how much time the user can spend scanning.
         if (!meshesProcessed && limitScanningByTime)
         {
             // If we have not processed the spatial mapping data
@@ -103,7 +108,44 @@ public class PlayspaceManager : Singleton<PlayspaceManager>
                 // 3.a: Set meshesProcessed to true.
                 meshesProcessed = true;
             }
-        }// TODO: else just reprocess planes for another time interval, but keep spatialmappingmanager scanning
+        }
+        else if (!meshesProcessed && limitScanningByVoiceCommand)
+        {
+            // If we have not processed the spatial mapping data
+            if (limitScanningByVoiceCommand && !stopScanningCommand)
+            {
+                // If we have a voice-deactivated scan, then we should wait until
+                // user commands end of scan before processing the mesh.
+            }
+            else
+            {
+                // The user should be done scanning their environment,
+                // so start processing the spatial mapping data...
+
+                // 3.a: Check if IsObserverRunning() is true on the
+                // SpatialMappingManager.Instance.
+                if (SpatialMappingManager.Instance.IsObserverRunning())
+                {
+                    // 3.a: If running, Stop the observer by calling
+                    // StopObserver() on the SpatialMappingManager.Instance.
+                    SpatialMappingManager.Instance.StopObserver();
+                }
+
+                // 3.a: Call CreatePlanes() to generate planes.
+                CreatePlanes();
+
+                // 3.a: Set meshesProcessed to true.
+                meshesProcessed = true;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Meant to be accessed by a voice recognition component (eg. HoloToolkit/KeywordManager.cs)
+    /// </summary>
+    public void stopScanningVoice()
+    {
+        stopScanningCommand = false;
     }
 
     /// <summary>
