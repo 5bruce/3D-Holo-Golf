@@ -22,7 +22,6 @@ public class clickHandler : MonoBehaviour,
     // Use this for initialization
     void Start()
     {
-
         objectSelectionHandler = ObjectSelectionHandler.Instance;
         objectSelectionHandler.prepareGameObjectMenu();
     }
@@ -65,8 +64,8 @@ public class clickHandler : MonoBehaviour,
         createdObject.SetActive(true);
 
         createdObject.AddComponent<HandDraggable>();
-        gameObject.GetComponent<HandDraggable>().StartedDragging += ObjectSelectionHandler_StartedDragging;
-        gameObject.GetComponent<HandDraggable>().StoppedDragging += ObjectSelectionHandler_StartedDragging;
+        createdObject.GetComponent<HandDraggable>().StartedDragging += clickHandler_StartedDragging;
+        createdObject.GetComponent<HandDraggable>().StoppedDragging += clickHandler_StoppedDragging;
 
         objectSelectionHandler.currentObjects[objectSelectionHandler.objectsCreated - 1] = createdObject;
 
@@ -78,12 +77,12 @@ public class clickHandler : MonoBehaviour,
     }
 
 
-    public void ObjectSelectionHandler_StartedDragging()
+    public void clickHandler_StartedDragging()
     {
         parentMenu.SetActive(false);
     }
 
-    public void ObjectSelectionHandler_StoppedDragging()
+    public void clickHandler_StoppedDragging()
     {
         Debug.Log(gameObject.name + ": " + this.GetType().Name + ": StoppedDragging event handler called");
         parentMenu.SetActive(true);
