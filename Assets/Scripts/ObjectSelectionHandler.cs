@@ -43,7 +43,7 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
             objectsCreated = 0;
 
             currentObjects = new GameObject[numPlayers+1];
-            currentObjects[0] = placeHolderLastObject;
+           // currentObjects[0] = placeHolderLastObject;
         }
     }
 
@@ -55,20 +55,24 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
     {
         for(int i = 0; i < buttons.Length; i++)
         {
-            setButtons(obstaclesPrefab[randomNumberSelector(0,obstaclesPrefab.Length-1)], i);
+            //I think random only selects a number less than the max, so I'm passing in 5 instead of 4
+            setButtons(obstaclesPrefab[randomNumberSelector(0,obstaclesPrefab.Length)], i);
         }
     } 
 
     //returns a random number from within a given range
     int randomNumberSelector(int min, int max)
     {
-        //TODO: don't allow repition of obstacles, remove choosen from pool
-        System.Random rnd = new System.Random();
-        return rnd.Next(min, max);
+        Debug.Log("min: " + min + " max: " + max);
+            //TODO: don't allow repition of obstacles, remove choosen from pool
+            System.Random rnd = new System.Random();
+            int num = rnd.Next(min, max);
+        Debug.Log("number random: "+num);
+        return num;
+        
     }
     
-    //sets the selection object of the button at index buttonNumber
-    //this is the object that will pop up when the user clicks the button
+
     void setButtons(GameObject obj, int buttonNumber)
     {
         buttons[buttonNumber].GetComponent<clickHandler>().selectionObject = obj;
@@ -77,14 +81,5 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
 
 
 
-    public void ObjectSelectionHandler_StartedDragging()
-    {
-        gameObject.SetActive(false);
-    }
 
-    public void ObjectSelectionHandler_StoppedDragging()
-    {
-        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": StoppedDragging event handler called");
-        gameObject.SetActive(true);
-    }
 }

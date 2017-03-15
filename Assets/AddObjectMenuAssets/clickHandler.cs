@@ -22,7 +22,9 @@ public class clickHandler : MonoBehaviour,
     // Use this for initialization
     void Start()
     {
+
         objectSelectionHandler = ObjectSelectionHandler.Instance;
+        objectSelectionHandler.prepareGameObjectMenu();
     }
 
     // Update is called once per frame
@@ -46,7 +48,7 @@ public class clickHandler : MonoBehaviour,
     void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
         //on click function
-        Debug.Log(gameObject.name + ": OnInputClicked()");
+        //Debug.Log(gameObject.name + ": OnInputClicked()");
         //System.Console.Write("ObjectButtons: OnInputClicked()");
 
         //The reason I do it before I actually create the objects, is so that it creates a "lock" on 
@@ -63,8 +65,8 @@ public class clickHandler : MonoBehaviour,
         createdObject.SetActive(true);
 
         createdObject.AddComponent<HandDraggable>();
-        gameObject.GetComponent<HandDraggable>().StartedDragging += ObjectSelectionHandler.Instance.ObjectSelectionHandler_StartedDragging;
-        gameObject.GetComponent<HandDraggable>().StoppedDragging += ObjectSelectionHandler.Instance.ObjectSelectionHandler_StartedDragging;
+        gameObject.GetComponent<HandDraggable>().StartedDragging += ObjectSelectionHandler_StartedDragging;
+        gameObject.GetComponent<HandDraggable>().StoppedDragging += ObjectSelectionHandler_StartedDragging;
 
         objectSelectionHandler.currentObjects[objectSelectionHandler.objectsCreated - 1] = createdObject;
 
@@ -73,5 +75,17 @@ public class clickHandler : MonoBehaviour,
             objectSelectionHandler.prepareGameObjectMenu();
         }
         
+    }
+
+
+    public void ObjectSelectionHandler_StartedDragging()
+    {
+        parentMenu.SetActive(false);
+    }
+
+    public void ObjectSelectionHandler_StoppedDragging()
+    {
+        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": StoppedDragging event handler called");
+        parentMenu.SetActive(true);
     }
 }
