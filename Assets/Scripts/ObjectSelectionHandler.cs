@@ -15,10 +15,16 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
     [Tooltip("The number of players in this game")]
     public int numPlayers = 1;
 
+    /*
+    In order to ensure that the last player is able to move their selected object
+    around during the current selection round, we allow the last player to HandDrag
+    their obstacle until the next round.  
+    */
     /// <summary>
     /// Obstacle gameobjects that have been created during this selection round
     /// </summary>
-    public GameObject[] currentObjects;
+    public Queue<GameObject> currentObjects;
+
     /// <summary>
     /// Number of obstacles created in this selection round
     /// </summary>
@@ -27,36 +33,44 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
     [Tooltip("is this used in a multiplayer game on a single device?")]
     public bool isPlayAndPassGame = true;
 
+    /// <summary>
+    /// Which round of obstacle selection we are currently on
+    /// </summary>
+    private int roundNumber = 1;
+
     void Start()
     { 
-        currentObjects = new GameObject[numPlayers + 1];
+        currentObjects = new Queue<GameObject>(numPlayers);
+
+        // initial obstacle selection randomization
+        prepareGameObjectMenu();
     }
 
-    void Update()
+    // Called after all Update() functions called
+    void LateUpdate()
     {
+        // current obstacle selection round over
        if(objectsCreated == numPlayers)
         {
-            //make the menu invisible
-            gameObject.SetActive(false);
+            Debug.Log(this.GetType().Name + ": current selection round ending");
 
-            for(int i = 0; i < currentObjects.Length - 1; i++)
+            // remove hand draggable capability from all objects created this round
+            // except for the one created by the last player
+            for (int i = 0; i < currentObjects.Count - 1; i++)
             {
-                //remove hand draggable capability
-                Destroy(currentObjects[i].GetComponent<HandDraggable>());
+                GameObject popped = currentObjects.Dequeue();
+                Debug.Log(this.GetType().Name + ": un-HandDragging gameobject " + popped.name);
+                Destroy(popped.GetComponent<HandDraggable>());
             }
 
-            //randomizes the game object menu for next round
-            if (!isPlayAndPassGame)
-            {
-                prepareGameObjectMenu();
-            }
+            // randomize menu for next round
+            prepareGameObjectMenu();
 
-            GameObject placeHolderLastObject = currentObjects[currentObjects.Length - 1];
-            //resets objects created back to zero
+            // reset number of objects created back to zero for next round
             objectsCreated = 0;
 
-            currentObjects = new GameObject[numPlayers+1];
-           // currentObjects[0] = placeHolderLastObject;
+            // disable the menu once all players have selected an object
+            gameObject.SetActive(false);
         }
     }
 

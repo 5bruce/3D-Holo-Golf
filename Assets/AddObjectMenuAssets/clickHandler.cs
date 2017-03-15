@@ -23,7 +23,6 @@ public class clickHandler : MonoBehaviour,
     void Start()
     {
         objectSelectionHandler = ObjectSelectionHandler.Instance;
-        objectSelectionHandler.prepareGameObjectMenu();
     }
 
     // Update is called once per frame
@@ -65,10 +64,15 @@ public class clickHandler : MonoBehaviour,
 
         createdObject.AddComponent<HandDraggable>();
         createdObject.GetComponent<HandDraggable>().StartedDragging += clickHandler_StartedDragging;
-        createdObject.GetComponent<HandDraggable>().StoppedDragging += clickHandler_StoppedDragging;
+        // only bring back menu after dragging if not last player of current selection round
+        if (objectSelectionHandler.objectsCreated < objectSelectionHandler.numPlayers) {
+            createdObject.GetComponent<HandDraggable>().StoppedDragging += clickHandler_StoppedDragging;
+        }
 
-        objectSelectionHandler.currentObjects[objectSelectionHandler.objectsCreated - 1] = createdObject;
+        // add this createdObject to the list of obstacles created during this round
+        objectSelectionHandler.currentObjects.Enqueue(createdObject);
 
+        // randomize selection menu for next player
         if (objectSelectionHandler.isPlayAndPassGame)
         {
             objectSelectionHandler.prepareGameObjectMenu();
@@ -76,7 +80,7 @@ public class clickHandler : MonoBehaviour,
         
     }
 
-
+    // TODO: these event handlers should probably be moved to the obstacle menu manager class (ObjectSelectionHandler.cs)
     public void clickHandler_StartedDragging()
     {
         parentMenu.SetActive(false);
