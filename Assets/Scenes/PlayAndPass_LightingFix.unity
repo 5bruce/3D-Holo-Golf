@@ -261,7 +261,7 @@ Transform:
   m_LocalScale: {x: 0.5, y: 0.25, z: 0.5}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &348005408
 Prefab:
@@ -809,6 +809,48 @@ MonoBehaviour:
   m_FirstSelected: {fileID: 0}
   m_sendNavigationEvents: 1
   m_DragThreshold: 5
+--- !u!1001 &969056461
+Prefab:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 4797167076354422, guid: 10fb7681e5e93d644b99048577ab5ce3, type: 2}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4797167076354422, guid: 10fb7681e5e93d644b99048577ab5ce3, type: 2}
+      propertyPath: m_LocalPosition.y
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4797167076354422, guid: 10fb7681e5e93d644b99048577ab5ce3, type: 2}
+      propertyPath: m_LocalPosition.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4797167076354422, guid: 10fb7681e5e93d644b99048577ab5ce3, type: 2}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4797167076354422, guid: 10fb7681e5e93d644b99048577ab5ce3, type: 2}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4797167076354422, guid: 10fb7681e5e93d644b99048577ab5ce3, type: 2}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4797167076354422, guid: 10fb7681e5e93d644b99048577ab5ce3, type: 2}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4797167076354422, guid: 10fb7681e5e93d644b99048577ab5ce3, type: 2}
+      propertyPath: m_RootOrder
+      value: 5
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_ParentPrefab: {fileID: 100100000, guid: 10fb7681e5e93d644b99048577ab5ce3, type: 2}
+  m_IsPrefabParent: 0
 --- !u!1001 &1109571880
 Prefab:
   m_ObjectHideFlags: 0
@@ -846,7 +888,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4684407260311718, guid: 3d175caf3db262344bdd5069b0bb5f24, type: 2}
       propertyPath: m_RootOrder
-      value: 5
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 23940128613132038, guid: 3d175caf3db262344bdd5069b0bb5f24,
         type: 2}
@@ -1148,10 +1190,10 @@ Transform:
   m_GameObject: {fileID: 1483984228}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.5, z: 2.45}
-  m_LocalScale: {x: 0.15, y: 0.15, z: 0.15}
+  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1502466332
 Prefab:
@@ -1502,7 +1544,7 @@ MonoBehaviour:
           m_CallState: 2
       m_TypeName: UnityEngine.Events.UnityEvent, UnityEngine, Version=0.0.0.0, Culture=neutral,
         PublicKeyToken=null
-  - Keyword: Toggle Scanning
+  - Keyword: Stop Scanning
     KeyCode: 96
     Response:
       m_PersistentCalls:
@@ -1658,7 +1700,7 @@ Transform:
   m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1945546803
 Prefab:
@@ -1740,6 +1782,11 @@ GameObject:
   m_PrefabParentObject: {fileID: 1266920180313250, guid: d48a78e2fa9f8d2449101947777e7d22,
     type: 2}
   m_PrefabInternal: {fileID: 1945546803}
+--- !u!1 &2048870416 stripped
+GameObject:
+  m_PrefabParentObject: {fileID: 1609113071447958, guid: 10fb7681e5e93d644b99048577ab5ce3,
+    type: 2}
+  m_PrefabInternal: {fileID: 969056461}
 --- !u!1 &2102121644
 GameObject:
   m_ObjectHideFlags: 0
@@ -1755,7 +1802,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2102121645
 Transform:
   m_ObjectHideFlags: 0
@@ -1780,7 +1827,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4433137da1fcd3a4aaf31e16e486b6f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ObstacleMenu: {fileID: 0}
+  ObstacleMenu: {fileID: 2048870416}
 --- !u!1 &2120573396
 GameObject:
   m_ObjectHideFlags: 0

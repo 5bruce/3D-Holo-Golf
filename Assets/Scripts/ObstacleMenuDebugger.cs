@@ -32,8 +32,8 @@ public class ObstacleMenuDebugger : MonoBehaviour {
     /// </summary>
     public void EnableMenu()
     {
-        Debug.Log("ObstacleMenuManager:ObstacleMenuDebugger: EnableMenu()");
-        ObstacleMenu.SetActive(!menuActive);
-        menuActive = !menuActive;
+        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": EnableMenu()");
+        ObstacleMenu.SetActive(true);
+        menuActive = true;
     }
 }
