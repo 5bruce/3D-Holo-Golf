@@ -28,18 +28,14 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
     /// <summary>
     /// Number of obstacles created in this selection round
     /// </summary>
-    public int objectsCreated = 0;
+    public int objectsCreated;
 
     [Tooltip("is this used in a multiplayer game on a single device?")]
     public bool isPlayAndPassGame = true;
 
-    /// <summary>
-    /// Which round of obstacle selection we are currently on
-    /// </summary>
-    private int roundNumber = 1;
-
     void Start()
-    { 
+    {
+        objectsCreated = 0;
         currentObjects = new Queue<GameObject>(numPlayers);
 
         // initial obstacle selection randomization
@@ -56,11 +52,11 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
 
             // remove hand draggable capability from all objects created this round
             // except for the one created by the last player
-            for (int i = 0; i < currentObjects.Count - 1; i++)
+            while (currentObjects.Count > 1)
             {
                 GameObject popped = currentObjects.Dequeue();
+                Destroy(popped.GetComponent(typeof(HandDraggable)));
                 Debug.Log(this.GetType().Name + ": un-HandDragging gameobject " + popped.name);
-                Destroy(popped.GetComponent<HandDraggable>());
             }
 
             // randomize menu for next round
@@ -76,20 +72,19 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
 
     /// <summary>
     /// Prepares the Game Object menu by linking each button to a random obstacle 
-    /// from the set of all obstacles. Associations are removed after each obstacle
-    /// selection round.
+    /// from the set of all obstacles.
     /// </summary>
     public void prepareGameObjectMenu()
     {
         for(int i = 0; i < buttons.Length; i++)
         {
             //I think random only selects a number less than the max, so I'm passing in 5 instead of 4
-            setButtons(obstaclesPrefab[randomNumberSelector(0,obstaclesPrefab.Length)], i);
+            setButtons(obstaclesPrefab[randomNumberSelector(0, obstaclesPrefab.Length)], i);
         }
     }
 
     /// <summary>
-    /// Returns a random number from within the given range
+    /// Returns a random number from within the given range. FIX: This implementation sucks and is broken.
     /// </summary>
     /// <param name="min"></param>
     /// <param name="max"></param>

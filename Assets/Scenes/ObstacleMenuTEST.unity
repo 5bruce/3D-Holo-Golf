@@ -588,7 +588,12 @@ Prefab:
     - target: {fileID: 114380606991869826, guid: 8bd4ac5a6a7c50a44a7a1923ab24a284,
         type: 2}
       propertyPath: debugging
-      value: 0
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114380606991869826, guid: 8bd4ac5a6a7c50a44a7a1923ab24a284,
+        type: 2}
+      propertyPath: scanTime_Debug
+      value: 100000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8bd4ac5a6a7c50a44a7a1923ab24a284, type: 2}
@@ -3187,7 +3192,7 @@ MonoBehaviour:
   - {fileID: 1895281144004862, guid: bfa0e97a39e0ecd4789a40e6c7e24f27, type: 2}
   - {fileID: 1216148902138626, guid: b587e7a31eb166d4ba829a33ca257dbc, type: 2}
   - {fileID: 1910308306350940, guid: 260c745240330e7498f93eddbe54d555, type: 2}
-  - {fileID: 0}
+  - {fileID: 100000, guid: befc70bcd73699b4d8e5c5fc86296927, type: 3}
   - {fileID: 1800630414454582, guid: 11d174c2ae4d1c5409a2001bb0441b02, type: 2}
   buttons:
   - {fileID: 954071991}
@@ -3196,7 +3201,6 @@ MonoBehaviour:
   - {fileID: 1211585116}
   - {fileID: 2055949066}
   numPlayers: 2
-  currentObjects: []
   objectsCreated: 0
   isPlayAndPassGame: 0
 --- !u!1 &1097478245

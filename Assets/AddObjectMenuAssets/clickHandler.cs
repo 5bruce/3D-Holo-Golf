@@ -55,13 +55,13 @@ public class clickHandler : MonoBehaviour,
         //see if I can make an actual lock in c#
         objectSelectionHandler.objectsCreated += 1;
 
-        //parentMenu.SetActive(false);
-
+        // create associated object and place in front of player
         GameObject createdObject;
         createdObject = (GameObject)Instantiate(selectionObject);
-        createdObject.transform.position = parentMenu.transform.position /*- parentMenu.transform.forward*/;
+        createdObject.transform.position = Camera.main.transform.position + Vector3.Normalize(Camera.main.transform.forward) * 2;
         createdObject.SetActive(true);
 
+        // make object handdraggable and setup its relation to obstacleSelectionMenu
         createdObject.AddComponent<HandDraggable>();
         createdObject.GetComponent<HandDraggable>().StartedDragging += clickHandler_StartedDragging;
         // only bring back menu after dragging if not last player of current selection round
