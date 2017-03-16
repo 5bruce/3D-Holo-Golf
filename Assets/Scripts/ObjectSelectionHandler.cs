@@ -76,26 +76,25 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
     /// </summary>
     public void prepareGameObjectMenu()
     {
-        for(int i = 0; i < buttons.Length; i++)
+        System.Random rng = new System.Random();
+        for (int i = 0; i < buttons.Length; i++)
         {
-            //I think random only selects a number less than the max, so I'm passing in 5 instead of 4
-            setButtons(obstaclesPrefab[randomNumberSelector(0, obstaclesPrefab.Length)], i);
+            setButtons(obstaclesPrefab[randomNumberInRange(rng, 0, obstaclesPrefab.Length)], i);
         }
     }
 
     /// <summary>
-    /// Returns a random number from within the given range. FIX: This implementation sucks and is broken.
+    /// Returns a random number from within the given range [min, max).
     /// </summary>
     /// <param name="min"></param>
     /// <param name="max"></param>
     /// <returns></returns>
-    int randomNumberSelector(int min, int max)
+    int randomNumberInRange(System.Random rng, int min, int max)
     {
-        //Debug.Log(gameObject.name + ": " + this.GetType().Name + " min: " + min + " max: " + max);
         //TODO: don't allow repition of obstacles, remove choosen from pool?
-        System.Random rnd = new System.Random();
-        int num = rnd.Next(min, max);
-        //Debug.Log(gameObject.name + ": " + this.GetType().Name + ": number random: " + num);
+        
+        int num = rng.Next(min, max);
+        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": number random: " + num);
         return num;
     }
     
