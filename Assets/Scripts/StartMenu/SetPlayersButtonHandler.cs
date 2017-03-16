@@ -2,14 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class StartButtonHandler : MonoBehaviour,
-                                 IFocusable,
-                                 IInputClickHandler
+public class SetPlayersButtonHandler : MonoBehaviour,
+                                       IFocusable,
+                                       IInputClickHandler
 {
     public Material active_material;
     public Material inactive_material;
+
+    [Tooltip("Value that this button sets the number of players to")]
+    public int playerValue;
 
     // Use this for initialization
     void Start()
@@ -37,14 +39,6 @@ public class StartButtonHandler : MonoBehaviour,
     void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
         Debug.Log(this.name + ": OnInputClicked()");
-        if (1 < SettingsManager.Instance.numberOfPlayers && 
-            SettingsManager.Instance.numberOfPlayers < SettingsManager.maxPlayers)
-        {
-            SceneManager.LoadSceneAsync("PlayAndPass_LightingFix");
-        }
-        else
-        {
-            SceneManager.LoadSceneAsync("InitialTossing");
-        }
+        SettingsManager.Instance.numberOfPlayers = playerValue;
     }
 }

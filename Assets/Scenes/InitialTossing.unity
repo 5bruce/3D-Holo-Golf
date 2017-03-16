@@ -1009,7 +1009,7 @@ MonoBehaviour:
   RecognizerStart: 0
   KeywordsAndResponses:
   - Keyword: Reset Ball
-    KeyCode: 0
+    KeyCode: 301
     Response:
       m_PersistentCalls:
         m_Calls:

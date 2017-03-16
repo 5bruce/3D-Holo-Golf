@@ -33,6 +33,10 @@ public class PlayAndPassManager : MonoBehaviour {
             }
             activePlayer = firstPlayer;
 
+            if (!GameObject.Find("SettingsManager").GetComponent<SettingsManager>())
+            {
+                Debug.LogError(gameObject.name + ": " + this.GetType().Name + ": could not find SettingsManager");
+            }
             // get access to settings information
             settingsAccess = GameObject.Find("SettingsManager").GetComponent<SettingsManager>();
 
@@ -44,24 +48,36 @@ public class PlayAndPassManager : MonoBehaviour {
             playerColors = settingsAccess.playerColors;
 
             // add the first player to players list (there should always be a first player)
-            players.Add(firstPlayer);
+            //players.Add(firstPlayer);
 
             // create list of other Player gameobject children and instantiate them
             Debug.Log(this.name + ": creating players");
-            for (int i = 1; i < numberOfPlayers; i++)
+            for (int i = 0; i < numberOfPlayers; i++)
             {
-                GameObject player = Instantiate(firstPlayer, firstPlayer.transform.position, firstPlayer.transform.rotation, gameObject.transform);
-                player.name = "Player" + (1+i);
-                player.BroadcastMessage("Deactivate");
+                GameObject player;
+                // 
+                if (i != 0) {
+                    player = Instantiate(firstPlayer, firstPlayer.transform.position, firstPlayer.transform.rotation, gameObject.transform);
+                    player.name = "Player" + (1 + i);
+                    player.BroadcastMessage("Deactivate");
+                } else
+                {
+                    player = firstPlayer;
+                }
 
                 // set this player's colors
                 player.transform.FindChild("Projectile").GetComponent<MeshRenderer>().material = playerColors[i];
                 player.transform.FindChild("FlagPole").transform.FindChild("Flag").GetComponent<MeshRenderer>().material = playerColors[i];
+                player.transform.FindChild("Projectile").GetComponent<TrailRenderer>().endColor = playerColors[i].color;
+                player.transform.FindChild("Projectile").GetComponent<TrailRenderer>().endColor = playerColors[i].color;
+                player.transform.FindChild("Projectile").GetComponent<Light>().color = playerColors[i].color;
 
-                // initially, hide other player balls so first toss does not toss all
-                player.SetActive(false);
+                // initially, hide all other player balls so first toss does not toss all
+                if (player != firstPlayer) {
+                    player.SetActive(false);
+                }
 
-                Debug.Log(this.name + ": player1 clone created: " + player.name);
+                Debug.Log(this.name + ": " + firstPlayer.name + "clone created: " + player.name);
                 players.Add(player); 
             }
         }

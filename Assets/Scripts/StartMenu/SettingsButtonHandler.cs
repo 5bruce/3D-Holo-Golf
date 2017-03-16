@@ -11,6 +11,9 @@ public class SettingsButtonHandler : MonoBehaviour,
     public Material active_material;
     public Material inactive_material;
 
+    public GameObject MainMenu;
+    public GameObject SettingsMenu;
+
     // Use this for initialization
     void Start()
     {
@@ -37,6 +40,7 @@ public class SettingsButtonHandler : MonoBehaviour,
     void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
         Debug.Log(this.name + ": OnInputClicked()");
-        SceneManager.LoadSceneAsync("PlayAndPass");
+        SettingsMenu.SetActive(true);
+        MainMenu.SetActive(false);
     }
 }

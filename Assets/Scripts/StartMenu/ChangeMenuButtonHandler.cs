@@ -2,14 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
-public class StartButtonHandler : MonoBehaviour,
-                                 IFocusable,
-                                 IInputClickHandler
+public class ChangeMenuButtonHandler: MonoBehaviour,
+                                      IFocusable,
+                                      IInputClickHandler
 {
     public Material active_material;
     public Material inactive_material;
+
+    [Tooltip("Menu GameObjects to be deactivated when button pressed")]
+    public GameObject[] toDeactivate;
+    public GameObject toActivate;
 
     // Use this for initialization
     void Start()
@@ -37,14 +40,10 @@ public class StartButtonHandler : MonoBehaviour,
     void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
         Debug.Log(this.name + ": OnInputClicked()");
-        if (1 < SettingsManager.Instance.numberOfPlayers && 
-            SettingsManager.Instance.numberOfPlayers < SettingsManager.maxPlayers)
+        toActivate.SetActive(true);
+        for (int i=0; i < toDeactivate.Length; i++)
         {
-            SceneManager.LoadSceneAsync("PlayAndPass_LightingFix");
-        }
-        else
-        {
-            SceneManager.LoadSceneAsync("InitialTossing");
+            toDeactivate[i].SetActive(false);
         }
     }
 }
