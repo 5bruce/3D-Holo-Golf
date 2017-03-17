@@ -33,7 +33,7 @@ public class clickHandler : MonoBehaviour,
 
     void IFocusable.OnFocusEnter()
     {
-        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": OnFocusEnter()");
+        //Debug.Log(gameObject.name + ": " + this.GetType().Name + ": OnFocusEnter()");
         //System.Console.Write("ExitButtonHandler: OnFocusEnter()");
         gameObject.GetComponent<MeshRenderer>().material = active_material;
     }
@@ -56,6 +56,8 @@ public class clickHandler : MonoBehaviour,
         objectSelectionHandler.objectsCreated += 1;
 
         // create associated object and place in front of player
+        Debug.Log(gameObject.name + ": " + this.GetType().Name + 
+            ": spawning object: " + this.selectionObject.name);
         GameObject createdObject;
         createdObject = (GameObject)Instantiate(selectionObject);
         createdObject.transform.position = Camera.main.transform.position + Vector3.Normalize(Camera.main.transform.forward) * 2;
@@ -76,19 +78,22 @@ public class clickHandler : MonoBehaviour,
         if (objectSelectionHandler.isPlayAndPassGame)
         {
             objectSelectionHandler.prepareGameObjectMenu();
+
+            // switch to next player
+            PlayAndPassManager.Instance.ChangeActivePlayer();
         }
-        
     }
 
     // TODO: these event handlers should probably be moved to the obstacle menu manager class (ObjectSelectionHandler.cs)
     public void clickHandler_StartedDragging()
     {
+        Debug.Log(this.GetType().Name + ": clickHandler_StartedDragging()");
         parentMenu.SetActive(false);
     }
 
     public void clickHandler_StoppedDragging()
     {
-        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": StoppedDragging event handler called");
+        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": clickHandler_StoppedDragging()");
         parentMenu.SetActive(true);
     }
 }

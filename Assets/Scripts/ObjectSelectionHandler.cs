@@ -67,6 +67,8 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
 
             // disable the menu once all players have selected an object
             gameObject.SetActive(false);
+
+            PlayAndPassManager.Instance.setFirstPlayerActive();
         }
     }
 
@@ -94,7 +96,7 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
         //TODO: don't allow repition of obstacles, remove choosen from pool?
         
         int num = rng.Next(min, max);
-        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": number random: " + num);
+        //Debug.Log(gameObject.name + ": " + this.GetType().Name + ": number random: " + num);
         return num;
     }
     

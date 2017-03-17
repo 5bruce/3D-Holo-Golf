@@ -524,6 +524,11 @@ Prefab:
       propertyPath: m_RootOrder
       value: 5
       objectReference: {fileID: 0}
+    - target: {fileID: 114678139559781170, guid: 10fb7681e5e93d644b99048577ab5ce3,
+        type: 2}
+      propertyPath: isPlayAndPassGame
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 10fb7681e5e93d644b99048577ab5ce3, type: 2}
   m_IsPrefabParent: 0
@@ -1438,6 +1443,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   goal: {fileID: 1483984228}
   objectSelectionMenu: {fileID: 2048870416}
+  playersInGoal: 0
 --- !u!114 &2120573397 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114458771262786846, guid: 6b9f64b577f279b4c8aba83f60b942dc,

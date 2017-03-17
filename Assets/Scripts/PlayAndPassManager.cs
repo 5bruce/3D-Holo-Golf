@@ -92,7 +92,7 @@ public class PlayAndPassManager : Singleton<PlayAndPassManager> {
 		
 	}
 
-    void ChangeActivePlayer ()
+    public void ChangeActivePlayer ()
     {
         // safely deactivate current active player
         /*
@@ -109,10 +109,39 @@ public class PlayAndPassManager : Singleton<PlayAndPassManager> {
                         : players[0];
         Debug.Log(gameObject.name + ": " + this.GetType().Name + ": activePlayer: " + activePlayer.name);
 
-        // enable this player object (eg. if first time being activated or start of new round) 
-        if (!activePlayer.activeSelf)
+        // enable this player object if not in obstacle selection round (eg. if first time being activated or start of new round)
+        // generally ok cost if only for setting activate and player objects have few child transforms
+        activePlayer.SetActive(true);
+        if (!ObjectSelectionHandler.Instance.gameObject.activeSelf) {
+            foreach (Transform child in activePlayer.transform)
+            {
+                child.gameObject.SetActive(true);
+                Debug.Log(this.GetType().Name +
+                    ": settting active: " + activePlayer.name + ": " + child.gameObject.name);
+            }
+        }
+        activePlayer.BroadcastMessage("Activate");
+        activePlayer.transform.FindChild("Canvas").gameObject.SetActive(true);
+    }
+
+    public void setFirstPlayerActive()
+    {
+        activePlayer.BroadcastMessage("Deactivate");
+        activePlayer.transform.FindChild("Canvas").gameObject.SetActive(false);
+
+        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": activePlayer: " + activePlayer.name);
+
+        // enable this player object if not in obstacle selection round (eg. if first time being activated or start of new round)
+        // generally ok cost if only for setting activate and player objects have few child transforms
+        activePlayer.SetActive(true);
+        if (!ObjectSelectionHandler.Instance.gameObject.activeSelf)
         {
-            activePlayer.SetActive(true);
+            foreach (Transform child in activePlayer.transform)
+            {
+                child.gameObject.SetActive(true);
+                Debug.Log(this.GetType().Name +
+                    ": settting active: " + activePlayer.name + ": " + child.gameObject.name);
+            }
         }
         activePlayer.BroadcastMessage("Activate");
         activePlayer.transform.FindChild("Canvas").gameObject.SetActive(true);

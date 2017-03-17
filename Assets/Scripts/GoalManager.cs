@@ -34,7 +34,11 @@ public class GoalManager : Singleton<GoalManager> {
 	void LateUpdate () {
         if (playersInGoal == numberOfPlayers)
         {
+            PlayAndPassManager.Instance.setFirstPlayerActive();
+
+            // toggle menu on
             objectSelectionMenu.SetActive(true);
+            playersInGoal = 0;
         }
     }
 }

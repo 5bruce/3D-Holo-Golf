@@ -289,15 +289,18 @@ public class ProjectileShooter : MonoBehaviour {
         {
             Debug.Log(gameObject.name + ": " + this.GetType().Name + ": goal entered");
             // clean up projectile stuff for this round
-            strokes = 0;
             this.OnReset();
-            gameObject.SetActive(false);
             
             // send message to player UI 
             SendMessageUpwards("GoalEntered", strokes);
+            strokes = 0;
 
             // alert GoalManager
             GoalManager.Instance.playersInGoal++;
+
+            this.Deactivate();
+            gameObject.SetActive(false);
+            //gameObject.transform.parent.gameObject.SetActive(false);
         }
     }
 
@@ -308,6 +311,7 @@ public class ProjectileShooter : MonoBehaviour {
     {
         if (isActive)
         {
+            Debug.Log(this.name + ": ProjectileShooter_StartedDragging()");
             resting = false;
             isDragging = true;
             gameObject.GetComponent<LineRenderer>().enabled = true;
@@ -320,7 +324,7 @@ public class ProjectileShooter : MonoBehaviour {
     private void ProjectileShooter_StoppedDragging()
     {
         if (isActive) {
-            Debug.Log(this.name + ": StoppedDragging event handler called");
+            Debug.Log(this.name + ": ProjectileShooter_StoppedDragging()");
             Rigidbody rb = gameObject.GetComponent<Rigidbody>();
             rb.useGravity = true;
             resting = false;
