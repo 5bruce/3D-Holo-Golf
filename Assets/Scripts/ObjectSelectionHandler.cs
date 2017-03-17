@@ -45,6 +45,7 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
     // Called after all Update() functions called
     void LateUpdate()
     {
+        /*
         // current obstacle selection round over
        if(objectsCreated == numPlayers)
         {
@@ -70,6 +71,32 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
 
             PlayAndPassManager.Instance.setFirstPlayerActive();
         }
+        */
+    }
+
+    void cleanupSelectionRound()
+    {
+        Debug.Log(this.GetType().Name + ": current selection round ending");
+
+        // remove hand draggable capability from all objects created this round
+        // except for the one created by the last player
+        while (currentObjects.Count > 1)
+        {
+            GameObject popped = currentObjects.Dequeue();
+            Destroy(popped.GetComponent(typeof(HandDraggable)));
+            Debug.Log(this.GetType().Name + ": un-HandDragging gameobject " + popped.name);
+        }
+
+        // randomize menu for next round
+        prepareGameObjectMenu();
+
+        // reset number of objects created back to zero for next round
+        objectsCreated = 0;
+
+        // disable the menu once all players have selected an object
+        gameObject.SetActive(false);
+
+        PlayAndPassManager.Instance.setFirstPlayerActive();
     }
 
     /// <summary>

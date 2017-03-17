@@ -129,6 +129,8 @@ public class PlayAndPassManager : Singleton<PlayAndPassManager> {
         activePlayer.BroadcastMessage("Deactivate");
         activePlayer.transform.FindChild("Canvas").gameObject.SetActive(false);
 
+        // set firstPlayer active
+        activePlayer = firstPlayer;
         Debug.Log(gameObject.name + ": " + this.GetType().Name + ": activePlayer: " + activePlayer.name);
 
         // enable this player object if not in obstacle selection round (eg. if first time being activated or start of new round)

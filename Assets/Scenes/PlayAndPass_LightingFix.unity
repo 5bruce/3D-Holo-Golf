@@ -535,6 +535,12 @@ Prefab:
       value: 
       objectReference: {fileID: 1785572487826262, guid: 9d6397a2bece3bf4185c0c3598dede9f,
         type: 2}
+    - target: {fileID: 114678139559781170, guid: 10fb7681e5e93d644b99048577ab5ce3,
+        type: 2}
+      propertyPath: obstaclesPrefab.Array.data[3]
+      value: 
+      objectReference: {fileID: 1166408174383502, guid: 2b7545779dc015741821985b5850daeb,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 10fb7681e5e93d644b99048577ab5ce3, type: 2}
   m_IsPrefabParent: 0

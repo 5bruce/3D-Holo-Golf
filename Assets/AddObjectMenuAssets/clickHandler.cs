@@ -67,15 +67,23 @@ public class clickHandler : MonoBehaviour,
         createdObject.AddComponent<HandDraggable>();
         createdObject.GetComponent<HandDraggable>().StartedDragging += clickHandler_StartedDragging;
         // only bring back menu after dragging if not last player of current selection round
-        if (objectSelectionHandler.objectsCreated < objectSelectionHandler.numPlayers) {
-            createdObject.GetComponent<HandDraggable>().StoppedDragging += clickHandler_StoppedDragging;
+        if (objectSelectionHandler.isPlayAndPassGame) {
+            if (objectSelectionHandler.objectsCreated < objectSelectionHandler.numPlayers) {
+                createdObject.GetComponent<HandDraggable>().StoppedDragging += clickHandler_StoppedDragging;
+            }
+            else
+            {
+                // FIXME: this is just a temporary fix until I can fix the projectil-always-handdragging bug
+                createdObject.GetComponent<HandDraggable>().StoppedDragging += clickHandler_lastPlayer_StoppedDragging;
+            }
         }
 
         // add this createdObject to the list of obstacles created during this round
         objectSelectionHandler.currentObjects.Enqueue(createdObject);
 
-        // randomize selection menu for next player
-        if (objectSelectionHandler.isPlayAndPassGame)
+        // randomize selection menu for next player if there are any remaining
+        if (objectSelectionHandler.isPlayAndPassGame &&  
+            objectSelectionHandler.objectsCreated < objectSelectionHandler.numPlayers)
         {
             objectSelectionHandler.prepareGameObjectMenu();
 
@@ -95,5 +103,12 @@ public class clickHandler : MonoBehaviour,
     {
         Debug.Log(gameObject.name + ": " + this.GetType().Name + ": clickHandler_StoppedDragging()");
         parentMenu.SetActive(true);
+    }
+
+    public void clickHandler_lastPlayer_StoppedDragging()
+    {
+        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": clickHandler_lastPlayer_StoppedDragging()");
+        parentMenu.SetActive(true);
+        gameObject.transform.root.SendMessage("cleanupSelectionRound");
     }
 }
