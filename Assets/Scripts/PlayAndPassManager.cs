@@ -1,18 +1,19 @@
-﻿using System.Collections;
+﻿using HoloToolkit.Unity;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 /// <summary>
 /// Creates and manages players in a play-and-pass game
 /// </summary>
-public class PlayAndPassManager : MonoBehaviour {
+public class PlayAndPassManager : Singleton<PlayAndPassManager> {
 
     /// <summary>
     /// Prefab or gameobject to use as tempate for generating players
     /// </summary>
     public GameObject firstPlayer;
 
-    SettingsManager settingsAccess;
+    SettingsManagerLoader settingsAccess;
     int numberOfPlayers;
     List<GameObject> players = new List<GameObject>();
     Material[] playerColors;
@@ -33,16 +34,17 @@ public class PlayAndPassManager : MonoBehaviour {
             }
             activePlayer = firstPlayer;
 
-            if (!GameObject.Find("SettingsManager").GetComponent<SettingsManager>())
+            settingsAccess = SettingsManagerLoader.Instance;
+            if (!settingsAccess)
             {
-                Debug.LogError(gameObject.name + ": " + this.GetType().Name + ": could not find SettingsManager");
+                Debug.LogError(gameObject.name + ": " + this.GetType().Name + 
+                    ": could not load a SettingsManagerLoader instance");
             }
-            // get access to settings information
-            settingsAccess = GameObject.Find("SettingsManager").GetComponent<SettingsManager>();
 
             // get number of player for this game
             numberOfPlayers = settingsAccess.numberOfPlayers;
-            Debug.Log(gameObject.name + ": " + this.GetType().Name + ": numberOfPlayers = " + numberOfPlayers);
+            Debug.Log(gameObject.name + ": " + this.GetType().Name + 
+                ": numberOfPlayers = " + numberOfPlayers);
 
             // get player colors
             playerColors = settingsAccess.playerColors;

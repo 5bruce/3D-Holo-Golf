@@ -1276,8 +1276,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3843716256798774097f56e52ed576f3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settingsAccess: {fileID: 0}
   numberOfPlayers: 0
+  playerColors:
+  - {fileID: 2100000, guid: 4c7a2a19ee1720f4b81c51d76877e962, type: 2}
+  - {fileID: 2100000, guid: c9619a4e1a320314d9a33ed2d594beb0, type: 2}
 --- !u!1 &1897400562
 GameObject:
   m_ObjectHideFlags: 0
@@ -1390,6 +1392,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2102121645}
   - component: {fileID: 2102121646}
+  - component: {fileID: 2102121647}
   m_Layer: 0
   m_Name: ObstacleMenuManager
   m_TagString: Untagged
@@ -1422,6 +1425,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ObstacleMenu: {fileID: 2048870416}
+--- !u!114 &2102121647
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2102121644}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72832a28d02a44144ad156d907926b7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  goal: {fileID: 1483984228}
+  objectSelectionMenu: {fileID: 2048870416}
 --- !u!114 &2120573397 stripped
 MonoBehaviour:
   m_PrefabParentObject: {fileID: 114458771262786846, guid: 6b9f64b577f279b4c8aba83f60b942dc,
