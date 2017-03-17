@@ -175,7 +175,7 @@ public class ProjectileShooter : MonoBehaviour {
         gameObject.GetComponent<DirectionIndicator>().enabled = false;
     }
 
-    void OnReset()
+    public void OnReset()
     {
         if (isActive) {
             Debug.Log(this.name + ": OnReset()");
