@@ -75,6 +75,12 @@ public class ProjectileShooter : MonoBehaviour {
             Application.Quit();
         }
 
+        if(!GoalManager.Instance)
+        {
+            Debug.LogError(gameObject.name + ": " + this.GetType().Name + 
+                ": Warning: Could not access any GoalManager component at Start()");
+        }
+
         isActive = true;
         forwardOffset = (forwardOffset < 0.5f) ? 0.5f : forwardOffset;
         throwRatio = (throwRatio <= 0) ? 10f : throwRatio;
@@ -153,6 +159,7 @@ public class ProjectileShooter : MonoBehaviour {
     void Activate()
     {
         Debug.Log(gameObject.transform.parent.gameObject.name + ": " + this.GetType().Name + ": Activate()");
+
         isActive = true;
         gameObject.GetComponent<HandDraggable>().enabled = true;
         gameObject.GetComponent<DirectionIndicator>().enabled = true;
@@ -276,12 +283,21 @@ public class ProjectileShooter : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(this.name + ": OnTriggerEntered()");
+        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": OnTriggerEntered()");
+        // check that we have entered the designated goal
         if(other.transform.gameObject.name == goal.name && canScore)
         {
-            Debug.Log(this.name + ": goal entered");
-            gameObject.SetActive(false);  // can't be activated once inactive (just for initial testing)
+            Debug.Log(gameObject.name + ": " + this.GetType().Name + ": goal entered");
+            // clean up projectile stuff for this round
+            strokes = 0;
+            this.OnReset();
+            gameObject.SetActive(false);
+            
+            // send message to player UI 
             SendMessageUpwards("GoalEntered", strokes);
+
+            // alert GoalManager
+            GoalManager.Instance.playersInGoal++;
         }
     }
 

@@ -11,7 +11,7 @@ public class SettingsManagerLoader : Singleton<SettingsManagerLoader> {
     GameObject settingsManager;
     
     /// <summary>
-    /// Gives us access to the settings information of a SettingsManager component
+    /// Gives access to the settings information of a SettingsManager component
     /// </summary>
     SettingsManager settingsAccess;
 

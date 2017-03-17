@@ -23,7 +23,8 @@ public class PlayAndPassManager : Singleton<PlayAndPassManager> {
 	void Start () {
         if (!firstPlayer)
         {
-            Debug.LogError(this.name + ": no player creation prefab assigned");
+            Debug.LogError(this.name + ": no player creation prefab/tempate assigned");
+            Application.Quit();
         }
         else
         {
@@ -34,6 +35,7 @@ public class PlayAndPassManager : Singleton<PlayAndPassManager> {
             }
             activePlayer = firstPlayer;
 
+            // try to access the SettignsManagerLoader singleton
             settingsAccess = SettingsManagerLoader.Instance;
             if (!settingsAccess)
             {
@@ -57,7 +59,7 @@ public class PlayAndPassManager : Singleton<PlayAndPassManager> {
             for (int i = 0; i < numberOfPlayers; i++)
             {
                 GameObject player;
-                // 
+                // certain setup steps can be skipped for the 1st player (since is the expected template for the others)
                 if (i != 0) {
                     player = Instantiate(firstPlayer, firstPlayer.transform.position, firstPlayer.transform.rotation, gameObject.transform);
                     player.name = "Player" + (1 + i);
@@ -90,7 +92,6 @@ public class PlayAndPassManager : Singleton<PlayAndPassManager> {
 		
 	}
 
-    // TODO: convert from using SetActive() to broadcasting Activate/Deactivate to children
     void ChangeActivePlayer ()
     {
         // safely deactivate current active player
@@ -108,7 +109,7 @@ public class PlayAndPassManager : Singleton<PlayAndPassManager> {
                         : players[0];
         Debug.Log(gameObject.name + ": " + this.GetType().Name + ": activePlayer: " + activePlayer.name);
 
-        // enable this player object if first time being activated
+        // enable this player object (eg. if first time being activated or start of new round) 
         if (!activePlayer.activeSelf)
         {
             activePlayer.SetActive(true);
