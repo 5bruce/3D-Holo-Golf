@@ -163,6 +163,8 @@ public class ProjectileShooter : MonoBehaviour {
         isActive = true;
         gameObject.GetComponent<HandDraggable>().enabled = true;
         gameObject.GetComponent<DirectionIndicator>().enabled = true;
+        gameObject.GetComponent<DirectionIndicator>().DirectionIndicatorObject.GetComponent<MeshRenderer>().enabled = true;
+
 
         // for PlayAndPass games, flash light to indicate this projectile has priority
         // only if ball is currently rolling around
@@ -180,20 +182,25 @@ public class ProjectileShooter : MonoBehaviour {
         isActive = false;
         gameObject.GetComponent<HandDraggable>().enabled = false;
         gameObject.GetComponent<DirectionIndicator>().enabled = false;
+        gameObject.GetComponent<DirectionIndicator>().DirectionIndicatorObject.GetComponent<MeshRenderer>().enabled = false;
     }
 
     public void OnReset()
     {
         if (isActive) {
             Debug.Log(this.name + ": OnReset()");
+
             // need to freeze ball before reset, else cursor and directional indicators glitch
             gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+
             // set projectile back to resting state
             gameObject.GetComponent<Rigidbody>().useGravity = false;
             resting = true;
+
             // projectile cannot be used to score in resting state
             canScore = false;
             canPlaceFlag = false;
+            
             // remove projectile trail
             gameObject.GetComponent<TrailRenderer>().enabled = false;
 
@@ -311,7 +318,8 @@ public class ProjectileShooter : MonoBehaviour {
     {
         if (isActive)
         {
-            Debug.Log(this.name + ": ProjectileShooter_StartedDragging()");
+            Debug.Log(transform.parent.gameObject.name + ": " + this.GetType().Name + 
+                ": ProjectileShooter_StartedDragging()");
             resting = false;
             isDragging = true;
             gameObject.GetComponent<LineRenderer>().enabled = true;
@@ -324,7 +332,8 @@ public class ProjectileShooter : MonoBehaviour {
     private void ProjectileShooter_StoppedDragging()
     {
         if (isActive) {
-            Debug.Log(this.name + ": ProjectileShooter_StoppedDragging()");
+            Debug.Log(transform.parent.gameObject.name + ": " + this.GetType().Name + 
+                ": ProjectileShooter_StoppedDragging()");
             Rigidbody rb = gameObject.GetComponent<Rigidbody>();
             rb.useGravity = true;
             resting = false;

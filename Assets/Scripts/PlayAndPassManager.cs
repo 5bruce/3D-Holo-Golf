@@ -71,6 +71,7 @@ public class PlayAndPassManager : Singleton<PlayAndPassManager> {
 
                 // set this player's colors
                 player.transform.FindChild("Projectile").GetComponent<MeshRenderer>().material = playerColors[i];
+                //player.transform.FindChild("Projectile").GetComponent<DirectionIndicator>().DirectionIndicatorColor = playerColors[i].color;
                 player.transform.FindChild("FlagPole").transform.FindChild("Flag").GetComponent<MeshRenderer>().material = playerColors[i];
                 player.transform.FindChild("Projectile").GetComponent<TrailRenderer>().endColor = playerColors[i].color;
                 player.transform.FindChild("Projectile").GetComponent<TrailRenderer>().endColor = playerColors[i].color;
@@ -78,10 +79,10 @@ public class PlayAndPassManager : Singleton<PlayAndPassManager> {
 
                 // initially, hide all other player balls so first toss does not toss all
                 if (player != firstPlayer) {
+                    Debug.Log(this.name + ": " + firstPlayer.name + " clone created: " + player.name);
                     player.SetActive(false);
                 }
 
-                Debug.Log(this.name + ": " + firstPlayer.name + "clone created: " + player.name);
                 players.Add(player); 
             }
         }
@@ -89,8 +90,8 @@ public class PlayAndPassManager : Singleton<PlayAndPassManager> {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+
+    }
 
     public void ChangeActivePlayer ()
     {
