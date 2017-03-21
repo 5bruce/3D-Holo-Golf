@@ -541,6 +541,12 @@ Prefab:
       value: 
       objectReference: {fileID: 1166408174383502, guid: 2b7545779dc015741821985b5850daeb,
         type: 2}
+    - target: {fileID: 114678139559781170, guid: 10fb7681e5e93d644b99048577ab5ce3,
+        type: 2}
+      propertyPath: obstaclesPrefab.Array.data[1]
+      value: 
+      objectReference: {fileID: 1906869666560050, guid: 1628ed51559db514f9540880c283c060,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 10fb7681e5e93d644b99048577ab5ce3, type: 2}
   m_IsPrefabParent: 0
@@ -785,6 +791,11 @@ Prefab:
       propertyPath: pauseMenu
       value: 
       objectReference: {fileID: 1503953867}
+    - target: {fileID: 54704894535195852, guid: 6b9f64b577f279b4c8aba83f60b942dc,
+        type: 2}
+      propertyPath: m_Drag
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6b9f64b577f279b4c8aba83f60b942dc, type: 2}
   m_IsPrefabParent: 0
@@ -1294,6 +1305,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfPlayers: 0
+  defaultNumberOfPlayers: 2
   playerColors:
   - {fileID: 2100000, guid: 4c7a2a19ee1720f4b81c51d76877e962, type: 2}
   - {fileID: 2100000, guid: c9619a4e1a320314d9a33ed2d594beb0, type: 2}

@@ -17,6 +17,9 @@ public class SettingsManagerLoader : Singleton<SettingsManagerLoader> {
 
     public int numberOfPlayers;
 
+    [Tooltip("Warning: must have at least as meny playerColors materials as default number of players")]
+    public int defaultNumberOfPlayers = 2;
+
     [Tooltip("Material inserted in the inspector will be overwritten at startup and so should only be used as defaults/backups")]
     public Material[] playerColors;
 
@@ -39,7 +42,7 @@ public class SettingsManagerLoader : Singleton<SettingsManagerLoader> {
             Debug.LogError(gameObject.name + ": " + this.GetType().Name + 
                 ": could not find a settings manager gameobject. Setting default values.");
            
-            numberOfPlayers = 2;
+            numberOfPlayers = defaultNumberOfPlayers;
         }
 	}
 	
