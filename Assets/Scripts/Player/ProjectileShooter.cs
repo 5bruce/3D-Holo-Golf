@@ -161,7 +161,20 @@ public class ProjectileShooter : MonoBehaviour {
         Debug.Log(gameObject.transform.parent.gameObject.name + ": " + this.GetType().Name + ": Activate()");
 
         isActive = true;
-        gameObject.GetComponent<HandDraggable>().enabled = true;
+
+        /*********** 
+        * FIXME: this is just part of work around for always-handdragging bug
+        * Only really applies to playandpass games
+        * It might be good design that players can pick up balls rolling around (since will cause launch)
+        * but does not answer underlying problem causing the bug in PlayAndPass.scene
+        ************/
+        if (resting)
+        {
+            gameObject.GetComponent<HandDraggable>().enabled = true;
+        }
+        //gameObject.GetComponent<HandDraggable>().enabled = true;
+        /*********** end wrokaround ***********/
+
         gameObject.GetComponent<DirectionIndicator>().enabled = true;
         gameObject.GetComponent<DirectionIndicator>().DirectionIndicatorObject.GetComponent<MeshRenderer>().enabled = true;
 
@@ -211,6 +224,12 @@ public class ProjectileShooter : MonoBehaviour {
              */
             cursor.transform.position = Vector3.Normalize(Camera.main.transform.forward) + new Vector3(0f, 0f, cursor.GetComponent<AnimatedCursor>().MinCursorDistance);
 
+            /*********** 
+             * FIXME: this is just part of work around for always-handdragging bug
+             * Only really applies to playandpass games
+            ************/
+            gameObject.GetComponent<HandDraggable>().enabled = true;
+            /*********** end wrokaround ***********/
         }
     }
 
@@ -354,6 +373,13 @@ public class ProjectileShooter : MonoBehaviour {
             isDragging = false;
             canScore = true;
             canPlaceFlag = true;
+
+            /*********** 
+             * FIXME: this is just part of work around for always-handdragging bug
+             * Only really applies to playandpass games
+            ************/
+            gameObject.GetComponent<HandDraggable>().enabled = false;
+            /*********** end wrokaround ***********/
         }
     }
     /// <summary>
