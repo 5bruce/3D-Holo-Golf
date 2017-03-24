@@ -68,6 +68,8 @@ public class clickHandler : MonoBehaviour,
         createdObject.GetComponent<HandDraggable>().StartedDragging += clickHandler_StartedDragging;
         // only bring back menu after dragging if not last player of current selection round
         if (objectSelectionHandler.isPlayAndPassGame) {
+            Debug.Log(string.Format("{0} : {1}: objects created={2}: numPlayers={3}", 
+                gameObject.name, this.GetType().Name, objectSelectionHandler.objectsCreated, objectSelectionHandler.numPlayers));
             if (objectSelectionHandler.objectsCreated < objectSelectionHandler.numPlayers) {
                 createdObject.GetComponent<HandDraggable>().StoppedDragging += clickHandler_StoppedDragging;
             }

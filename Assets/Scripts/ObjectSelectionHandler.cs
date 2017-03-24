@@ -36,6 +36,7 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
     void Start()
     {
         objectsCreated = 0;
+        numPlayers = SettingsManagerLoader.Instance.numberOfPlayers;
         currentObjects = new Queue<GameObject>(numPlayers);
 
         // initial obstacle selection randomization
@@ -74,6 +75,9 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
         */
     }
 
+    /// <summary>
+    /// To be called by clickHandler.cs components
+    /// </summary>
     void cleanupSelectionRound()
     {
         Debug.Log(this.GetType().Name + ": current selection round ending");
