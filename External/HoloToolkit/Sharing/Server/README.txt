@@ -1,0 +1,1 @@
+SharingService.exe from HoloToolkit-Unity\External\HoloToolkit\Sharing\Server\ should be copied here when cloning project

@@ -33,3 +33,6 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+# HoloToolkit sharingservice executable needed for lauching SharingService.exe from editor
+/External/HoloToolkit/Sharing/Server/SharingService.exe
