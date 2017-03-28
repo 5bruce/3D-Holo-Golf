@@ -38,7 +38,7 @@ public class StartButtonHandler : MonoBehaviour,
     {
         Debug.Log(this.name + ": OnInputClicked()");
         if (1 < SettingsManager.Instance.numberOfPlayers && 
-            SettingsManager.Instance.numberOfPlayers < SettingsManager.maxPlayers)
+            SettingsManager.Instance.numberOfPlayers <= SettingsManager.maxPlayers)
         {
             SceneManager.LoadSceneAsync("PlayAndPass_LightingFix");
         }

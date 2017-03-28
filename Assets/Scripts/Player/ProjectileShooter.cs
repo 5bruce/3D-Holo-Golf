@@ -75,6 +75,12 @@ public class ProjectileShooter : MonoBehaviour {
             Application.Quit();
         }
 
+        if(!GoalManager.Instance)
+        {
+            Debug.LogError(gameObject.name + ": " + this.GetType().Name + 
+                ": Warning: Could not access any GoalManager component at Start()");
+        }
+
         isActive = true;
         forwardOffset = (forwardOffset < 0.5f) ? 0.5f : forwardOffset;
         throwRatio = (throwRatio <= 0) ? 10f : throwRatio;
@@ -153,9 +159,25 @@ public class ProjectileShooter : MonoBehaviour {
     void Activate()
     {
         Debug.Log(gameObject.transform.parent.gameObject.name + ": " + this.GetType().Name + ": Activate()");
+
         isActive = true;
-        gameObject.GetComponent<HandDraggable>().enabled = true;
+
+        /*********** 
+        * FIXME: this is just part of work around for always-handdragging bug
+        * Only really applies to playandpass games
+        * It might be good design that players can pick up balls rolling around (since will cause launch)
+        * but does not answer underlying problem causing the bug in PlayAndPass.scene
+        ************/
+        if (resting)
+        {
+            gameObject.GetComponent<HandDraggable>().enabled = true;
+        }
+        //gameObject.GetComponent<HandDraggable>().enabled = true;
+        /*********** end wrokaround ***********/
+
         gameObject.GetComponent<DirectionIndicator>().enabled = true;
+        gameObject.GetComponent<DirectionIndicator>().DirectionIndicatorObject.GetComponent<MeshRenderer>().enabled = true;
+
 
         // for PlayAndPass games, flash light to indicate this projectile has priority
         // only if ball is currently rolling around
@@ -173,20 +195,25 @@ public class ProjectileShooter : MonoBehaviour {
         isActive = false;
         gameObject.GetComponent<HandDraggable>().enabled = false;
         gameObject.GetComponent<DirectionIndicator>().enabled = false;
+        gameObject.GetComponent<DirectionIndicator>().DirectionIndicatorObject.GetComponent<MeshRenderer>().enabled = false;
     }
 
-    void OnReset()
+    public void OnReset()
     {
         if (isActive) {
             Debug.Log(this.name + ": OnReset()");
+
             // need to freeze ball before reset, else cursor and directional indicators glitch
             gameObject.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+
             // set projectile back to resting state
             gameObject.GetComponent<Rigidbody>().useGravity = false;
             resting = true;
+
             // projectile cannot be used to score in resting state
             canScore = false;
             canPlaceFlag = false;
+            
             // remove projectile trail
             gameObject.GetComponent<TrailRenderer>().enabled = false;
 
@@ -197,6 +224,12 @@ public class ProjectileShooter : MonoBehaviour {
              */
             cursor.transform.position = Vector3.Normalize(Camera.main.transform.forward) + new Vector3(0f, 0f, cursor.GetComponent<AnimatedCursor>().MinCursorDistance);
 
+            /*********** 
+             * FIXME: this is just part of work around for always-handdragging bug
+             * Only really applies to playandpass games
+            ************/
+            gameObject.GetComponent<HandDraggable>().enabled = true;
+            /*********** end wrokaround ***********/
         }
     }
 
@@ -276,12 +309,24 @@ public class ProjectileShooter : MonoBehaviour {
 
     void OnTriggerEnter(Collider other)
     {
-        Debug.Log(this.name + ": OnTriggerEntered()");
+        Debug.Log(gameObject.name + ": " + this.GetType().Name + ": OnTriggerEntered()");
+        // check that we have entered the designated goal
         if(other.transform.gameObject.name == goal.name && canScore)
         {
-            Debug.Log(this.name + ": goal entered");
-            gameObject.SetActive(false);  // can't be activated once inactive (just for initial testing)
+            Debug.Log(gameObject.name + ": " + this.GetType().Name + ": goal entered");
+            // clean up projectile stuff for this round
+            this.OnReset();
+            
+            // send message to player UI 
             SendMessageUpwards("GoalEntered", strokes);
+            strokes = 0;
+
+            // alert GoalManager
+            GoalManager.Instance.playersInGoal++;
+
+            this.Deactivate();
+            gameObject.SetActive(false);
+            //gameObject.transform.parent.gameObject.SetActive(false);
         }
     }
 
@@ -292,6 +337,8 @@ public class ProjectileShooter : MonoBehaviour {
     {
         if (isActive)
         {
+            Debug.Log(transform.parent.gameObject.name + ": " + this.GetType().Name + 
+                ": ProjectileShooter_StartedDragging()");
             resting = false;
             isDragging = true;
             gameObject.GetComponent<LineRenderer>().enabled = true;
@@ -304,7 +351,8 @@ public class ProjectileShooter : MonoBehaviour {
     private void ProjectileShooter_StoppedDragging()
     {
         if (isActive) {
-            Debug.Log(this.name + ": StoppedDragging event handler called");
+            Debug.Log(transform.parent.gameObject.name + ": " + this.GetType().Name + 
+                ": ProjectileShooter_StoppedDragging()");
             Rigidbody rb = gameObject.GetComponent<Rigidbody>();
             rb.useGravity = true;
             resting = false;
@@ -325,6 +373,13 @@ public class ProjectileShooter : MonoBehaviour {
             isDragging = false;
             canScore = true;
             canPlaceFlag = true;
+
+            /*********** 
+             * FIXME: this is just part of work around for always-handdragging bug
+             * Only really applies to playandpass games
+            ************/
+            gameObject.GetComponent<HandDraggable>().enabled = false;
+            /*********** end wrokaround ***********/
         }
     }
     /// <summary>
