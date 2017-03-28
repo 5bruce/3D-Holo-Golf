@@ -1207,10 +1207,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfPlayers: 0
-  defaultNumberOfPlayers: 2
+  defaultNumberOfPlayers: 3
   playerColors:
   - {fileID: 2100000, guid: 4c7a2a19ee1720f4b81c51d76877e962, type: 2}
   - {fileID: 2100000, guid: c9619a4e1a320314d9a33ed2d594beb0, type: 2}
+  - {fileID: 2100000, guid: 7269024d07f1f0842bd8bfc4fa8bc7d8, type: 2}
+  - {fileID: 2100000, guid: 91fcf0af73c6dc544a6071ff90e6024f, type: 2}
 --- !u!1 &2048870416 stripped
 GameObject:
   m_PrefabParentObject: {fileID: 1609113071447958, guid: 10fb7681e5e93d644b99048577ab5ce3,
