@@ -447,7 +447,7 @@ Prefab:
         type: 2}
       propertyPath: obstaclesPrefab.Array.data[1]
       value: 
-      objectReference: {fileID: 1906869666560050, guid: 1628ed51559db514f9540880c283c060,
+      objectReference: {fileID: 1671952743307542, guid: a4ac7b4da8f0097499529e7d8a931710,
         type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 10fb7681e5e93d644b99048577ab5ce3, type: 2}
@@ -696,7 +696,7 @@ Prefab:
     - target: {fileID: 54704894535195852, guid: 6b9f64b577f279b4c8aba83f60b942dc,
         type: 2}
       propertyPath: m_Drag
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 6b9f64b577f279b4c8aba83f60b942dc, type: 2}

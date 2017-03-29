@@ -282,12 +282,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClientRole: 0
-  ServerAddress: localhost
+  ServerAddress: 
   ServerPort: 20602
   connectOnAwake: 1
   AutoDiscoverServer: 0
   PingIntervalSec: 2
   IsAudioEndpoint: 0
+  ShowDetailedLogs: 0
 --- !u!4 &1430003398
 Transform:
   m_ObjectHideFlags: 0
@@ -329,7 +330,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   SpawnParent: {fileID: 915832921}
-  Prefab: {fileID: 1000011931115288, guid: 59101abe6f9a51149a4c07b3ea154698, type: 2}
   SpawnManager: {fileID: 1430003395}
 --- !u!4 &1935067749
 Transform:
