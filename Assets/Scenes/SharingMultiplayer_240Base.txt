@@ -1,0 +1,6 @@
+In this scene, my plan is to try to build the basic framework of the open HoloAcademy240 tutorial,
+but instead using as much of the HoloToolkit as possible, rather than their AcademyHoloToolkit library.
+From there, I will try to build in the functionality specific to 3dHoloPong.
+Thus, the resulting sharing scene will not be following the expected way that the 
+HoloToolkit expects, but it will (ideally) get the job of sharing done; can think about converting 
+to expected method later. 

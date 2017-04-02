@@ -1,0 +1,2 @@
+In this scene, my plan is to try to build the basic framework for sharing from the 
+examples scenes in HoloToolkit/Sharing/Tests/Scenes.
