@@ -79,7 +79,7 @@ public class clickHandler : MonoBehaviour,
                 createdObject.GetComponent<HandDraggable>().StoppedDragging += clickHandler_lastPlayer_StoppedDragging;
             }
         }
-        else
+        else  // if only single player
         {
             // FIXME: this is just a temporary fix until I can fix the projectil-always-handdragging bug
             createdObject.GetComponent<HandDraggable>().StoppedDragging += clickHandler_lastPlayer_StoppedDragging;

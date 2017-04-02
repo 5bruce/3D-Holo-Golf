@@ -75,7 +75,7 @@ public class ObjectSelectionHandler : Singleton<ObjectSelectionHandler> {
         // disable the menu once all players have selected an object
         gameObject.SetActive(false);
 
-        if (numPlayers > 1 && isPlayAndPassGame) PlayAndPassManager.Instance.setFirstPlayerActive();
+        PlayAndPassManager.Instance.setFirstPlayerActive();
     }
 
     /// <summary>

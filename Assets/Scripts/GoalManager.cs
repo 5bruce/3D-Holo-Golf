@@ -40,10 +40,8 @@ public class GoalManager : Singleton<GoalManager> {
             objectSelectionMenu.SetActive(true);
             playersInGoal = 0;
 
-            // activate first player to access menu (only AFTER it has been activaed/enabled)
-            if (SettingsManagerLoader.Instance.numberOfPlayers > 1 && 
-                SettingsManagerLoader.Instance.isPlayAndPassGame)
-                PlayAndPassManager.Instance.setFirstPlayerActive();
+            // activate first player to access obstacle selection menu (only AFTER it has been activaed/enabled)
+            PlayAndPassManager.Instance.setFirstPlayerActive();
         }
     }
 }
