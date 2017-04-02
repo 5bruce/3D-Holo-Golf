@@ -23,8 +23,10 @@ public class SettingsManager : Singleton<SettingsManager>
     /// </summary>
     public Material[] playerColors = new Material[maxPlayers];
 
-	// Use this for initialization
-	void Start () {
+    public bool isPlayAndPassGame { get; internal set; }
+
+    // Use this for initialization
+    void Start () {
         // save settings for access in gameplay scenes
         Object.DontDestroyOnLoad(gameObject);
     }
