@@ -1207,6 +1207,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfPlayers: 0
+  isPlayAndPassGame: 1
   defaultNumberOfPlayers: 3
   playerColors:
   - {fileID: 2100000, guid: 4c7a2a19ee1720f4b81c51d76877e962, type: 2}

@@ -66,8 +66,8 @@ public class clickHandler : MonoBehaviour,
         // make object handdraggable and setup its relation to obstacleSelectionMenu
         createdObject.AddComponent<HandDraggable>();
         createdObject.GetComponent<HandDraggable>().StartedDragging += clickHandler_StartedDragging;
-        // only bring back menu after dragging if not last player of current selection round
-        if (objectSelectionHandler.isPlayAndPassGame) {
+        // only bring back menu after dragging if not last player of current selection round and have multiple players
+        if (objectSelectionHandler.numPlayers > 1 && objectSelectionHandler.isPlayAndPassGame) {
             Debug.Log(string.Format("{0} : {1}: objects created={2}: numPlayers={3}", 
                 gameObject.name, this.GetType().Name, objectSelectionHandler.objectsCreated, objectSelectionHandler.numPlayers));
             if (objectSelectionHandler.objectsCreated < objectSelectionHandler.numPlayers) {
@@ -78,6 +78,11 @@ public class clickHandler : MonoBehaviour,
                 // FIXME: this is just a temporary fix until I can fix the projectil-always-handdragging bug
                 createdObject.GetComponent<HandDraggable>().StoppedDragging += clickHandler_lastPlayer_StoppedDragging;
             }
+        }
+        else
+        {
+            // FIXME: this is just a temporary fix until I can fix the projectil-always-handdragging bug
+            createdObject.GetComponent<HandDraggable>().StoppedDragging += clickHandler_lastPlayer_StoppedDragging;
         }
 
         // add this createdObject to the list of obstacles created during this round

@@ -30,7 +30,7 @@ public class GoalManager : Singleton<GoalManager> {
         playersInGoal = 0;
 	}
 	
-	// Update is called once per frame
+	// LateUpdate is called once per frame after all Update()s
 	void LateUpdate () {
         if (playersInGoal == numberOfPlayers)
         {
@@ -41,7 +41,9 @@ public class GoalManager : Singleton<GoalManager> {
             playersInGoal = 0;
 
             // activate first player to access menu (only AFTER it has been activaed/enabled)
-            PlayAndPassManager.Instance.setFirstPlayerActive();
+            if (SettingsManagerLoader.Instance.numberOfPlayers > 1 && 
+                SettingsManagerLoader.Instance.isPlayAndPassGame)
+                PlayAndPassManager.Instance.setFirstPlayerActive();
         }
     }
 }

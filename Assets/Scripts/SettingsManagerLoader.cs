@@ -17,6 +17,9 @@ public class SettingsManagerLoader : Singleton<SettingsManagerLoader> {
 
     public int numberOfPlayers;
 
+    // TODO: have this be set from SetingsManager
+    public bool isPlayAndPassGame = false;
+
     [Tooltip("Warning: must have at least as meny playerColors materials as default number of players")]
     public int defaultNumberOfPlayers = 2;
 
