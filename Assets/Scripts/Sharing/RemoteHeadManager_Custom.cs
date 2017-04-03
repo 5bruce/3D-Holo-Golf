@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using HoloToolkit.Unity;
+using System.Reflection;
 
 namespace HoloToolkit.Sharing
 {
@@ -14,8 +15,11 @@ namespace HoloToolkit.Sharing
     /// Head transforms are sent and received in the local coordinate space of the GameObject 
     /// this component is on.
     /// </summary>
-    public class RemoteHeadManager : Singleton<RemoteHeadManager>
+    public class RemoteHeadManager_Custom : Singleton<RemoteHeadManager_Custom>
     {
+        [Tooltip("Primative type to use to represent remote heads of players")]
+        public PrimitiveType headRepresentation = PrimitiveType.Cube;
+
         public class RemoteHeadInfo
         {
             public long UserID;
@@ -33,7 +37,7 @@ namespace HoloToolkit.Sharing
         private void Start()
         {
             // receive headtransform update messages
-            CustomMessages.Instance.MessageHandlers[CustomMessages.MessageID.HeadTransform] = UpdateHeadTransform_RemoteHeadManager;
+            CustomMessages_Custom.Instance.MessageHandlers[CustomMessages_Custom.MessageID.HeadTransform] = UpdateHeadTransform_RemoteHeadManager;
 
             // SharingStage should be valid at this point.
             SharingStage.Instance.SharingManagerConnected += SharingManagerConnected_RemoteHeadManager;
@@ -68,7 +72,7 @@ namespace HoloToolkit.Sharing
             Quaternion headRotation = Quaternion.Inverse(transform.rotation) * headTransform.rotation;
 
             // broadcast transform info
-            CustomMessages.Instance.SendHeadTransform(headPosition, headRotation);
+            CustomMessages_Custom.Instance.SendHeadTransform(headPosition, headRotation);
         }
 
         /// <summary>
@@ -92,6 +96,7 @@ namespace HoloToolkit.Sharing
         /// <param name="user">User that joined the current session.</param>
         private void UserJoinedSession_RemoteHeadManager(User user)
         {
+            Debug.LogFormat("{0}: UserJoinedSession_RemoteHeadManager entered", this.GetType().Name);
             // check that the user is not just the local user themselves
             if (user.GetID() != SharingStage.Instance.Manager.GetLocalUser().GetID())
             {
@@ -109,8 +114,8 @@ namespace HoloToolkit.Sharing
             // Parse the message
             long userID = msg.ReadInt64();
 
-            Vector3 headPos = CustomMessages.Instance.ReadVector3(msg);
-            Quaternion headRot = CustomMessages.Instance.ReadQuaternion(msg);
+            Vector3 headPos = CustomMessages_Custom.Instance.ReadVector3(msg);
+            Quaternion headRot = CustomMessages_Custom.Instance.ReadQuaternion(msg);
 
             RemoteHeadInfo headInfo = GetRemoteHeadInfo(userID);
             headInfo.HeadObject.transform.localPosition = headPos;
@@ -146,7 +151,8 @@ namespace HoloToolkit.Sharing
         /// <returns></returns>
         private GameObject CreateRemoteHead()
         {
-            GameObject newHeadObj = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            Debug.LogFormat("{0}: Creating remote head.", this.GetType().Name);
+            GameObject newHeadObj = GameObject.CreatePrimitive(headRepresentation);
             newHeadObj.transform.parent = gameObject.transform;
             newHeadObj.transform.localScale = Vector3.one * 0.2f;
             return newHeadObj;

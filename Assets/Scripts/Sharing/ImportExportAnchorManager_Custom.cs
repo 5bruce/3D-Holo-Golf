@@ -8,16 +8,19 @@ using UnityEngine;
 using UnityEngine.VR.WSA;
 using UnityEngine.VR.WSA.Persistence;
 using UnityEngine.VR.WSA.Sharing;
+using System.Reflection;
 
 namespace HoloToolkit.Sharing
 {
     /// <summary>
     /// Manages creating anchors and sharing the anchors with other clients.
     /// </summary>
-    public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
+    public class ImportExportAnchorManager_Custom : Singleton<ImportExportAnchorManager_Custom>
     {
+        public GameObject testAnchor;
+
         /// <summary>
-        /// Enum to track the progress through establishing a shared coordinate system.
+        /// Enum to track the progress of establishing a shared coordinate system.
         /// </summary>
         private enum ImportExportState
         {
@@ -74,6 +77,9 @@ namespace HoloToolkit.Sharing
             }
         }
 
+        /// <summary>
+        /// Determines if this local user should create a shared room
+        /// </summary>
         private static bool ShouldLocalUserCreateRoom
         {
             get
@@ -83,14 +89,17 @@ namespace HoloToolkit.Sharing
                     return false;
                 }
 
+                // if the session has started tracking users...
                 if (SharingStage.Instance.SessionUsersTracker != null)
                 {
+                    // get the user id of this local user
                     long localUserId;
                     using (User localUser = SharingStage.Instance.Manager.GetLocalUser())
                     {
                         localUserId = localUser.GetID();
                     }
 
+                    // check that we are the first user to be give an id, ie. have the lowest id of all tracked users
                     for (int i = 0; i < SharingStage.Instance.SessionUsersTracker.CurrentUsers.Count; i++)
                     {
                         User user = SharingStage.Instance.SessionUsersTracker.CurrentUsers[i];
@@ -106,12 +115,12 @@ namespace HoloToolkit.Sharing
         }
 
         /// <summary>
-        /// Called once the anchor has fully uploaded
+        /// Called/fired once the anchor has fully uploaded
         /// </summary>
         public event Action<bool> AnchorUploaded;
 
         /// <summary>
-        /// Called when the anchor has been loaded
+        /// Called/fired when the anchor has been loaded
         /// </summary>
         public event Action AnchorLoaded;
 
@@ -163,8 +172,8 @@ namespace HoloToolkit.Sharing
         private RoomManager roomManager;
 
         /// <summary>
-        /// Keeps track of the current room we are connected to.  Anchors
-        /// are kept in rooms.
+        /// Keeps track of the current room we are connected to.  
+        /// (Anchors are kept in rooms).
         /// </summary>
         private Room currentRoom;
 
@@ -184,6 +193,7 @@ namespace HoloToolkit.Sharing
         /// </summary>
         private RoomManagerAdapter roomManagerCallbacks;
 
+        // Called before all Start() methods
         protected override void Awake()
         {
             base.Awake();
@@ -196,17 +206,22 @@ namespace HoloToolkit.Sharing
         private void Start()
         {
             // SharingStage should be valid at this point.
-            SharingStage.Instance.SharingManagerConnected += Connected;
+            SharingStage.Instance.SharingManagerConnected += SharingManagerConnected_ImportExportAnchorManager;
         }
 
-        private void Connected(object sender, EventArgs e)
+        /// <summary>
+        /// Single-use event hook for successful connection of SharingManager
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void SharingManagerConnected_ImportExportAnchorManager(object sender, EventArgs e)
         {
             if (SharingStage.Instance.ShowDetailedLogs)
             {
-                Debug.Log("Import Export Manager starting");
+                Debug.LogFormat("{0}: {1}: Import Export Manager starting", this.GetType().Name, MethodBase.GetCurrentMethod().Name);
             }
 
-            SharingStage.Instance.SharingManagerConnected -= Connected;
+            SharingStage.Instance.SharingManagerConnected -= SharingManagerConnected_ImportExportAnchorManager;
 
             // Setup the room manager callbacks.
             roomManager = SharingStage.Instance.Manager.GetRoomManager();
@@ -258,6 +273,7 @@ namespace HoloToolkit.Sharing
 
         /// <summary>
         /// Called when anchor upload operations complete.
+        /// Updates anchor upload status in this.ImportExportState enum
         /// </summary>
         private void RoomManagerCallbacks_AnchorUploaded(bool successful, XString failureReason)
         {
@@ -273,12 +289,14 @@ namespace HoloToolkit.Sharing
 
             if (AnchorUploaded != null)
             {
+                // fire event to notify of successful or failed anchor upload status
                 AnchorUploaded(successful);
             }
         }
 
         /// <summary>
         /// Called when anchor download operations complete.
+        /// Imports anchor data on successful download.
         /// </summary>
         private void RoomManagerCallbacks_AnchorsDownloaded(bool successful, AnchorDownloadRequest request, XString failureReason)
         {
@@ -307,6 +325,7 @@ namespace HoloToolkit.Sharing
 
         /// <summary>
         /// Called when the local anchor store is ready.
+        /// Stores anchor store and updates current progress state.
         /// </summary>
         /// <param name="store"></param>
         private void AnchorStoreReady(WorldAnchorStore store)
@@ -447,6 +466,7 @@ namespace HoloToolkit.Sharing
 
         /// <summary>
         /// Kicks off the process of creating the shared space.
+        /// Attempts to attach an existing anchor in our local anchor store.
         /// </summary>
         private void StartAnchorProcess()
         {
@@ -495,6 +515,9 @@ namespace HoloToolkit.Sharing
             }
         }
 
+        /// <summary>
+        /// Handles some initializations as experience transitions between anchor ImportExport states
+        /// </summary>
         private void Update()
         {
             switch (currentState)
@@ -528,26 +551,32 @@ namespace HoloToolkit.Sharing
 
         /// <summary>
         /// Starts establishing a new anchor.
+        /// Updates ImportExport state when ready to export anchor (or anchor not found)
         /// </summary>
         private void CreateAnchorLocally()
         {
+            // use or create gameObject's WorldAnchor component
             var anchor = GetComponent<WorldAnchor>() ?? gameObject.AddComponent<WorldAnchor>();
-
+            //var anchor = testAnchor.GetComponent<WorldAnchor>();  // debugging anchor not located problem
+            Debug.LogFormat("{0}: {1}: anchor = {2}", this.GetType().Name, MethodBase.GetCurrentMethod().Name, anchor);
             if (anchor.isLocated)
             {
+                Debug.LogFormat("{0}: {1}: anchor located", this.GetType().Name, MethodBase.GetCurrentMethod().Name);
                 currentState = ImportExportState.ReadyToExportInitialAnchor;
             }
             else
             {
+                Debug.LogFormat("{0}: {1}: anchor not located", this.GetType().Name, MethodBase.GetCurrentMethod().Name);
                 anchor.OnTrackingChanged += Anchor_OnTrackingChanged_InitialAnchor;
             }
         }
 
         /// <summary>
-        /// Callback to trigger when an anchor has been 'found'.
+        /// Single-use callback to trigger when an anchor has been 'found'.
         /// </summary>
         private void Anchor_OnTrackingChanged_InitialAnchor(WorldAnchor self, bool located)
         {
+            Debug.LogFormat("{0}: {1}: entered", this.GetType().Name, MethodBase.GetCurrentMethod().Name);
             if (located)
             {
                 if (SharingStage.Instance.ShowDetailedLogs)
@@ -567,12 +596,13 @@ namespace HoloToolkit.Sharing
         }
 
         /// <summary>
-        /// Attempts to attach to  an anchor by anchorName in the local store..
+        /// Attempts to attach to an anchor by anchorName in the local store.
+        /// True if it attached, false if it could not attach.
         /// </summary>
         /// <returns>True if it attached, false if it could not attach</returns>
         private bool AttachToCachedAnchor(string anchorName)
         {
-
+            Debug.LogFormat("{0}: {1}: entered", this.GetType().Name, MethodBase.GetCurrentMethod().Name);
             if (SharingStage.Instance.ShowDetailedLogs)
             {
                 Debug.Log("Looking for " + anchorName);
@@ -585,7 +615,8 @@ namespace HoloToolkit.Sharing
                 {
                     if (SharingStage.Instance.ShowDetailedLogs)
                     {
-                        Debug.LogFormat("Attempting to load {0}...", anchorName);
+                        Debug.LogFormat("{0}: Attempting to load anchor {1}...", 
+                            this.GetType().Name, anchorName);
                     }
 
                     WorldAnchor anchor = anchorStore.Load(ids[index], gameObject);
@@ -638,6 +669,7 @@ namespace HoloToolkit.Sharing
         /// <param name="wat"></param>
         private void ImportComplete(SerializationCompletionReason status, WorldAnchorTransferBatch wat)
         {
+            Debug.LogFormat("{0}: {1}: entered", this.GetType().Name, MethodBase.GetCurrentMethod().Name);
             if (status == SerializationCompletionReason.Succeeded)
             {
                 if (SharingStage.Instance.ShowDetailedLogs)
@@ -667,8 +699,12 @@ namespace HoloToolkit.Sharing
             }
         }
 
+        /// <summary>
+        /// Updates ImportExport state when anchor has been loaded
+        /// </summary>
         private void AnchorLoadComplete()
         {
+            Debug.LogFormat("{0}: {1}: entered", this.GetType().Name, MethodBase.GetCurrentMethod().Name);
             if (AnchorLoaded != null)
             {
                 AnchorLoaded();
@@ -682,6 +718,7 @@ namespace HoloToolkit.Sharing
         /// </summary>
         private void Export()
         {
+            Debug.LogFormat("{0}: {1}: entered", this.GetType().Name, MethodBase.GetCurrentMethod().Name);
             var anchor = GetComponent<WorldAnchor>();
 
             string guidString = Guid.NewGuid().ToString();

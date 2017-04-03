@@ -11,7 +11,7 @@ namespace HoloToolkit.Sharing
     /// <summary>
     /// Test class for demonstrating how to send custom messages between clients.
     /// </summary>
-    public class CustomMessages : Singleton<CustomMessages>
+    public class CustomMessages_Custom : Singleton<CustomMessages_Custom>
     {
         /// <summary>
         /// Message enum containing our information bytes to share.
@@ -111,36 +111,6 @@ namespace HoloToolkit.Sharing
             return msg;
         }
 
-
-
-        /*****************************************
-         * Custom Messages
-         *****************************************/
-         
-         /// <summary>
-         /// Broadcasts information related to head transformations
-         /// </summary>
-         /// <param name="position"></param>
-         /// <param name="rotation"></param>
-        public void SendHeadTransform(Vector3 position, Quaternion rotation)
-        {
-            // If we are connected to a session, broadcast our head info
-            if (serverConnection != null && serverConnection.IsConnected())
-            {
-                // Create an outgoing network message to contain all the info we want to send
-                NetworkOutMessage msg = CreateMessage((byte)MessageID.HeadTransform);
-
-                AppendTransform(msg, position, rotation);
-
-                // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.
-                serverConnection.Broadcast(
-                    msg,
-                    MessagePriority.Immediate,
-                    MessageReliability.UnreliableSequenced,
-                    MessageChannel.Avatar);
-            }
-        }
-
         protected override void OnDestroy()
         {
             base.OnDestroy();
@@ -162,6 +132,35 @@ namespace HoloToolkit.Sharing
             if (messageHandler != null)
             {
                 messageHandler(msg);
+            }
+        }
+
+
+        /*****************************************
+         * Custom Messages
+         *****************************************/
+
+        /// <summary>
+        /// Broadcasts information related to head transformations
+        /// </summary>
+        /// <param name="position"></param>
+        /// <param name="rotation"></param>
+        public void SendHeadTransform(Vector3 position, Quaternion rotation)
+        {
+            // If we are connected to a session, broadcast our head info
+            if (serverConnection != null && serverConnection.IsConnected())
+            {
+                // Create an outgoing network message to contain all the info we want to send
+                NetworkOutMessage msg = CreateMessage((byte)MessageID.HeadTransform);
+
+                AppendTransform(msg, position, rotation);
+
+                // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.
+                serverConnection.Broadcast(
+                    msg,
+                    MessagePriority.Immediate,
+                    MessageReliability.UnreliableSequenced,
+                    MessageChannel.Avatar);
             }
         }
 
