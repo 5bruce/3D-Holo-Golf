@@ -9,7 +9,7 @@ namespace HoloToolkit.Unity
     /// When a tap gesture is detected, GestureManager uses GazeManager to find the game object.
     /// GestureManager then sends a message to that game object.
     /// </summary>
-    [RequireComponent(typeof(GazeManager))]
+    [RequireComponent(typeof(GazeManager_Custom))]
     public class GestureManager : Singleton<GestureManager>
     {
         /// <summary>
@@ -49,13 +49,13 @@ namespace HoloToolkit.Unity
         {
             GameObject oldFocusedObject = focusedObject;
             
-            if (GazeManager.Instance.Hit && 
+            if (GazeManager_Custom.Instance.Hit && 
                 OverrideFocusedObject == null &&
-                GazeManager.Instance.HitInfo.collider != null)
+                GazeManager_Custom.Instance.HitInfo.collider != null)
             {
                 // If gaze hits a hologram, set the focused object to that game object.
                 // Also if the caller has not decided to override the focused object.
-                focusedObject = GazeManager.Instance.HitInfo.collider.gameObject;
+                focusedObject = GazeManager_Custom.Instance.HitInfo.collider.gameObject;
             }
             else
             {
