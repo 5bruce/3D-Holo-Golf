@@ -20,7 +20,7 @@ namespace HoloToolkit.Sharing
         /// <summary>
         /// Enum to track the progress of establishing a shared coordinate system.
         /// </summary>
-        private enum ImportExportState
+        public enum ImportExportState
         {
             // Overall states
             Start,
@@ -41,7 +41,7 @@ namespace HoloToolkit.Sharing
             Importing
         }
 
-        private ImportExportState currentState = ImportExportState.Start;
+        public ImportExportState currentState = ImportExportState.Start;
 
         public string StateName
         {

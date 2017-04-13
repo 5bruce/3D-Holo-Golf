@@ -164,6 +164,18 @@ namespace HoloToolkit.Sharing
             }
         }
 
+        // see LocalPlayerManager.cs
+        internal void SendHeadTransform(Vector3 headPosition, Quaternion headRotation, int v)
+        {
+            throw new NotImplementedException();
+        }
+
+        // see LocalPlayerManager.cs
+        internal void SendUserAvatar(int avatarIndex)
+        {
+            throw new NotImplementedException();
+        }
+
         #region HelperFunctionsForWriting
 
         private void AppendTransform(NetworkOutMessage msg, Vector3 position, Quaternion rotation)
