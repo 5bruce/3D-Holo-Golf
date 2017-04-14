@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using UnityEngine.Windows.Speech;
 using HoloToolkit.Unity;
 using HoloToolkit.Sharing;
+using HoloToolkit.Unity.InputModule;
 
 /// <summary>
 /// Lets us place, broadcast, and recieve room anchor information
 /// </summary>
-public class HologramPlacement : Singleton<HologramPlacement>
+public class HologramPlacement : Singleton<HologramPlacement>, IInputClickHandler
 {
     /// <summary>
     /// Tracks if we have been sent a transform for the model.
@@ -142,8 +143,8 @@ public class HologramPlacement : Singleton<HologramPlacement>
         // Wait till users pick an avatar to enable renderers.
         if (disabledRenderers.Count > 0)
         {
-            if (!PlayerAvatarStore.Instance.PickerActive &&
-            ImportExportAnchorManager.Instance.AnchorEstablished)
+            if (!PlayerAvatarStore.Instance.PickerActive && 
+                ImportExportAnchorManager.Instance.AnchorEstablished)
             {
                 // After which we want to start rendering.
                 EnableModel();
@@ -178,7 +179,7 @@ public class HologramPlacement : Singleton<HologramPlacement>
     /// <summary>
     /// Propagate transform location of model to all players
     /// </summary>
-    public void OnSelect()
+    void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
         // Note that we have a transform.
         GotTransform = true;

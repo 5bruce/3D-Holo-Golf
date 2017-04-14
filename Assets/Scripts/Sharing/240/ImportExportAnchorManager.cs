@@ -47,8 +47,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     {
         get
         {
-            Debug.Log(String.Format("{0}: {1}: AnchorEstablished check", 
-                gameObject.name, this.GetType().Name));
+            Debug.Log(String.Format("{0}: {1}: AnchorEstablished checking", gameObject.name, this.GetType().Name));
             return CurrentState == ImportExportState.Ready;
         }
     }
@@ -114,7 +113,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
 
     void Start()
     {
-        Debug.Log("Import Export Manager starting");
+        Debug.LogFormat("{0}: {1}: Import Export Anchor Manager starting", gameObject.name, this.GetType().Name);
 
         CurrentState = ImportExportState.Ready;
 
@@ -154,6 +153,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     private void RoomManagerCallbacks_AnchorUploaded(bool successful, XString failureReason)
     {
+        Debug.LogFormat("{0}: RoomManagerCallbacks_AnchorUploaded", this.GetType().Name);
+
         if (successful)
         {
             CurrentState = ImportExportState.Ready;
@@ -170,6 +171,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     private void RoomManagerCallbacks_AnchorsDownloaded(bool successful, AnchorDownloadRequest request, XString failureReason)
     {
+        Debug.LogFormat("{0}: RoomManagerCallbacks_AnchorsDownloaded()", this.GetType().Name);
+
         // If we downloaded anchor data successfully we should import the data.
         if (successful)
         {
@@ -194,6 +197,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// <param name="store"></param>
     void AnchorStoreReady(WorldAnchorStore store)
     {
+        Debug.LogFormat("{0}: AnchorStoreReady()", this.GetType().Name);
         anchorStore = store;
         CurrentState = ImportExportState.AnchorStore_Initialized;
     }
@@ -207,6 +211,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// <param name="e"></param>
     private void Instance_SessionJoined(object sender, SharingSessionTracker.SessionJoinedEventArgs e)
     {
+        Debug.LogFormat("{0}: Instance_SessionJoined()", this.GetType().Name);
         // We don't need to get this event anymore.
         SharingSessionTracker.Instance.SessionJoined -= Instance_SessionJoined;
 
@@ -224,6 +229,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     void InitRoomApi()
     {
+        Debug.LogFormat("{0}: InitRoomApi()", this.GetType().Name);
         // If we have a room, we'll join the first room we see.
         // If we are the user with the lowest user ID, we will create the room.
         // Otherwise we will wait for the room to be created.
@@ -271,6 +277,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     void StartAnchorProcess()
     {
+        Debug.LogFormat("{0}: StartAnchorProcess()", this.GetType().Name);
         // First, are there any anchors in this room?
         int anchorCount = currentRoom.GetAnchorCount();
 
@@ -298,6 +305,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     void MakeAnchorDataRequest()
     {
+        Debug.LogFormat("{0}: MakeAnchorDataRequest()", this.GetType().Name);
         if (roomManager.DownloadAnchor(currentRoom, currentRoom.GetAnchorName(0)))
         {
             CurrentState = ImportExportState.DataRequested;
@@ -345,6 +353,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     void CreateAnchorLocally()
     {
+        Debug.LogFormat("{0}: CreateAnchorLocally()", this.GetType().Name);
+
         WorldAnchor anchor = GetComponent<WorldAnchor>();
         if (anchor == null)
         {
@@ -366,6 +376,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     private void Anchor_OnTrackingChanged_InitialAnchor(WorldAnchor self, bool located)
     {
+        Debug.LogFormat("{0}: Anchor_OnTrackingChanged_InitialAnchor()", this.GetType().Name);
+
         if (located)
         {
             Debug.Log("Found anchor, ready to export");
@@ -396,6 +408,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
                 WorldAnchor wa = anchorStore.Load(ids[index], gameObject);
                 if (wa.isLocated)
                 {
+                    Debug.LogFormat("{0}: AttachToCachedAnchor: worldanchor isLocated", this.GetType().Name);
                     CurrentState = ImportExportState.Ready;
                 }
                 else
@@ -417,7 +430,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// <param name="located"></param>
     private void ImportExportAnchorManager_OnTrackingChanged_Attaching(WorldAnchor self, bool located)
     {
-        Debug.Log("anchor " + located);
+        Debug.LogFormat("{0}: ImportExportAnchorManager_OnTrackingChanged_Attaching: anchor located = {1}",
+            this.GetType().Name, located);
         if (located)
         {
             CurrentState = ImportExportState.Ready;
@@ -438,6 +452,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// <param name="wat"></param>
     void ImportComplete(SerializationCompletionReason status, WorldAnchorTransferBatch wat)
     {
+        Debug.LogFormat("{0}: ImportComplete", this.GetType().Name);
+
         if (status == SerializationCompletionReason.Succeeded && wat.GetAllIds().Length > 0)
         {
             Debug.Log("Import complete");
@@ -461,6 +477,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// </summary>
     void Export()
     {
+        Debug.LogFormat("{0}: Export()", this.GetType().Name);
+
         WorldAnchor anchor = GetComponent<WorldAnchor>();
 
         if (anchor == null)
@@ -501,6 +519,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     /// <param name="status"></param>
     public void ExportComplete(SerializationCompletionReason status)
     {
+        Debug.LogFormat("{0}: ExportComplete()", this.GetType().Name);
+
         if (status == SerializationCompletionReason.Succeeded && exportingAnchorBytes.Count > minTrustworthySerializedAnchorDataSize)
         {
             Debug.Log("Uploading anchor: " + exportingAnchorName);

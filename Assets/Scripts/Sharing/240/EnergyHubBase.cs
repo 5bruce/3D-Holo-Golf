@@ -1,9 +1,10 @@
 ﻿using HoloToolkit.Unity;
+using HoloToolkit.Unity.InputModule;
 using UnityEngine;
 using UnityEngine.VR.WSA;
 
 [RequireComponent(typeof(AudioSource))]
-public class EnergyHubBase : Singleton<EnergyHubBase>
+public class EnergyHubBase : Singleton<EnergyHubBase>, IInputClickHandler
 {
     public AudioClip AnchorLanding;
     public AudioClip AnchorLooping;
@@ -39,6 +40,30 @@ public class EnergyHubBase : Singleton<EnergyHubBase>
             targetViewportPosition.z > 0);
     }
 
+    void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
+    {
+        ResetAnimation();
+        foreach (Transform child in this.transform)
+        {
+            MaterialSwap(child, PlacingMaterial, PlacedMaterial);
+            foreach (Transform childnested in child.transform)
+            {
+                MaterialSwap(childnested, PlacingMaterial, PlacedMaterial);
+            }
+        }
+        //this.transform.Find("BlobOutside").gameObject.GetComponent<Renderer>().enabled = true;
+        //this.transform.Find("BlobOutside/BlobInside").gameObject.GetComponent<Renderer>().enabled = true;
+        //Animator animator = GetComponent<Animator>();
+        //animator.speed = 1;
+
+        GetComponent<AudioSource>().clip = AnchorLanding;
+        GetComponent<AudioSource>().loop = false;
+        GetComponent<AudioSource>().Play();
+    }
+
+    // This does not work under HoloToolkit input manager, but used in component 
+    // in case no GestureManager.Instance detected, see Start(). Also used to 
+    // respond to passed messages. 
     void OnSelect()
     {
         ResetAnimation();
@@ -50,10 +75,10 @@ public class EnergyHubBase : Singleton<EnergyHubBase>
                 MaterialSwap(childnested, PlacingMaterial, PlacedMaterial);
             }
         }
-        this.transform.Find("BlobOutside").gameObject.GetComponent<Renderer>().enabled = true;
-        this.transform.Find("BlobOutside/BlobInside").gameObject.GetComponent<Renderer>().enabled = true;
-        Animator animator = GetComponent<Animator>();
-        animator.speed = 1;
+        //this.transform.Find("BlobOutside").gameObject.GetComponent<Renderer>().enabled = true;
+        //this.transform.Find("BlobOutside/BlobInside").gameObject.GetComponent<Renderer>().enabled = true;
+        //Animator animator = GetComponent<Animator>();
+        //animator.speed = 1;
 
         GetComponent<AudioSource>().clip = AnchorLanding;
         GetComponent<AudioSource>().loop = false;
@@ -62,10 +87,10 @@ public class EnergyHubBase : Singleton<EnergyHubBase>
 
     public void ResetAnimation()
     {
-        Animator animator = GetComponent<Animator>();
+        //Animator animator = GetComponent<Animator>();
 
-        animator.Rebind();
-        animator.speed = 0;
+        //animator.Rebind();
+        //animator.speed = 0;
 
         // Setup Placing Object
         foreach (Transform child in this.transform)
@@ -77,22 +102,22 @@ public class EnergyHubBase : Singleton<EnergyHubBase>
             }
         }
 
-        this.transform.Find("BlobOutside").gameObject.GetComponent<Renderer>().enabled = false;
-        this.transform.Find("BlobOutside/BlobInside").gameObject.GetComponent<Renderer>().enabled = false;
+        //this.transform.Find("BlobOutside").gameObject.GetComponent<Renderer>().enabled = false;
+        //this.transform.Find("BlobOutside/BlobInside").gameObject.GetComponent<Renderer>().enabled = false;
 
-        GameObject BaseParticles = this.transform.Find("BaseParticles").gameObject;
-        BaseParticles.SetActive(false);
+        //GameObject BaseParticles = this.transform.Find("BaseParticles").gameObject;
+        //BaseParticles.SetActive(false);
 
-        ParticleSystem BlobParticles = this.transform.Find("BlobOutside/SphereOutside").GetComponent<ParticleSystem>();
-        BlobParticles.Stop();
+        //ParticleSystem BlobParticles = this.transform.Find("BlobOutside/SphereOutside").GetComponent<ParticleSystem>();
+        //BlobParticles.Stop();
 
         GetComponent<AudioSource>().Stop();
     }
 
     void LightShieldsOpen()
     {
-        GameObject BaseParticles = this.transform.Find("BaseParticles").gameObject;
-        BaseParticles.SetActive(true);
+        //GameObject BaseParticles = this.transform.Find("BaseParticles").gameObject;
+        //BaseParticles.SetActive(true);
     }
 
     void LandingDone()
@@ -100,8 +125,8 @@ public class EnergyHubBase : Singleton<EnergyHubBase>
         GetComponent<AudioSource>().loop = true;
         GetComponent<AudioSource>().clip = AnchorLooping;
         GetComponent<AudioSource>().Play();
-        ParticleSystem BlobParticles = this.transform.Find("BlobOutside/SphereOutside").GetComponent<ParticleSystem>();
-        BlobParticles.Play();
+        //ParticleSystem BlobParticles = this.transform.Find("BlobOutside/SphereOutside").GetComponent<ParticleSystem>();
+        //BlobParticles.Play();
     }
 
     void MaterialSwap(Transform mesh, Material currentMaterial, Material newMaterial)

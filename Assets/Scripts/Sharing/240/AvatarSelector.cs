@@ -31,7 +31,7 @@ public class AvatarSelector : MonoBehaviour, IInputClickHandler
     /// </summary>
     void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
-        Debug.LogFormat("{0}: {1}: OnSelect()", gameObject.name, this.GetType().Name);
+        Debug.LogFormat("{0}: {1}: OnInputClicked()", gameObject.name, this.GetType().Name);
 
         PlayerAvatarStore.Instance.DismissAvatarPicker();
         LocalPlayerManager.Instance.SetUserAvatar(AvatarIndex);

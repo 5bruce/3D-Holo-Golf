@@ -26,6 +26,7 @@ public class AppStateManager : Singleton<AppStateManager>
     /// Tracks the current state ID in the experience.
     /// </summary>
     public AppState CurrentAppState { get; set; }
+    private AppState previousAppState { get; set; }
 
     void Start()
     {
@@ -35,9 +36,10 @@ public class AppStateManager : Singleton<AppStateManager>
         {
             shootHandler = GetComponent<ProjectileLauncher>().gameObject;
         }
-       
+
 
         // We start in the 'picking avatar' mode.
+        previousAppState = AppState.Starting;
         CurrentAppState = AppState.PickingAvatar;
 
         // Spatial mapping should be disabled when we start up so as not
@@ -58,6 +60,7 @@ public class AppStateManager : Singleton<AppStateManager>
         // get us into setting the target transform state will be setup.
         if (CurrentAppState != AppState.PickingAvatar)
         {
+            previousAppState = CurrentAppState;
             CurrentAppState = AppState.WaitingForAnchor;
         }
 
@@ -73,12 +76,20 @@ public class AppStateManager : Singleton<AppStateManager>
     /// </summary>
     void Update()
     {
+        // log app state changes
+        if (previousAppState != CurrentAppState)
+        {
+            Debug.LogFormat("{0}: {1}: currentAppState = {2}", gameObject.name, this.GetType().Name, CurrentAppState);
+            previousAppState = CurrentAppState;
+        }
+
         switch (CurrentAppState)
         {
             case AppState.PickingAvatar:
                 // Avatar picking is done when the avatar picker has been dismissed.
                 if (PlayerAvatarStore.Instance.PickerActive == false)
                 {
+                    previousAppState = CurrentAppState;
                     CurrentAppState = AppState.WaitingForAnchor;
                 }
                 break;
@@ -87,6 +98,7 @@ public class AppStateManager : Singleton<AppStateManager>
                 // little while to build up some meshes.
                 if (ImportExportAnchorManager.Instance.AnchorEstablished)
                 {
+                    previousAppState = CurrentAppState;
                     CurrentAppState = AppState.WaitingForStageTransform;
                     GestureManager.Instance.OverrideFocusedObject = HologramPlacement.Instance.gameObject;
 
@@ -100,6 +112,7 @@ public class AppStateManager : Singleton<AppStateManager>
                 // Now if we have the stage transform we are ready to go.
                 if (HologramPlacement.Instance.GotTransform)
                 {
+                    previousAppState = CurrentAppState;
                     CurrentAppState = AppState.Ready;
                     // At this point, all air taps are sent to shoothandler rather
                     // than the object 'actually' in focus.
