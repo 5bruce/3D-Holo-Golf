@@ -127,6 +127,7 @@ public class ProjectileBehavior : MonoBehaviour
     /// <returns>true = use the collision for exploding, false = bounce.</returns>
     protected virtual bool HitPlayer(Collision collision)
     {
+        /*
         if(collision.contacts[0].otherCollider.GetComponent<ExplodingBlob>() != null)
         {
             return true;
@@ -152,6 +153,7 @@ public class ProjectileBehavior : MonoBehaviour
         // Play the 'we hit something that's not the players head clip'.
         audioSource.clip = bounceSoundEffect;
         audioSource.Play();
+        */
 
         // Tell spatial mapping deformation that we hit this point.  
         // This causes the shader to do a little animation around the hit position.

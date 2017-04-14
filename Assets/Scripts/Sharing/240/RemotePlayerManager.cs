@@ -45,7 +45,7 @@ public class RemotePlayerManager : Singleton<RemotePlayerManager>
 
         customMessages.MessageHandlers[CustomMessages.TestMessageID.HeadTransform] = this.UpdateHeadTransform;
         customMessages.MessageHandlers[CustomMessages.TestMessageID.UserAvatar] = this.UpdateUserAvatar;
-        customMessages.MessageHandlers[CustomMessages.TestMessageID.UserHit] = this.ProcessUserHit;
+        //customMessages.MessageHandlers[CustomMessages.TestMessageID.UserHit] = this.ProcessUserHit;
         SharingSessionTracker.Instance.SessionJoined += Instance_SessionJoined;
         SharingSessionTracker.Instance.SessionLeft += Instance_SessionLeft;
     }
@@ -74,6 +74,7 @@ public class RemotePlayerManager : Singleton<RemotePlayerManager>
         GetRemoteHeadInfo(e.joiningUser.GetID());
     }
 
+    /*
     /// <summary>
     /// Process user hit.
     /// </summary>
@@ -108,6 +109,7 @@ public class RemotePlayerManager : Singleton<RemotePlayerManager>
         remoteHeadAudio.clip = playerParams.PlayerHitSomeoneClip;
         remoteHeadAudio.Play();
     }
+    */
 
     /// <summary>
     /// Called when a user's avatar has changed. Updates user's avatar.

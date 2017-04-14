@@ -9,7 +9,7 @@ public class PlayerAvatarStore : Singleton<PlayerAvatarStore>
 {
 
     /// <summary>
-    /// List of possible avatars.
+    /// List of possible avatars (must have colliders to be selectable).
     /// </summary>
     public GameObject[] PlayerAvatars;
 
