@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.Windows.Speech;
 using HoloToolkit.Unity;
 using HoloToolkit.Sharing;
+using HoloToolkit.Unity.SpatialMapping;
 
 public class HologramPlacement_GroupControlled : Singleton<HologramPlacement>
 {

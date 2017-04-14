@@ -29,11 +29,13 @@ public class AppStateManager : Singleton<AppStateManager>
 
     void Start()
     {
+        // Look in WebplayerTemplates/sharing240/ for example of ProjetileLauncher
         // The shootHandler shoots projectiles for this player.
         if (GetComponent<ProjectileLauncher>() != null)
         {
             shootHandler = GetComponent<ProjectileLauncher>().gameObject;
         }
+       
 
         // We start in the 'picking avatar' mode.
         CurrentAppState = AppState.PickingAvatar;

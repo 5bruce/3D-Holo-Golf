@@ -443,7 +443,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1796343167}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c015168658553b45936f66b86c49aa0, type: 3}
+  m_Script: {fileID: 11500000, guid: 7b606e3e0bc5b6e4c9f8ac406f337c73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   headRepresentation: 3
@@ -458,6 +458,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b541da332edb8ab4abd12fd700d88283, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentState: 0
   KeepRoomAlive: 0
   RoomName: DefaultRoom
 --- !u!114 &1796343171
