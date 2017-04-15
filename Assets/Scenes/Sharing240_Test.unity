@@ -763,10 +763,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   PlayerAvatars:
-  - {fileID: 1895281144004862, guid: bfa0e97a39e0ecd4789a40e6c7e24f27, type: 2}
-  - {fileID: 1266920180313250, guid: d48a78e2fa9f8d2449101947777e7d22, type: 2}
-  - {fileID: 1266920180313250, guid: d48a78e2fa9f8d2449101947777e7d22, type: 2}
-  - {fileID: 1266920180313250, guid: d48a78e2fa9f8d2449101947777e7d22, type: 2}
+  - {fileID: 1789119982833924, guid: 303028d5d0c42c448a8f96d8ba062302, type: 2}
+  - {fileID: 1040071104681856, guid: 91f85dd43168b2c488726e0ce0a4ab82, type: 2}
+  - {fileID: 1788203373152976, guid: 787cfba54b5e12e44862d79113ea7e01, type: 2}
+  - {fileID: 1151648374273400, guid: 0fd0280f0434c11419455eaf8472c3a6, type: 2}
   PickerActiveSound: {fileID: 8300000, guid: aef9bdbad6f91c448bcfe26a63fcbc05, type: 3}
   PickerDistanceFromUser: 2
 --- !u!4 &1706305072

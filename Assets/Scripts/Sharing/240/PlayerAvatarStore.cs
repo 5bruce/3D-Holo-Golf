@@ -70,6 +70,15 @@ public class PlayerAvatarStore : Singleton<PlayerAvatarStore>
             nextAvatar.transform.position = startPosition + offset;
             spawnedPlayerAvatars.Add(nextAvatar);
 
+            // avatars need to have colliders to be clickable
+            if (!nextAvatar.GetComponent<Collider>().enabled)
+            {
+                foreach (Transform child in nextAvatar.transform)
+                {
+                    child.GetComponent<Collider>().enabled = true;
+                }
+            }
+
             // Add AvatarSelector component to handle avatar selection by user.
             AvatarSelector avatarSelector = nextAvatar.GetComponent<AvatarSelector>();
             if (avatarSelector == null)
