@@ -102,6 +102,7 @@ public class AppStateManager : Singleton<AppStateManager>
                 // little while to build up some meshes.
                 if (ImportExportAnchorManager.Instance.AnchorEstablished)
                 {
+                    Debug.LogFormat("{0}: {1}: attempting to activate spatial mapping", gameObject.name, this.GetType().Name);
                     previousAppState = CurrentAppState;
                     CurrentAppState = AppState.WaitingForStageTransform;
                     GestureManager_Custom.Instance.OverrideFocusedObject = HologramPlacement.Instance.gameObject;
@@ -110,6 +111,7 @@ public class AppStateManager : Singleton<AppStateManager>
                     SpatialMappingManager.Instance.DrawVisualMeshes = true;
                     SpatialMappingDeformation.Instance.ResetGlobalRendering();
                     SpatialMappingManager.Instance.StartObserver();
+                    Debug.LogFormat("{0}: {1}: spatial mapping activated", gameObject.name, this.GetType().Name);
                 }
                 break;
             case AppState.WaitingForStageTransform:
