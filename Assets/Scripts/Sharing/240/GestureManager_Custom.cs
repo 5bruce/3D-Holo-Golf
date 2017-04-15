@@ -74,7 +74,7 @@ namespace HoloToolkit.Unity
             }
         }
 
-        void OnDestroy()
+        new void OnDestroy()
         {
             gestureRecognizer.StopCapturingGestures();
             gestureRecognizer.TappedEvent -= GestureRecognizer_TappedEvent;

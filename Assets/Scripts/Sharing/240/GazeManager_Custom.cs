@@ -4,7 +4,8 @@ namespace HoloToolkit.Unity
 {
     /// <summary>
     /// GazeManager determines the location of the user's gaze, hit position and normals.
-    /// Custom version used for sharing (from 240)
+    /// Custom version used for sharing (from 240); 
+    /// I think mainly provides Hit bool used by GestureManager_Custom.
     /// </summary>
     public class GazeManager_Custom : Singleton<GazeManager_Custom>
     {

@@ -30,12 +30,15 @@ public class AppStateManager : Singleton<AppStateManager>
 
     void Start()
     {
-        // Look in WebplayerTemplates/sharing240/ for example of ProjetileLauncher
         // The shootHandler shoots projectiles for this player.
         // Associated component should be attached to same gameObject as this component.
         if (GetComponent<ProjectileLauncher>() != null)
         {
             shootHandler = GetComponent<ProjectileLauncher>().gameObject;
+        }
+        else
+        {
+            Debug.LogFormat("{0}: {1}: Start(): no ProjectileLauncher component detected", gameObject.name, this.GetType().Name);
         }
 
 
