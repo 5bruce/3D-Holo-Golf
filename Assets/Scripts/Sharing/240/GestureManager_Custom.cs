@@ -10,7 +10,7 @@ namespace HoloToolkit.Unity
     /// GestureManager then sends a message to that game object.
     /// </summary>
     [RequireComponent(typeof(GazeManager_Custom))]
-    public class GestureManager : Singleton<GestureManager>
+    public class GestureManager_Custom : Singleton<GestureManager_Custom>
     {
         /// <summary>
         /// To select even when a hologram is not being gazed at,
@@ -39,6 +39,8 @@ namespace HoloToolkit.Unity
 
         private void GestureRecognizer_TappedEvent(InteractionSourceKind source, int tapCount, Ray headRay)
         {
+            Debug.LogFormat("{0}: {1}: GestureRecognizer_TappedEvent()", gameObject.name, this.GetType().Name);
+
             if (focusedObject != null)
             {
                 focusedObject.SendMessage("OnSelect");

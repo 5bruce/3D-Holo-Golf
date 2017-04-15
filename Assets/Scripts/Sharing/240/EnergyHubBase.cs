@@ -13,7 +13,7 @@ public class EnergyHubBase : Singleton<EnergyHubBase>, IInputClickHandler
 
     void Start()
     {
-        if (GestureManager.Instance == null)
+        if (GestureManager_Custom.Instance == null)
         {
             OnSelect();
         }
@@ -62,7 +62,7 @@ public class EnergyHubBase : Singleton<EnergyHubBase>, IInputClickHandler
     }
 
     // This does not work under HoloToolkit input manager, but used in component 
-    // in case no GestureManager.Instance detected, see Start(). Also used to 
+    // in case no GestureManager_Custom.Instance detected, see Start(). Also used to 
     // respond to passed messages. 
     void OnSelect()
     {

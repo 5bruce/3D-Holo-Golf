@@ -47,7 +47,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     {
         get
         {
-            Debug.Log(String.Format("{0}: {1}: AnchorEstablished checking", gameObject.name, this.GetType().Name));
+            Debug.Log(String.Format("{0}: AnchorEstablished checking", this.GetType().Name));
             return CurrentState == ImportExportState.Ready;
         }
     }
@@ -149,7 +149,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     }
 
     /// <summary>
-    /// Called when anchor upload operations complete.
+    /// Hook called when anchor upload operations complete.
     /// </summary>
     private void RoomManagerCallbacks_AnchorUploaded(bool successful, XString failureReason)
     {

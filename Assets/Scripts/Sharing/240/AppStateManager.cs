@@ -26,12 +26,13 @@ public class AppStateManager : Singleton<AppStateManager>
     /// Tracks the current state ID in the experience.
     /// </summary>
     public AppState CurrentAppState { get; set; }
-    private AppState previousAppState { get; set; }
+    private AppState previousAppState { get; set; }  // for debugging purposes
 
     void Start()
     {
         // Look in WebplayerTemplates/sharing240/ for example of ProjetileLauncher
         // The shootHandler shoots projectiles for this player.
+        // Associated component should be attached to same gameObject as this component.
         if (GetComponent<ProjectileLauncher>() != null)
         {
             shootHandler = GetComponent<ProjectileLauncher>().gameObject;
@@ -100,7 +101,7 @@ public class AppStateManager : Singleton<AppStateManager>
                 {
                     previousAppState = CurrentAppState;
                     CurrentAppState = AppState.WaitingForStageTransform;
-                    GestureManager.Instance.OverrideFocusedObject = HologramPlacement.Instance.gameObject;
+                    GestureManager_Custom.Instance.OverrideFocusedObject = HologramPlacement.Instance.gameObject;
 
                     SpatialMappingManager.Instance.gameObject.SetActive(true);
                     SpatialMappingManager.Instance.DrawVisualMeshes = true;
@@ -116,7 +117,7 @@ public class AppStateManager : Singleton<AppStateManager>
                     CurrentAppState = AppState.Ready;
                     // At this point, all air taps are sent to shoothandler rather
                     // than the object 'actually' in focus.
-                    GestureManager.Instance.OverrideFocusedObject = shootHandler;
+                    GestureManager_Custom.Instance.OverrideFocusedObject = shootHandler;
                 }
                 break;
         }
