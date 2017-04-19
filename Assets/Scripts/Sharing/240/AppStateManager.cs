@@ -109,7 +109,7 @@ public class AppStateManager : Singleton<AppStateManager>
 
                     SpatialMappingManager.Instance.gameObject.SetActive(true);
                     SpatialMappingManager.Instance.DrawVisualMeshes = true;
-                    SpatialMappingDeformation.Instance.ResetGlobalRendering();
+                    //SpatialMappingDeformation.Instance.ResetGlobalRendering();
                     SpatialMappingManager.Instance.StartObserver();
                     Debug.LogFormat("{0}: {1}: spatial mapping activated", gameObject.name, this.GetType().Name);
                 }
