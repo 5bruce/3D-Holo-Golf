@@ -43,6 +43,8 @@ public class EnergyHubBase : Singleton<EnergyHubBase>, IInputClickHandler
     void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
         ResetAnimation();
+
+        gameObject.GetComponent<Renderer>().material = PlacedMaterial;
         foreach (Transform child in this.transform)
         {
             MaterialSwap(child, PlacingMaterial, PlacedMaterial);
@@ -67,6 +69,8 @@ public class EnergyHubBase : Singleton<EnergyHubBase>, IInputClickHandler
     void OnSelect()
     {
         ResetAnimation();
+
+        gameObject.GetComponent<Renderer>().material = PlacedMaterial;
         foreach (Transform child in this.transform)
         {
             MaterialSwap(child, PlacingMaterial, PlacedMaterial);
@@ -93,6 +97,7 @@ public class EnergyHubBase : Singleton<EnergyHubBase>, IInputClickHandler
         //animator.speed = 0;
 
         // Setup Placing Object
+        gameObject.GetComponent<Renderer>().material = PlacingMaterial;
         foreach (Transform child in this.transform)
         {
             MaterialSwap(child, PlacedMaterial, PlacingMaterial);

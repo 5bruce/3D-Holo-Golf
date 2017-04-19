@@ -16,6 +16,7 @@ public class CustomMessages : Singleton<CustomMessages>
         UserAvatar,
         UserHit,
         ShootProjectile,
+        ShootProjectile_Velocity,
         StageTransform,
         ResetStage,
         ExplodeTarget,
@@ -124,8 +125,31 @@ public class CustomMessages : Singleton<CustomMessages>
             // Create an outgoing network message to contain all the info we want to send
             NetworkOutMessage msg = CreateMessage((byte)TestMessageID.ShootProjectile);
 
+            // append vector info to message
             AppendVector3(msg, position + (direction * 0.016f));
             AppendVector3(msg, direction);
+
+            // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.
+            this.serverConnection.Broadcast(
+                msg,
+                MessagePriority.Immediate,
+                MessageReliability.Reliable,
+                MessageChannel.Avatar);
+        }
+    }
+
+    public void SendShootProjectile_Velocity(Vector3 position, Vector3 direction, float magnitude)
+    {
+        // If we are connected to a session, broadcast our head info
+        if (this.serverConnection != null && this.serverConnection.IsConnected())
+        {
+            // Create an outgoing network message to contain all the info we want to send
+            NetworkOutMessage msg = CreateMessage((byte)TestMessageID.ShootProjectile_Velocity);
+
+            // append vector info to message
+            AppendVector3(msg, position + (direction * 0.016f));
+            AppendVector3(msg, direction);
+            AppendVelocityMagnitude(msg, magnitude);
 
             // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.
             this.serverConnection.Broadcast(
@@ -176,7 +200,7 @@ public class CustomMessages : Singleton<CustomMessages>
 
     public void SendStageTransform(Vector3 position, Quaternion rotation)
     {
-        // If we are connected to a session, broadcast our head info
+        // If we are connected to a session
         if (this.serverConnection != null && this.serverConnection.IsConnected())
         {
             // Create an outgoing network message to contain all the info we want to send
@@ -198,7 +222,7 @@ public class CustomMessages : Singleton<CustomMessages>
     /// </summary>
     public void SendResetStage()
     {
-        // If we are connected to a session, broadcast our head info
+        // If we are connected to a session
         if (this.serverConnection != null && this.serverConnection.IsConnected())
         {
             // Create an outgoing network message to contain all the info we want to send
@@ -273,6 +297,11 @@ public class CustomMessages : Singleton<CustomMessages>
         msg.Write(rotation.y);
         msg.Write(rotation.z);
         msg.Write(rotation.w);
+    }
+
+    void AppendVelocityMagnitude(NetworkOutMessage msg, float magnitude)
+    {
+        msg.Write(magnitude);
     }
 
     #endregion HelperFunctionsForWriting

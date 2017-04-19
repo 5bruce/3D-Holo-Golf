@@ -122,7 +122,7 @@ public class AppStateManager : Singleton<AppStateManager>
                     CurrentAppState = AppState.Ready;
                     // At this point, all air taps are sent to shoothandler rather
                     // than the object 'actually' in focus.
-                    GestureManager_Custom.Instance.OverrideFocusedObject = shootHandler;
+                    //GestureManager_Custom.Instance.OverrideFocusedObject = shootHandler;
                 }
                 break;
         }

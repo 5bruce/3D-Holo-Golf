@@ -71,12 +71,18 @@ public class PlayerAvatarStore : Singleton<PlayerAvatarStore>
             spawnedPlayerAvatars.Add(nextAvatar);
 
             // avatars need to have colliders to be clickable
-            if (!nextAvatar.GetComponent<Collider>().enabled)
+            if (nextAvatar.GetComponent<Collider>() != null && nextAvatar.GetComponent<Collider>().enabled)
             {
                 foreach (Transform child in nextAvatar.transform)
                 {
                     child.GetComponent<Collider>().enabled = true;
                 }
+            }
+            else
+            {
+                Debug.LogErrorFormat("{0}: {1}: SpawnAvatarPicker(): avatar {2} has no collider, cannot be selected",
+                    gameObject.name, this.GetType().Name, nextAvatar.name);
+                Application.Quit();
             }
 
             // Add AvatarSelector component to handle avatar selection by user.

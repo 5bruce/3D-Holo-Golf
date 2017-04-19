@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using HoloToolkit.Unity;
 using HoloToolkit.Unity.SpatialMapping;
 
+/// <summary>
+/// Defines the behavoir of projectile objects for various collisions
+/// </summary>
 [RequireComponent(typeof(MeshCollider))]
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(AudioSource))]
@@ -55,6 +58,7 @@ public class ProjectileBehavior : MonoBehaviour
     {
         Rigidbody rigidBody = GetComponent<Rigidbody>();
         rigidBody.velocity = 4 * startDir;
+        // give projectile some spin
         rigidBody.angularVelocity = Random.onUnitSphere * 20;
     }
 

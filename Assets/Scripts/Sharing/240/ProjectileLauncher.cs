@@ -18,6 +18,7 @@ public class ProjectileLauncher : MonoBehaviour
     /// </summary>
     void Start()
     {
+        // hook to process ShootProjectile messages
         CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.ShootProjectile] = this.ProcessRemoteProjectile;
 
         // We will use the camera's audio source to play sounds whenever a projectile hits the user's avatar
@@ -57,11 +58,11 @@ public class ProjectileLauncher : MonoBehaviour
         Vector3 ProjectilePosition = Camera.main.transform.position + Camera.main.transform.forward * 0.85f;
         Vector3 ProjectileDirection = Camera.main.transform.forward;
 
-        ShootProjectile(ProjectilePosition,
-                    ProjectileDirection, UserId);
+        ShootProjectile(ProjectilePosition, ProjectileDirection, UserId);
 
-        // broadcast info of this fired projectile to other players
+        // anchor relative to the transform of the ImportExportAnchorManager
         Transform anchor = ImportExportAnchorManager.Instance.gameObject.transform;
+        // broadcast position and direction info of this fired projectile to other players in world space relative to anchor
         CustomMessages.Instance.SendShootProjectile(anchor.InverseTransformPoint(ProjectilePosition), anchor.InverseTransformDirection(ProjectileDirection));
     }
 
@@ -113,17 +114,18 @@ public class ProjectileLauncher : MonoBehaviour
     }
 
     /// <summary>
-    /// Process user hit.
+    /// Process user hit by someone else's projectile.
     /// </summary>
     /// <param name="msg"></param>
     void ProcessRemoteProjectile(NetworkInMessage msg)
     {
         // Parse the message
         long userID = msg.ReadInt64();
-        Vector3 remoteProjectilePosition = CustomMessages.Instance.ReadVector3(msg);
 
+        Vector3 remoteProjectilePosition = CustomMessages.Instance.ReadVector3(msg);
         Vector3 remoteProjectileDirection = CustomMessages.Instance.ReadVector3(msg);
 
+        // capture position and direction values of remote projectile and add it to our local space
         Transform anchor = ImportExportAnchorManager.Instance.gameObject.transform;
         ShootProjectile(anchor.TransformPoint(remoteProjectilePosition), anchor.TransformDirection(remoteProjectileDirection), userID);
     }
