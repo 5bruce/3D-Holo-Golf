@@ -20,7 +20,7 @@ public class ProjectileShooter_Shared : MonoBehaviour {
     /// <summary>
     /// Icon indicating where Projectile should be shot from next
     /// </summary>
-    public GameObject flag;
+    GameObject flag;
     Vector3 flagPosition;
     Quaternion flagRotation;
 
