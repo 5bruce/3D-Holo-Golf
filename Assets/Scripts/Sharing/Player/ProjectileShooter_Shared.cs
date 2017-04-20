@@ -115,8 +115,10 @@ public class ProjectileShooter_Shared : MonoBehaviour {
 
         // Set projectile color to be the same as the avatar color.
         Color flag_color = PlayerAvatarStore.Instance.PlayerAvatars[AvatarIndex].GetComponentInChildren<Renderer>().material.color;
-        if (flag != null)
+        if (flag_color != null)
         {
+            Debug.LogFormat("{0}: {1}: Start(): setting ball color to {2}",
+                gameObject.name, this.GetType().Name, flag_color.ToString());
             gameObject.GetComponent<Renderer>().material.color = flag_color;
         }
     }
@@ -165,6 +167,7 @@ public class ProjectileShooter_Shared : MonoBehaviour {
             }
 
             // broadcast projectile position
+            //CustomMessages.Instance.SendStageTransform(gameObject.transform.position, gameObject.transform.rotation);
         }
     }
 
@@ -187,6 +190,9 @@ public class ProjectileShooter_Shared : MonoBehaviour {
 
             // remove projectile trail
             gameObject.GetComponent<TrailRenderer>().enabled = false;
+
+            // allow user to toss ball again
+            gameObject.GetComponent<HandDraggable>().enabled = true;
 
             // reset cursor back to its min. distance in front of camera
             /* 
@@ -222,6 +228,7 @@ public class ProjectileShooter_Shared : MonoBehaviour {
             {
                 position += velocity * timeDelta + 0.5f * gravity * timeDelta * timeDelta;
                 velocity += gravity * timeDelta;
+
                 lineRenderer.SetPosition(v, position);  // can place this either at start or end of this section
             }
         }
@@ -324,10 +331,10 @@ public class ProjectileShooter_Shared : MonoBehaviour {
 
             launchHeight = gameObject.transform.position.y;
             
-            /*********** 3 different ways I think can shoot projectile, need to test for better understanding
-            // apply velocity based on reference point distance
             rb.velocity = this.LaunchVelocity();
 
+            /*********** 2 different ways I think can shoot projectile, need to test for better understanding
+            // apply velocity based on reference point distance
 
             Vector3 direction = reference_point.transform.position - gameObject.transform.position;
             float magnitude = direction.magnitude * throwRatio;
@@ -352,6 +359,9 @@ public class ProjectileShooter_Shared : MonoBehaviour {
 
             // start drawing projectile line
             gameObject.GetComponent<TrailRenderer>().enabled = true;
+
+            // dont let user pick thier ball up when rolling
+            gameObject.GetComponent<HandDraggable>().enabled = false;
 
             isDragging = false;
             canScore = true;

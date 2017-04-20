@@ -47,7 +47,7 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     {
         get
         {
-            Debug.LogFormat("{0}: AnchorEstablished checking: {1}", this.GetType().Name, (CurrentState == ImportExportState.Ready));
+            //Debug.LogFormat("{0}: AnchorEstablished checking: {1}", this.GetType().Name, (CurrentState == ImportExportState.Ready));
             return CurrentState == ImportExportState.Ready;
         }
     }

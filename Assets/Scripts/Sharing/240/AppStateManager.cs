@@ -19,6 +19,9 @@ public class AppStateManager : Singleton<AppStateManager>
         Ready
     }
 
+    // player gameobject to activate after avatar selected
+    public GameObject playerHandler = null;
+
     // The object to call to make a projectile.
     GameObject shootHandler = null;
 
@@ -30,6 +33,16 @@ public class AppStateManager : Singleton<AppStateManager>
 
     void Start()
     {
+        if (playerHandler == null)
+        {
+            Debug.LogErrorFormat("{0}: {1}: Start(): no playerHandler object detected, shutting down", gameObject.name, this.GetType().Name);
+            Application.Quit();
+        }
+        else
+        {
+            playerHandler.SetActive(false);
+        }
+
         // The shootHandler shoots projectiles for this player.
         // Associated component should be attached to same gameObject as this component.
         if (GetComponent<ProjectileLauncher>() != null)
@@ -123,6 +136,9 @@ public class AppStateManager : Singleton<AppStateManager>
                     // At this point, all air taps are sent to shoothandler rather
                     // than the object 'actually' in focus.
                     //GestureManager_Custom.Instance.OverrideFocusedObject = shootHandler;
+
+                    GestureManager_Custom.Instance.OverrideFocusedObject = null;
+                    playerHandler.SetActive(true);
                 }
                 break;
         }

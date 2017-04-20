@@ -15,12 +15,14 @@ public class SetStatusColor : MonoBehaviour
 
     ImportExportAnchorManager anchorManager;
     Color startColor;
+    Color previousColor;
     Light pointLight;
 
     void Start()
     {
         pointLight = GetComponent<Light>();
         startColor = pointLight.color;
+        previousColor = startColor;
 
         anchorManager = ImportExportAnchorManager.Instance;
     }
@@ -34,31 +36,55 @@ public class SetStatusColor : MonoBehaviour
                 case ImportExportAnchorManager.ImportExportState.AnchorStore_Initializing:
                 case ImportExportAnchorManager.ImportExportState.Start:
                 case ImportExportAnchorManager.ImportExportState.AnchorStore_Initialized:
-                    Debug.LogFormat("{0}: Initialization color", this.GetType().Name);
                     pointLight.color = InitializingColor;
+                    if (previousColor != pointLight.color)
+                    {
+                        Debug.LogFormat("{0}: Initialization color", this.GetType().Name);
+                        previousColor = pointLight.color;
+                    }
                     break;
                 case ImportExportAnchorManager.ImportExportState.Importing:
                 case ImportExportAnchorManager.ImportExportState.InitialAnchorRequired:
                 case ImportExportAnchorManager.ImportExportState.CreatingInitialAnchor:
                 case ImportExportAnchorManager.ImportExportState.DataReady:
-                    Debug.LogFormat("{0}: ImportingOrExporting color", this.GetType().Name);
                     pointLight.color = ImportingOrExportingColor;
+                    if (previousColor != pointLight.color)
+                    {
+                        Debug.LogFormat("{0}: ImportingOrExporting color", this.GetType().Name);
+                        previousColor = pointLight.color;
+                    }
                     break;
                 case ImportExportAnchorManager.ImportExportState.UploadingInitialAnchor:
-                    Debug.LogFormat("{0}: Uploading color", this.GetType().Name);
                     pointLight.color = UploadingColor;
+                    if (previousColor != pointLight.color)
+                    {
+                        Debug.LogFormat("{0}: Uploading color", this.GetType().Name);
+                        previousColor = pointLight.color;
+                    }
                     break;
                 case ImportExportAnchorManager.ImportExportState.DataRequested:
-                    Debug.LogFormat("{0}: Downloading color", this.GetType().Name);
                     pointLight.color = DownloadingColor;
+                    if (previousColor != pointLight.color)
+                    {
+                        Debug.LogFormat("{0}: Downloading color", this.GetType().Name);
+                        previousColor = pointLight.color;
+                    }
                     break;
                 case ImportExportAnchorManager.ImportExportState.Failed:
-                    Debug.LogFormat("{0}: Failure color", this.GetType().Name);
                     pointLight.color = FailureColor;
+                    if (previousColor != pointLight.color)
+                    {
+                        Debug.LogFormat("{0}: Failure color", this.GetType().Name);
+                        previousColor = pointLight.color;
+                    }
                     break;
                 default:
-                    Debug.LogFormat("{0}: start color", this.GetType().Name);
                     pointLight.color = startColor;
+                    if (previousColor != pointLight.color)
+                    {
+                        Debug.LogFormat("{0}: start color", this.GetType().Name);
+                        previousColor = pointLight.color;
+                    }
                     break;
             }
         }
