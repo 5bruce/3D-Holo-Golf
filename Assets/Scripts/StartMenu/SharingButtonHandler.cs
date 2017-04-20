@@ -2,17 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
-public class ChangeMenuButtonHandler: MonoBehaviour,
-                                      IFocusable,
-                                      IInputClickHandler
+public class SharingButtonHandler : MonoBehaviour,
+                                    IFocusable,
+                                    IInputClickHandler
 {
     public Material active_material;
     public Material inactive_material;
-
-    [Tooltip("Menu GameObjects to be deactivated when button pressed")]
-    public GameObject[] toDeactivate;
-    public GameObject toActivate;
 
     // Use this for initialization
     void Start()
@@ -39,14 +36,11 @@ public class ChangeMenuButtonHandler: MonoBehaviour,
 
     void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
-        Debug.Log(this.name + ": OnInputClicked()");
-        if (toActivate != null)
-        {
-            toActivate.SetActive(true);
-        }
-        for (int i=0; i < toDeactivate.Length; i++)
-        {
-            toDeactivate[i].SetActive(false);
-        }
+        /*
+         Note: this operation is not thread safe since not mutual exclusion
+         and SettingsManager quits program if isPlayAndPassGame && isSharedGame
+         are both true. However, I think Unity only uses a single thread.
+         */
+        SettingsManager.Instance.toggleSharedGame();
     }
 }

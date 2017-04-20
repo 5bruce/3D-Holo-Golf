@@ -23,7 +23,8 @@ public class SettingsManager : Singleton<SettingsManager>
     /// </summary>
     public Material[] playerColors = new Material[maxPlayers];
 
-    public bool isPlayAndPassGame { get; internal set; }
+    public bool isPlayAndPassGame = true;
+    public bool isSharedGame = false;
 
     // Use this for initialization
     void Start () {
@@ -32,7 +33,18 @@ public class SettingsManager : Singleton<SettingsManager>
     }
 	
 	// Update is called once per frame
-	void Update () {
-		
+	void LateUpdate () {
+		if(isPlayAndPassGame && isSharedGame)
+        {
+            Debug.LogErrorFormat("{0}: {1}: settings set to play-and-pass AND sharing, cannot select both",
+                gameObject.name, this.GetType().Name);
+            Application.Quit();
+        }
 	}
+
+    public void toggleSharedGame()
+    {
+        isSharedGame = (isSharedGame) ? false: true;
+        isPlayAndPassGame = (isSharedGame) ? false: true;
+    }
 }

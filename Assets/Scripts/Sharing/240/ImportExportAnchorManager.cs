@@ -225,7 +225,8 @@ public class ImportExportAnchorManager : Singleton<ImportExportAnchorManager>
     }
 
     /// <summary>
-    /// Initializes the room api.
+    /// Initializes the room api to find a room space to join.
+    /// Note: I don't know how to get this to succeed in the Unity editor, need to use actual device
     /// </summary>
     void InitRoomApi()
     {

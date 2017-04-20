@@ -202,6 +202,14 @@ Prefab:
       propertyPath: m_RootOrder
       value: 4
       objectReference: {fileID: 0}
+    - target: {fileID: 1962609843184366, guid: 49c6970d77be01c41bd3d37194731bb4, type: 2}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1000552643544446, guid: 49c6970d77be01c41bd3d37194731bb4, type: 2}
+      propertyPath: m_Name
+      value: Sharing
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 49c6970d77be01c41bd3d37194731bb4, type: 2}
   m_IsPrefabParent: 0
@@ -251,6 +259,8 @@ MonoBehaviour:
   - {fileID: 2100000, guid: c9619a4e1a320314d9a33ed2d594beb0, type: 2}
   - {fileID: 2100000, guid: 7269024d07f1f0842bd8bfc4fa8bc7d8, type: 2}
   - {fileID: 2100000, guid: 91fcf0af73c6dc544a6071ff90e6024f, type: 2}
+  isPlayAndPassGame: 1
+  isSharedGame: 0
 --- !u!1001 &1267639817
 Prefab:
   m_ObjectHideFlags: 0

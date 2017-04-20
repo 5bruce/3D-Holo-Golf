@@ -37,7 +37,11 @@ public class StartButtonHandler : MonoBehaviour,
     void IInputClickHandler.OnInputClicked(InputClickedEventData eventData)
     {
         Debug.Log(this.name + ": OnInputClicked()");
-        if (1 < SettingsManager.Instance.numberOfPlayers && 
+        if (SettingsManager.Instance.isSharedGame)
+        {
+            SceneManager.LoadSceneAsync("Sharing240_Test");
+        }
+        else if (1 < SettingsManager.Instance.numberOfPlayers && 
             SettingsManager.Instance.numberOfPlayers <= SettingsManager.maxPlayers)
         {
             SceneManager.LoadSceneAsync("PlayAndPass_LightingFix");
