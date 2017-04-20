@@ -114,11 +114,11 @@ public class ProjectileShooter_Shared : MonoBehaviour {
         CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.ShootProjectile_Velocity] = this.ProjectileShooter_ProcessRemoteProjectile;
 
         // Set projectile color to be the same as the avatar color.
-        Color flag_color = PlayerAvatarStore.Instance.PlayerAvatars[AvatarIndex].GetComponentInChildren<Renderer>().material.color;
+        Color flag_color = PlayerAvatarStore.Instance.PlayerAvatars[AvatarIndex].transform.FindChild("Flag").GetComponent<Renderer>().material.color;
         if (flag_color != null)
         {
             Debug.LogFormat("{0}: {1}: Start(): setting ball color to {2}",
-                gameObject.name, this.GetType().Name, flag_color.ToString());
+                gameObject.name, this.GetType().Name, flag_color);
             gameObject.GetComponent<Renderer>().material.color = flag_color;
         }
     }
