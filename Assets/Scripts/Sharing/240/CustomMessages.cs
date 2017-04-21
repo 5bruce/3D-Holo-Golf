@@ -18,6 +18,7 @@ public class CustomMessages : Singleton<CustomMessages>
         ShootProjectile,
         ShootProjectile_Velocity,
         StageTransform,
+        StageTransformDynamic,
         ResetStage,
         ExplodeTarget,
         Max
@@ -198,6 +199,7 @@ public class CustomMessages : Singleton<CustomMessages>
         }
     }
 
+    // used for placing shared, static goal object
     public void SendStageTransform(Vector3 position, Quaternion rotation)
     {
         // If we are connected to a session
@@ -205,6 +207,26 @@ public class CustomMessages : Singleton<CustomMessages>
         {
             // Create an outgoing network message to contain all the info we want to send
             NetworkOutMessage msg = CreateMessage((byte)TestMessageID.StageTransform);
+
+            AppendTransform(msg, position, rotation);
+
+            // Send the message as a broadcast, which will cause the server to forward it to all other users in the session.
+            this.serverConnection.Broadcast(
+                msg,
+                MessagePriority.Immediate,
+                MessageReliability.ReliableOrdered,
+                MessageChannel.Avatar);
+        }
+    }
+
+    // used for placing shared objects that may move
+    public void SendDynamicStageTransform(Vector3 position, Quaternion rotation)
+    {
+        // If we are connected to a session
+        if (this.serverConnection != null && this.serverConnection.IsConnected())
+        {
+            // Create an outgoing network message to contain all the info we want to send
+            NetworkOutMessage msg = CreateMessage((byte)TestMessageID.StageTransformDynamic);
 
             AppendTransform(msg, position, rotation);
 

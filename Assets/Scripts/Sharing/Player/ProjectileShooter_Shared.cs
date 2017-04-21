@@ -94,7 +94,7 @@ public class ProjectileShooter_Shared : MonoBehaviour {
         gameObject.GetComponent<LineRenderer>().enabled = false;
 
         // set flag to be same as player avatar flag
-        flag = PlayerAvatarStore.Instance.PlayerAvatars[AvatarIndex];
+        flag = (GameObject)Instantiate(PlayerAvatarStore.Instance.PlayerAvatars[AvatarIndex]);
 
         // initially hide flag
         MeshRenderer[] flagMeshes = flag.GetComponentsInChildren<MeshRenderer>();
