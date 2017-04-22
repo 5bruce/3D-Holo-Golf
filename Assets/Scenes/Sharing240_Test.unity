@@ -499,6 +499,12 @@ Prefab:
       propertyPath: Cursor
       value: 
       objectReference: {fileID: 1750997575}
+    - target: {fileID: 114458682609031440, guid: 22bc4dc87cf415445bb15d6da516b97c,
+        type: 2}
+      propertyPath: remoteProjectileTemplate
+      value: 
+      objectReference: {fileID: 1554238530696454, guid: 2ca21dd8071b81244836cc68578d6f40,
+        type: 2}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 22bc4dc87cf415445bb15d6da516b97c, type: 2}
   m_IsPrefabParent: 0
@@ -738,6 +744,11 @@ Prefab:
       propertyPath: TimeBetweenUpdates
       value: 2.5
       objectReference: {fileID: 0}
+    - target: {fileID: 114000011154029958, guid: 2ed75ffdf9031c94e8bce4b3d17b9928,
+        type: 2}
+      propertyPath: surfaceMaterial
+      value: 
+      objectReference: {fileID: 15303, guid: 0000000000000000f000000000000000, type: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 2ed75ffdf9031c94e8bce4b3d17b9928, type: 2}
   m_IsPrefabParent: 0

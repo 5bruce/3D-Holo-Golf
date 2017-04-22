@@ -46,6 +46,11 @@ public class ProjectileShooter_Shared : MonoBehaviour {
 
     public bool resting = true;
 
+    /// <summary>
+    /// used to represent projectiles of remote users
+    /// </summary>
+    public GameObject remoteProjectileTemplate;
+
     bool isActive;
     bool isDragging;
     bool isColliding;
@@ -60,6 +65,10 @@ public class ProjectileShooter_Shared : MonoBehaviour {
     const float maxDrop = 20;
 
     // Use this for initialization
+    // NOTE: Like the Awake function, Start is called exactly once in the lifetime of the script. 
+    // However, Awake is called when the script object is initialised, regardless of whether or not 
+    // the script is enabled. Start may not be called on the same frame as Awake if the script is not 
+    // enabled at initialisation time.
     void Start()
     {
         // Special case ID 0 to mean the _local_ user.  
@@ -67,11 +76,12 @@ public class ProjectileShooter_Shared : MonoBehaviour {
 
         // exit with error if this projectile does not have gameobject relationships set
         if (!cursor || cursor.GetComponent<AnimatedCursor>() == null ||
+            remoteProjectileTemplate == null ||
             !reference_point ||
             !goal)
         {
             Debug.LogError(this.name + ": Start(): this script expects 'cursor' GameObject to have 'AnimatedCursor' component from the HoloToolkit");
-            Debug.LogError(this.name + ": Start(): reference_point, flag, or goal GameObject may not have been set in this component");
+            Debug.LogError(this.name + ": Start(): remoteProjectileTemplate, reference_point, flag, or goal GameObject may not have been set in this component");
             // note, this does not quit in the Unity editor, see http://answers.unity3d.com/answers/514429/view.html
             Application.Quit();
         }
@@ -95,6 +105,8 @@ public class ProjectileShooter_Shared : MonoBehaviour {
 
         // set flag to be same as player avatar flag
         flag = (GameObject)Instantiate(PlayerAvatarStore.Instance.PlayerAvatars[AvatarIndex]);
+        flag.GetComponent<Collider>().enabled = false;              // make flag pole noncollidable
+        flag.GetComponentInChildren<Collider>().enabled = false;    // make flag noncollidable
 
         // initially hide flag
         MeshRenderer[] flagMeshes = flag.GetComponentsInChildren<MeshRenderer>();
@@ -111,7 +123,8 @@ public class ProjectileShooter_Shared : MonoBehaviour {
 
 
         // hook to process ShootProjectile CutomMessages
-        CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.ShootProjectile_Velocity] = this.ProjectileShooter_ProcessRemoteProjectile;
+        CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.ShootProjectile_Velocity]
+            = this.ProjectileShooter_ProcessRemoteProjectile;
 
         // Set projectile color to be the same as the avatar color.
         Color flag_color = PlayerAvatarStore.Instance.PlayerAvatars[AvatarIndex].transform.FindChild("Flag").GetComponent<Renderer>().material.color;
@@ -332,23 +345,10 @@ public class ProjectileShooter_Shared : MonoBehaviour {
             
             rb.velocity = this.LaunchVelocity();
 
-            /*********** 2 different ways I think can shoot projectile, need to test for better understanding
             // apply velocity based on reference point distance
-
             Vector3 direction = reference_point.transform.position - gameObject.transform.position;
             float magnitude = direction.magnitude * throwRatio;
-            SpawnProjectile(gameObject.transform.position, direction, magnitude, 0);
-
-            
-            // anchor relative to the transform of the ImportExportAnchorManager
-            Transform anchor = ImportExportAnchorManager.Instance.gameObject.transform;
-            // broadcast position and direction info of this fired projectile to other players in world space relative to anchor
-            CustomMessages.Instance.SendShootProjectile_Velocity(
-                anchor.InverseTransformPoint(gameObject.transform.position),
-                anchor.InverseTransformDirection(direction),
-                magnitude);
-            ***********/
-
+            BroadcastProjectile(gameObject.transform.position, direction, magnitude, 0);
 
             strokes++;
             SendMessageUpwards("ProjectileLaunched", strokes);
@@ -383,13 +383,13 @@ public class ProjectileShooter_Shared : MonoBehaviour {
     /// Spawns a new (remote) projectile in the world if the user
     /// doesn't already have one and fires it, broadcasting this info to other players.
     /// </summary>
-    void SpawnProjectile(Vector3 position, Vector3 direction, float magnitude, long UserId)
+    void BroadcastProjectile(Vector3 position, Vector3 direction, float magnitude, long UserId)
     {
-        ShootProjectile(position, direction, magnitude, UserId);
+        //ShootProjectile(position, direction, magnitude, UserId);  // no need to spwan locally
 
         // anchor relative to the transform of the ImportExportAnchorManager
         Transform anchor = ImportExportAnchorManager.Instance.gameObject.transform;
-        // broadcast position and direction info of this fired projectile to other players in world space relative to anchor
+        // broadcast shooting info of this fired projectile to other players in world space relative to anchor
         CustomMessages.Instance.SendShootProjectile_Velocity(
             anchor.InverseTransformPoint(position),
             anchor.InverseTransformDirection(direction),
@@ -402,15 +402,19 @@ public class ProjectileShooter_Shared : MonoBehaviour {
     /// <param name="start">Position to shoot from</param>
     /// <param name="direction">Position to shoot toward</param>
     /// <param name="radius">Size of destruction when colliding.</param>
-    void ShootProjectile(Vector3 start, Vector3 direction, float magnitude, long OwningUser)
+    void ShootProjectileLocally(Vector3 start, Vector3 direction, float magnitude, long OwningUser)
     {
+        Debug.LogFormat("{0}: {1}: ShootProjectileLocally()", gameObject.name, this.GetType().Name);
         // Need to know the index in the PlayerAvatarStore to grab for this projectile's behavior.
         int AvatarIndex = 0;
 
         // Special case ID 0 to mean the _local_ user.  
         if (OwningUser == 0)
         {
-            AvatarIndex = LocalPlayerManager.Instance.AvatarIndex;
+            // already launched locally from ProjectileShooter_StoppedDragging()
+            return;
+
+            //AvatarIndex = LocalPlayerManager.Instance.AvatarIndex;
         }
         else
         {
@@ -418,16 +422,23 @@ public class ProjectileShooter_Shared : MonoBehaviour {
             AvatarIndex = headInfo.PlayerAvatarIndex;
         }
 
-        PlayerAvatarParameters ownerAvatarParameters = PlayerAvatarStore.Instance.PlayerAvatars[AvatarIndex].GetComponent<PlayerAvatarParameters>();
-
         // spawn projectile
-        GameObject spawnedProjectile = (GameObject)Instantiate(ownerAvatarParameters.PlayerShotObject);
+        GameObject spawnedProjectile = (GameObject)Instantiate(remoteProjectileTemplate);
+        if (spawnedProjectile == null)
+        {
+            Debug.LogErrorFormat("{0}: {1}: ShootProjectileLocally(): could not instantiate remote projectile object: object = {2}",
+                gameObject.name, this.GetType().Name, spawnedProjectile);
+        }
         spawnedProjectile.transform.position = start;
+        spawnedProjectile.GetComponent<MeshRenderer>().material.color
+            = PlayerAvatarStore.Instance.PlayerAvatars[AvatarIndex].transform.FindChild("Flag").GetComponent<Renderer>().material.color;
 
         // fire projectile in direction
-        ProjectileBehavior pc = spawnedProjectile.GetComponentInChildren<ProjectileBehavior>();
-        pc.startDir = direction * magnitude;
-        pc.OwningUserId = OwningUser;
+        //ProjectileBehavior pc = spawnedProjectile.GetComponentInChildren<ProjectileBehavior>();
+        //pc.startDir = direction * magnitude;
+        //pc.OwningUserId = OwningUser;
+
+        spawnedProjectile.GetComponent<Rigidbody>().velocity = direction * magnitude;
     }
 
     /// <summary>
@@ -445,7 +456,7 @@ public class ProjectileShooter_Shared : MonoBehaviour {
 
         // capture position and direction values of remote projectile and add it to our local space
         Transform anchor = ImportExportAnchorManager.Instance.gameObject.transform;
-        ShootProjectile(
+        ShootProjectileLocally(
             anchor.TransformPoint(remoteProjectilePosition),
             anchor.TransformDirection(remoteProjectileDirection),
             remoteProjectileVelocityMagnitude, 
