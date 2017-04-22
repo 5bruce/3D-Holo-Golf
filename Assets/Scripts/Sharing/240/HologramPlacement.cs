@@ -7,6 +7,7 @@ using HoloToolkit.Unity.InputModule;
 
 /// <summary>
 /// Lets us place, broadcast, and recieve room anchor information
+/// (of holograms common to each user instance).
 /// </summary>
 public class HologramPlacement : Singleton<HologramPlacement>, IInputClickHandler
 {

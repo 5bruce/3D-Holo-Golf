@@ -117,8 +117,7 @@ public class ProjectileShooter_Shared : MonoBehaviour {
         Color flag_color = PlayerAvatarStore.Instance.PlayerAvatars[AvatarIndex].transform.FindChild("Flag").GetComponent<Renderer>().material.color;
         if (flag_color != null)
         {
-            Debug.LogFormat("{0}: {1}: Start(): setting ball color to {2}",
-                gameObject.name, this.GetType().Name, flag_color);
+            Debug.LogFormat("{0}: {1}: Start(): setting ball color to {2}", gameObject.name, this.GetType().Name, flag_color);
             gameObject.GetComponent<Renderer>().material.color = flag_color;
         }
     }
@@ -381,7 +380,7 @@ public class ProjectileShooter_Shared : MonoBehaviour {
 
 
     /// <summary>
-    /// Spawns a new projectile in the world if the user
+    /// Spawns a new (remote) projectile in the world if the user
     /// doesn't already have one and fires it, broadcasting this info to other players.
     /// </summary>
     void SpawnProjectile(Vector3 position, Vector3 direction, float magnitude, long UserId)
@@ -432,7 +431,7 @@ public class ProjectileShooter_Shared : MonoBehaviour {
     }
 
     /// <summary>
-    /// Process user hit by someone else's projectile.
+    /// Process projectile firing from remote users
     /// </summary>
     /// <param name="msg"></param>
     void ProjectileShooter_ProcessRemoteProjectile(NetworkInMessage msg)

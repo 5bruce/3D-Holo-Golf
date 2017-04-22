@@ -18,10 +18,10 @@ public class ProjectileLauncher : MonoBehaviour
     /// </summary>
     void Start()
     {
-        // hook to process ShootProjectile messages
+        // hook to process broadcasted ShootProjectile messages
         CustomMessages.Instance.MessageHandlers[CustomMessages.TestMessageID.ShootProjectile] = this.ProcessRemoteProjectile;
 
-        // We will use the camera's audio source to play sounds whenever a projectile hits the user's avatar
+        // set camera's audio source to play sounds whenever a projectile hits the user's avatar
         // or when the user hits another player's avatar with a projectile.
         if (Camera.main.gameObject.GetComponent<AudioSource>() == null)
         {
@@ -50,7 +50,7 @@ public class ProjectileLauncher : MonoBehaviour
 
     /// <summary>
     /// Spawns a new projectile in the world if the user
-    /// doesn't already have one and fires it, broadcasting this info to other players.
+    /// doesn't already have one and fires it locally, broadcasting this info to other players.
     /// </summary>
     void SpawnProjectile(long UserId)
     {
@@ -114,12 +114,12 @@ public class ProjectileLauncher : MonoBehaviour
     }
 
     /// <summary>
-    /// Process user hit by someone else's projectile.
+    /// Processes projectile firing from remote users
     /// </summary>
     /// <param name="msg"></param>
     void ProcessRemoteProjectile(NetworkInMessage msg)
     {
-        // Parse the message
+        // Parse the message for launching user's id and projectile direction
         long userID = msg.ReadInt64();
 
         Vector3 remoteProjectilePosition = CustomMessages.Instance.ReadVector3(msg);
@@ -127,6 +127,9 @@ public class ProjectileLauncher : MonoBehaviour
 
         // capture position and direction values of remote projectile and add it to our local space
         Transform anchor = ImportExportAnchorManager.Instance.gameObject.transform;
-        ShootProjectile(anchor.TransformPoint(remoteProjectilePosition), anchor.TransformDirection(remoteProjectileDirection), userID);
+        ShootProjectile(
+            anchor.TransformPoint(remoteProjectilePosition),
+            anchor.TransformDirection(remoteProjectileDirection),
+            userID);
     }
 }

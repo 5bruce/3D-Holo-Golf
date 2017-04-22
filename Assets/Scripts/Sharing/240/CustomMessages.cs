@@ -219,7 +219,7 @@ public class CustomMessages : Singleton<CustomMessages>
         }
     }
 
-    // used for placing shared objects that may move
+    // used for placing shared common, static, objects that don't use same behavior as HologramPlacement.cs
     public void SendDynamicStageTransform(Vector3 position, Quaternion rotation)
     {
         // If we are connected to a session

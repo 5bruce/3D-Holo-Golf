@@ -112,7 +112,7 @@ public class RemotePlayerManager : Singleton<RemotePlayerManager>
     */
 
     /// <summary>
-    /// Called when a user's avatar has changed. Updates user's avatar.
+    /// Called when a (remote) user's avatar has changed. Updates (remote) users' avatar locally.
     /// </summary>
     /// <param name="msg"></param>
     void UpdateUserAvatar(NetworkInMessage msg)
@@ -179,9 +179,9 @@ public class RemotePlayerManager : Singleton<RemotePlayerManager>
 
         RemoteHeadInfo headInfo = GetRemoteHeadInfo(userID);
 
+        // If we don't have our anchor established, don't draw the remote head.
         if (headInfo.HeadObject != null)
         {
-            // If we don't have our anchor established, don't draw the remote head.
             headInfo.HeadObject.SetActive(headInfo.Anchored);
 
             headInfo.HeadObject.transform.localPosition = headPos + headRot * headInfo.headObjectPositionOffset;

@@ -24,7 +24,7 @@ public class LocalPlayerManager : Singleton<LocalPlayerManager>
     }
 
     /// <summary>
-    /// Broadcasts the user's avatar to other players.
+    /// Broadcasts the local user's avatar to other players.
     /// </summary>
     public void SendUserAvatar()
     {
